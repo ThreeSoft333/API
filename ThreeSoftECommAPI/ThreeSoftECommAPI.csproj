@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-ThreeSoftECommAPI-696F4548-E3CA-4A2A-9E1C-5B737C1C987D</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200611205258_appuser.cs" />
+    <Compile Remove="Data\Migrations\20200611205258_appuser.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612051123_Brand.cs" />
+    <Compile Remove="Data\Migrations\20200612051123_Brand.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612051320_addBrand.cs" />
+    <Compile Remove="Data\Migrations\20200612051320_addBrand.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612051453_Brand.cs" />
+    <Compile Remove="Data\Migrations\20200612051453_Brand.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612051933_Brand.cs" />
+    <Compile Remove="Data\Migrations\20200612051933_Brand.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612052300_xx.cs" />
+    <Compile Remove="Data\Migrations\20200612052300_xx.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612062327_addEcomm.cs" />
+    <Compile Remove="Data\Migrations\20200612062327_addEcomm.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
+  </ItemGroup>
+
+</Project>
