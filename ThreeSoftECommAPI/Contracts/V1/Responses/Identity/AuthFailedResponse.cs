@@ -7,6 +7,7 @@ namespace ThreeSoftECommAPI.Contracts.V1.Responses.Identity
 {
     public class AuthFailedResponse
     {
-        public IEnumerable<string> Errors { get; set; }
+        public string message { get; set; }
+        public int status { get; set; }
     }
 }

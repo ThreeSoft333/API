@@ -14,11 +14,14 @@ namespace ThreeSoftECommAPI.Domain.EComm
 
         [Key]
         public Int64 Id { get; set; }
+        public string ArabicName { get; set; }
+        public string EnglishName { get; set; }
+        public string ArabicDescription { get; set; }
+        public string EnglishDescription { get; set; }
+        public decimal Price { get; set; }
+        public decimal SalePrice { get; set; }
 
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public double Price { get; set; }
-        public double SalePrice { get; set; }
+        public string ImgUrl { get; set; }
 
         [DefaultValue(DefCurr)]
         public string Currency { get; set; }

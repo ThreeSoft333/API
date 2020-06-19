@@ -9,7 +9,8 @@ namespace ThreeSoftECommAPI.Contracts.V1.Requests.EComm.BrandReq
     public class CreateBrandRequest
     {
         [Required]
-        public string Name { get; set; }
+        public string ArabicName { get; set; }
+        public string EnglishName { get; set; }
         public string ImgUrl { get; set; }
     }
 }

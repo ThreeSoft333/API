@@ -20,6 +20,32 @@
     <Compile Remove="Data\Migrations\20200612052300_xx.Designer.cs" />
     <Compile Remove="Data\Migrations\20200612062327_addEcomm.cs" />
     <Compile Remove="Data\Migrations\20200612062327_addEcomm.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612220019_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612220019_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612220154_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612220154_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612220348_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612220348_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612220516_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612220516_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612220631_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612220631_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612220740_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612220740_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612220835_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612220835_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612222420_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612222420_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612222724_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612222724_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612222840_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612222840_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612223103_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612223103_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612223205_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612223205_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200612223248_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200612223248_addEcomm2.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +56,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\EComm\OrderItem\" />
   </ItemGroup>
 
 </Project>

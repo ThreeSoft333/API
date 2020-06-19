@@ -25,7 +25,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
             {
                 return BadRequest(new AuthFailedResponse
                 {
-                    Errors = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage))
+                    message = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage)).FirstOrDefault(),
+                    status = BadRequest().StatusCode
                 });
             }
             var authResponse = await _identityService.RegisterAsync(request.Email, request.MobileNo, request.Password);
@@ -34,13 +35,20 @@ namespace ThreeSoftECommAPI.Controllers.V1
             {
                 return BadRequest(new AuthFailedResponse
                 {
-                    Errors = authResponse.Errors
+                    message = authResponse.Errors,
+                    status = BadRequest().StatusCode
                 });
             }
 
             return Ok(new AuthSuccessResponse
             {
-                Token = authResponse.Token
+                Token = authResponse.Token,
+                UserId = authResponse.UserId,
+                UserName = authResponse.UserName,
+                Email = authResponse.Email,
+                Address = authResponse.Address,
+                ImgUrl = authResponse.ImgUrl,
+                ImgCoverUrl = authResponse.ImgCoverUrl
             });
         }
 
@@ -53,13 +61,20 @@ namespace ThreeSoftECommAPI.Controllers.V1
             {
                 return BadRequest(new AuthFailedResponse
                 {
-                    Errors = authResponse.Errors
+                    message = authResponse.Errors,
+                    status = BadRequest().StatusCode
                 });
             }
 
             return Ok(new AuthSuccessResponse
             {
-                Token = authResponse.Token
+                Token = authResponse.Token,
+                UserId = authResponse.UserId,
+                UserName = authResponse.UserName,
+                Email = authResponse.Email,
+                Address = authResponse.Address,
+                ImgUrl = authResponse.ImgUrl,
+                ImgCoverUrl = authResponse.ImgCoverUrl
             });
         }
     }

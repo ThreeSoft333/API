@@ -36,7 +36,7 @@ namespace ThreeSoftECommAPI.Services.Identity
             {
                 return new AuthenticationResult
                 {
-                    Errors = new[] { "User with this email address already exists" }
+                    Errors = "User with this email address already exists"
                 };
             }
 
@@ -54,7 +54,7 @@ namespace ThreeSoftECommAPI.Services.Identity
                 return new AuthenticationResult
                 {
                     Success = false,
-                    Errors = CreateUser.Errors.Select(x => x.Description)
+                    Errors = CreateUser.Errors.Select(x => x.Description).FirstOrDefault()
                 };
             }
 
@@ -70,7 +70,7 @@ namespace ThreeSoftECommAPI.Services.Identity
             {
                 return new AuthenticationResult
                 {
-                    Errors = new[] { "User does not exists" }
+                    Errors = "User does not exists"
                 };
             }
 
@@ -80,7 +80,7 @@ namespace ThreeSoftECommAPI.Services.Identity
             {
                 return new AuthenticationResult
                 {
-                    Errors = new[] { "User/password combination is wrong" }
+                    Errors = "User/password combination is wrong"
                 };
             }
 
@@ -112,7 +112,13 @@ namespace ThreeSoftECommAPI.Services.Identity
             return new AuthenticationResult
             {
                 Success = true,
-                Token = tokenHandler.WriteToken(token)
+                Token = tokenHandler.WriteToken(token),
+                UserId = User.Id,
+                UserName = User.UserName,
+                Email = User.Email,
+                ImgUrl = User.ProfileImageUrl,
+                ImgCoverUrl = User.CoverImageUrl,
+                Address = User.Address,
             };
         }
     }

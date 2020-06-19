@@ -12,11 +12,12 @@ namespace ThreeSoftECommAPI.Domain.EComm
         [Key]
         public Int64 Id { get; set; }
         public Int32 CategoryId { get; set; }
-        public string Name { get; set; }
+        public string ArabicName { get; set; }
+        public string EnglishName { get; set; }
         public string ImgUrl { get; set; }
+        public int Status { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
-
         public Category category { get; set; }
     }
 }

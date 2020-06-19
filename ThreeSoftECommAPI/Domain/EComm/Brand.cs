@@ -10,7 +10,8 @@ namespace ThreeSoftECommAPI.Domain.EComm
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string ArabicName { get; set; }
+        public string EnglishName { get; set; }
         public string ImgUrl { get; set; }
     }
 }

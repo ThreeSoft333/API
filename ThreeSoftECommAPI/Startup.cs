@@ -20,6 +20,16 @@ using System.Text;
 using ThreeSoftECommAPI.Services.Identity;
 using ThreeSoftECommAPI.Domain.Identity;
 using ThreeSoftECommAPI.Services.EComm.BrandServ;
+using ThreeSoftECommAPI.Services.EComm.AdvertisingServ;
+using ThreeSoftECommAPI.Services.EComm.CategoryServ;
+using ThreeSoftECommAPI.Services.EComm.ProductServ;
+using ThreeSoftECommAPI.Services.EComm.UserFavouritesServ;
+using ThreeSoftECommAPI.Services.EComm.SubCategoryServ;
+using ThreeSoftECommAPI.Services.EComm.SubSubCategoryServ;
+using ThreeSoftECommAPI.Services.EComm.OffersServ;
+using ThreeSoftECommAPI.Services.EComm.ProductReviewsServ;
+using ThreeSoftECommAPI.Services.EComm.ProductColorServ;
+using ThreeSoftECommAPI.Services.EComm.ProductSizeServ;
 
 namespace ThreeSoftECommAPI
 {
@@ -45,6 +55,15 @@ namespace ThreeSoftECommAPI
 
 
             services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<IAdvertisingService, AdvertisingService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ISubCategoryService, SubCategoryService>();
+            services.AddScoped<IProductService,ProductService>();
+            services.AddScoped<IUserFavService,UserFavService>();
+            services.AddScoped<IOffersService,OffersService>();
+            services.AddScoped<IProductReviewService,ProductReviewService>();
+            services.AddScoped<IProductColorService,ProductColorService>();
+            services.AddScoped<IProductSizeService,ProductSizeService>();
 
 
 

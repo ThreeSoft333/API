@@ -8,12 +8,10 @@ namespace ThreeSoftECommAPI.Services.EComm.BrandServ
 {
    public interface IBrandService
     {
-        Task<List<Brand>> GetBrandsAsync();
-
+       Task<List<Brand>> GetBrandsAsync();
         Task<Brand> GetBrandByIdAsync(Int32 brandId);
-
-        Task<bool> CreateBrandAsync(Brand brand);
-        Task<bool> UpdateBrandAsync(Brand brand);
+        Task<int> CreateBrandAsync(Brand brand);
+        Task<int> UpdateBrandAsync(Brand brand);
         Task<bool> DeleteBrandAsync(Int32 brandId);
     }
 }

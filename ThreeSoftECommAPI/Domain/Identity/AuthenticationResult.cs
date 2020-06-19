@@ -9,6 +9,12 @@ namespace ThreeSoftECommAPI.Domain.Identity
     {
         public string Token { get; set; }
         public bool Success { get; set; }
-        public IEnumerable<string> Errors { get; set; }
+        public string Errors { get; set; }
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string ImgUrl { get; set; }
+        public string ImgCoverUrl { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
     }
 }

@@ -28,18 +28,30 @@ namespace ThreeSoftECommAPI.Services.EComm.BrandServ
             return await _dataContext.Brand.SingleOrDefaultAsync(x => x.Id == brandId);
         }
 
-        public async Task<bool> CreateBrandAsync(Brand brand)
+        public async Task<int> CreateBrandAsync(Brand brand)
         {
+            var CheckArName = await _dataContext.Brand.SingleOrDefaultAsync(x => x.ArabicName == brand.ArabicName);
+            var CheckEnName = await _dataContext.Brand.SingleOrDefaultAsync(x => x.EnglishName == brand.EnglishName);
+
+            if (CheckArName != null || CheckEnName != null)
+                return -1;
+
             await _dataContext.Brand.AddAsync(brand);
             var created = await _dataContext.SaveChangesAsync();
-            return created > 0;
+            return created;
         }
 
-        public async Task<bool> UpdateBrandAsync(Brand brand)
+        public async Task<int> UpdateBrandAsync(Brand brand)
         {
+            var CheckArName = await _dataContext.category.Where(y => y.Id != brand.Id).SingleOrDefaultAsync(x => x.ArabicName == brand.ArabicName);
+            var CheckEnName = await _dataContext.category.Where(y => y.Id != brand.Id).SingleOrDefaultAsync(x => x.EnglishName == brand.EnglishName);
+
+            if (CheckArName != null || CheckEnName != null)
+                return -1;
+
             _dataContext.Brand.Update(brand);
             var created = await _dataContext.SaveChangesAsync();
-            return created > 0;
+            return created ;
         }
             
         public async Task<bool> DeleteBrandAsync(int brandId)

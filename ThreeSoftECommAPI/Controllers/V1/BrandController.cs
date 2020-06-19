@@ -44,15 +44,32 @@ namespace ThreeSoftECommAPI.Controllers.V1
         {
             var brand = new Brand
             {
-                Name = brandRequest.Name,
+                ArabicName = brandRequest.ArabicName,
+                EnglishName = brandRequest.EnglishName,
                 ImgUrl = brandRequest.ImgUrl
             };
 
-            await _brandService.CreateBrandAsync(brand);
+           var status= await _brandService.CreateBrandAsync(brand);
 
-            var response = new BrandResponse { Id = brand.Id };
+            if (status == -1)
+            {
+                return Conflict(new ErrorResponse
+                {
+                    message = "Dublicate Entry",
+                    status = Conflict().StatusCode
+                });
+            }
 
-            return Created("", response);
+            if (status == 1)
+            {
+                var response = new BrandResponse { Id = brand.Id };
+                return Ok(response);
+            }
+            return NotFound(new ErrorResponse
+            {
+                message = "Not Found",
+                status = NotFound().StatusCode
+            });
         }
 
         [HttpPost(ApiRoutes.Brands.Update)]
@@ -61,15 +78,30 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var brand = new Brand
             {
                 Id = brandId,
-                Name = brandRequest.Name,
+                ArabicName = brandRequest.ArabicName,
+                EnglishName = brandRequest.EnglishName,
                 ImgUrl = brandRequest.ImgUrl
             };
 
-            var Updated = await _brandService.UpdateBrandAsync(brand);
+            var status = await _brandService.UpdateBrandAsync(brand);
 
-            if (Updated)
+            if (status == -1)
+            {
+                return Conflict(new ErrorResponse
+                {
+                    message = "Dublicate Entry",
+                    status = Conflict().StatusCode
+                });
+            }
+
+            if (status == 1)
                 return Ok(brand);
-            return NotFound();
+
+            return NotFound(new ErrorResponse
+            {
+                message = "Not Found",
+                status = NotFound().StatusCode
+            });
         }
 
         [HttpDelete(ApiRoutes.Brands.Delete)]
