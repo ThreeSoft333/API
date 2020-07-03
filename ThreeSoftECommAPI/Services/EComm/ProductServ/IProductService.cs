@@ -10,6 +10,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
    public interface IProductService
     {
         Task<List<Product>> GetProductsAsync(Int64 SubCatgId, int status);
+        Task<List<ProductResponse>> GetProductsBySubCategoryAsync(string UserId,Int64 SubCatgId);
         Task<List<ProductResponse>> GetProductsMostRecentAsync(string UserId, int count);
         Task<List<ProductResponse>> GetProductsMostWantedAsync(string UserId, int count);
         Task<List<Product>> GetProductsUserFavAsync(string UserId);

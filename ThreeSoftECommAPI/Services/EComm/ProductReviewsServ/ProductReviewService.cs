@@ -18,12 +18,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductReviewsServ
         }
         public async Task<int> CreateProductReviewAsync(ProductReviews productReviews)
         {
-           //var _productReview = _dataContext.ProductReviews.Where(h => h.ProductId == productReviews.ProductId).SingleOrDefaultAsync(x => x.UserId == productReviews.UserId);
-            //.SingleOrDefaultAsync(y => y.ArabicName == ProductReviews.ArabicName)
-            //.Where(x => x.UserId == productReviews.UserId)
-
-            //if (CheckArName != null || CheckEnName != null)
-            //    return -1;
             await _dataContext.ProductReviews.AddAsync(productReviews);
             var created = await _dataContext.SaveChangesAsync();
             return created;
@@ -31,7 +25,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductReviewsServ
 
         public async Task<List<ProductReviews>> GetProductReviews(long ProductId)
         {
-           return await _dataContext.ProductReviews.Where(x => x.ProductId == ProductId).ToListAsync();
+           return await _dataContext.ProductReviews.Include(y => y.User).Where(x => x.ProductId == ProductId).ToListAsync();
         }
     }
 }

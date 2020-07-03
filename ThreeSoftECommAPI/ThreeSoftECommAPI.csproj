@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-ThreeSoftECommAPI-696F4548-E3CA-4A2A-9E1C-5B737C1C987D</UserSecretsId>
+    
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,6 +47,26 @@
     <Compile Remove="Data\Migrations\20200612223205_addEcomm2.Designer.cs" />
     <Compile Remove="Data\Migrations\20200612223248_addEcomm2.cs" />
     <Compile Remove="Data\Migrations\20200612223248_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200620161820_addEcomm1.cs" />
+    <Compile Remove="Data\Migrations\20200620161820_addEcomm1.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200620162221_addEcomm1.cs" />
+    <Compile Remove="Data\Migrations\20200620162221_addEcomm1.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200620163049_addEcomm1.cs" />
+    <Compile Remove="Data\Migrations\20200620163049_addEcomm1.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200620202137_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200620202137_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200620203233_addEcomm2.cs" />
+    <Compile Remove="Data\Migrations\20200620203233_addEcomm2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200620203354_addEcomm3.cs" />
+    <Compile Remove="Data\Migrations\20200620203354_addEcomm3.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200620204918_addecomm3.cs" />
+    <Compile Remove="Data\Migrations\20200620204918_addecomm3.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200620213947_addEcomm4.cs" />
+    <Compile Remove="Data\Migrations\20200620213947_addEcomm4.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200620214419_addEcomm5.cs" />
+    <Compile Remove="Data\Migrations\20200620214419_addEcomm5.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200622204523_addEcomm7.cs" />
+    <Compile Remove="Data\Migrations\20200622204523_addEcomm7.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,7 +80,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\EComm\OrderItem\" />
+    <Folder Include="Resources\Images\BrandImg\" />
+    <Folder Include="Resources\Images\CategoryImg\" />
+    <Folder Include="Resources\Images\ProductImg\" />
+    <Folder Include="Resources\Images\SubCatgImg\" />
   </ItemGroup>
 
 </Project>

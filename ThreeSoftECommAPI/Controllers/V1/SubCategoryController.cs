@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Contracts.V1.Requests.EComm.SubCatgReq;
@@ -30,9 +32,9 @@ namespace ThreeSoftECommAPI.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.SubCategory.Get)]
-        public async Task<IActionResult> Get([FromRoute] Int32 CatgId)
+        public async Task<IActionResult> Get([FromRoute] Int32 id)
         {
-            var SubCatg = await _SubCategoryService.GetSubCategoryByIdAsync(CatgId);
+            var SubCatg = await _SubCategoryService.GetSubCategoryByIdAsync(id);
 
             if (SubCatg == null)
                 return NotFound(new ErrorResponse
@@ -81,11 +83,12 @@ namespace ThreeSoftECommAPI.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.SubCategory.Update)]
-        public async Task<IActionResult> Update([FromRoute] Int32 subCatgId, [FromBody] UpdateSubCategoryRequest SubCategoryRequst)
+        public async Task<IActionResult> Update([FromRoute] Int32 id, [FromBody] UpdateSubCategoryRequest SubCategoryRequst)
         {
             var SubCategory = new SubCategory
             {
-                Id = subCatgId,
+                Id = id,
+                CategoryId = SubCategoryRequst.CategoryId,
                 ArabicName = SubCategoryRequst.ArabicName,
                 EnglishName = SubCategoryRequst.EnglishName,
                 ImgUrl = SubCategoryRequst.ImgUrl,
@@ -115,9 +118,9 @@ namespace ThreeSoftECommAPI.Controllers.V1
         }
 
         [HttpDelete(ApiRoutes.SubCategory.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] Int32 SubCatgId)
+        public async Task<IActionResult> Delete([FromRoute] Int32 id)
         {
-            var deleted = await _SubCategoryService.DeleteSubCategoryAsync(SubCatgId);
+            var deleted = await _SubCategoryService.DeleteSubCategoryAsync(id);
 
             if (deleted)
                 return Ok(new SuccessResponse
@@ -130,6 +133,29 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 message = "Not Found",
                 status = NotFound().StatusCode
             });
+        }
+
+        [HttpPost(ApiRoutes.SubCategory.Upload), DisableRequestSizeLimit]
+        public async Task<IActionResult> Upload()
+        {
+            var file = Request.Form.Files[0];
+            var folderName = Path.Combine("Resources", "Images", "SubCatgImg");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+            if (file.Length > 0)
+            {
+                var fileName = DateTime.Now.Ticks + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                var fullPath = Path.Combine(pathToSave, fileName);
+                var dbPath = Path.Combine(folderName, fileName);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                return Ok(new { dbPath });
+            }
+            return BadRequest();
         }
     }
 }

@@ -17,19 +17,10 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductSizeServ
             _dataContext = dbContext;
         }
 
-        public async Task<List<ProductSize>> GetProductSizeAsync(Int64 ProductId, int status)
+        public async Task<List<ProductSize>> GetProductSizeAsync(Int32 CategoryId)
         {
-            switch (status)
-            {
-                case 1:
-                    return await _dataContext.ProductSizes.Where(p => p.ProductId == ProductId && p.Status == 1).ToListAsync();
-                case 0:
-                    return await _dataContext.ProductSizes.Where(p => p.ProductId == ProductId && p.Status == 0).ToListAsync();
-                default:
-                    return await _dataContext.ProductSizes.ToListAsync();
-            }
+            return await _dataContext.ProductSizes.Where(x => x.CategoryId == CategoryId).ToListAsync();
         }
-
 
         public async Task<ProductSize> GetProductSizeByIdAsync(long Id)
         {
@@ -38,7 +29,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductSizeServ
 
         public async Task<int> CreateProductSizeAsync(ProductSize productSizes)
         {
-            var CheckExist = await _dataContext.ProductSizes.Where(p => p.ProductId == productSizes.ProductId)
+            var CheckExist = await _dataContext.ProductSizes
                 .SingleOrDefaultAsync(x => x.Size == productSizes.Size);
 
             if (CheckExist != null)
@@ -51,7 +42,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductSizeServ
 
         public async Task<int> UpdateProductSizeAsync(ProductSize productSizes)
         {
-            var CheckExist = await _dataContext.ProductSizes.Where(p => p.ProductId == productSizes.ProductId && p.Id != productSizes.Id)
+            var CheckExist = await _dataContext.ProductSizes.Where(x => x.Id != productSizes.Id)
               .SingleOrDefaultAsync(x => x.Size == productSizes.Size);
 
             if (CheckExist != null)
@@ -73,5 +64,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductSizeServ
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
+
+     
     }
 }

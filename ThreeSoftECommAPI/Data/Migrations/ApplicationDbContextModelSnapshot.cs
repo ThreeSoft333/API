@@ -222,11 +222,11 @@ namespace ThreeSoftECommAPI.Data.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CreatedAt")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("UpdatedAt")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -248,8 +248,8 @@ namespace ThreeSoftECommAPI.Data.Migrations
                     b.Property<long>("CartId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("CreatedAt")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
@@ -257,8 +257,8 @@ namespace ThreeSoftECommAPI.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("UpdatedAt")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -397,7 +397,7 @@ namespace ThreeSoftECommAPI.Data.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CouponId")
+                    b.Property<int?>("CouponId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -406,22 +406,19 @@ namespace ThreeSoftECommAPI.Data.Migrations
                     b.Property<int>("DeliveryMethod")
                         .HasColumnType("int");
 
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
                     b.Property<string>("RejectReason")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("SubTotal")
-                        .HasColumnType("DECIMAL (25,3)");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("DECIMAL (25,3)");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserAddressesId")
+                    b.Property<int?>("UserAddressesId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -450,9 +447,6 @@ namespace ThreeSoftECommAPI.Data.Migrations
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("DECIMAL (25,3)");
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
@@ -512,14 +506,13 @@ namespace ThreeSoftECommAPI.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ArabicName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Condition")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedAt")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -531,8 +524,7 @@ namespace ThreeSoftECommAPI.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EnglishName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
@@ -552,24 +544,28 @@ namespace ThreeSoftECommAPI.Data.Migrations
                     b.Property<long>("SubCategoryId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("UpdatedAt")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("colorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("sizeId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArabicName")
-                        .IsUnique();
-
-                    b.HasIndex("EnglishName")
-                        .IsUnique();
-
                     b.HasIndex("SubCategoryId");
+
+                    b.HasIndex("colorId");
+
+                    b.HasIndex("sizeId");
 
                     b.ToTable("product");
                 });
@@ -619,34 +615,21 @@ namespace ThreeSoftECommAPI.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ArabicName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EnglishName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("HexCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ArabicName")
-                        .IsUnique();
-
-                    b.HasIndex("EnglishName")
-                        .IsUnique();
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductColors");
                 });
@@ -702,6 +685,9 @@ namespace ThreeSoftECommAPI.Data.Migrations
                     b.Property<int>("Rate")
                         .HasColumnType("int");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -724,21 +710,18 @@ namespace ThreeSoftECommAPI.Data.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<string>("Unit")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("ProductSizes");
                 });
@@ -1050,15 +1033,11 @@ namespace ThreeSoftECommAPI.Data.Migrations
                 {
                     b.HasOne("ThreeSoftECommAPI.Domain.EComm.Coupon", "coupon")
                         .WithMany()
-                        .HasForeignKey("CouponId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CouponId");
 
                     b.HasOne("ThreeSoftECommAPI.Domain.Identity.UserAddresses", "userAddresses")
                         .WithMany()
-                        .HasForeignKey("UserAddressesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserAddressesId");
 
                     b.HasOne("ThreeSoftECommAPI.Domain.Identity.AppUser", "User")
                         .WithMany()
@@ -1096,18 +1075,17 @@ namespace ThreeSoftECommAPI.Data.Migrations
                         .HasForeignKey("SubCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ThreeSoftECommAPI.Domain.EComm.ProductColors", "colors")
+                        .WithMany()
+                        .HasForeignKey("colorId");
+
+                    b.HasOne("ThreeSoftECommAPI.Domain.EComm.ProductSize", "size")
+                        .WithMany()
+                        .HasForeignKey("sizeId");
                 });
 
             modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.ProductAttributes", b =>
-                {
-                    b.HasOne("ThreeSoftECommAPI.Domain.EComm.Product", "product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.ProductColors", b =>
                 {
                     b.HasOne("ThreeSoftECommAPI.Domain.EComm.Product", "product")
                         .WithMany()
@@ -1133,16 +1111,16 @@ namespace ThreeSoftECommAPI.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ThreeSoftECommAPI.Domain.Identity.AppUser", "appUser")
+                    b.HasOne("ThreeSoftECommAPI.Domain.Identity.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.ProductSize", b =>
                 {
-                    b.HasOne("ThreeSoftECommAPI.Domain.EComm.Product", "product")
+                    b.HasOne("ThreeSoftECommAPI.Domain.EComm.Category", "category")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

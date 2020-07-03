@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using ThreeSoftECommAPI.Contracts.V1;
@@ -138,6 +140,29 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 message = "Not Found",
                 status = NotFound().StatusCode
             });
+        }
+
+        [HttpPost(ApiRoutes.Category.Upload), DisableRequestSizeLimit]
+        public async Task<IActionResult> Upload()
+        {
+            var file = Request.Form.Files[0];
+            var folderName = Path.Combine("Resources", "Images", "CategoryImg");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+            if (file.Length > 0)
+            {
+                var fileName = DateTime.Now.Ticks + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                var fullPath = Path.Combine(pathToSave, fileName);
+                var dbPath = Path.Combine(folderName, fileName);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                return Ok(new { dbPath });
+            }
+            return BadRequest();
         }
     }
 }

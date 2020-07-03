@@ -8,7 +8,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductColorServ
 {
    public interface IProductColorService
     {
-        Task<List<ProductColors>> GetProductColorsAsync(long productId,Int32 Status);
+        Task<List<ProductColors>> GetProductColorsAsync();
         Task<ProductColors> GetProductColorsByIdAsync(long id);
         Task<int> CreateProductColorsAsync(ProductColors productColors);
         Task<int> UpdateProductColorsAsync(ProductColors productColors);

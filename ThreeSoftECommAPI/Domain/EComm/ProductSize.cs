@@ -13,11 +13,9 @@ namespace ThreeSoftECommAPI.Domain.EComm
         public Int64 Id { get; set; }
         public string Size { get; set; }
         public string Unit { get; set; }
-        public Int64 ProductId { get; set; }
-        public Int32 Status { get; set; }
+        public Int32 CategoryId { get; set; }
 
-
-        [ForeignKey(nameof(ProductId))]
-        public Product product { get; set; }
+        [ForeignKey(nameof(CategoryId))]
+        public Category category { get; set; }
     }
 }

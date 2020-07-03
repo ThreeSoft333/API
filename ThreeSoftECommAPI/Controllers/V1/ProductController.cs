@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Contracts.V1.Requests.EComm.ProductReq;
@@ -27,6 +29,12 @@ namespace ThreeSoftECommAPI.Controllers.V1
         public async Task<IActionResult> GetAll([FromRoute] Int64 SubCatgId, [FromQuery] int status)
         {
             return Ok(await _productService.GetProductsAsync(SubCatgId, status));
+        }
+
+        [HttpGet(ApiRoutes.Product.GetAllforApp)]
+        public async Task<IActionResult> GetProductsBySubCategoryAsync([FromRoute] Int64 SubCatgId,[FromQuery] string UserId)
+        {
+            return Ok(await _productService.GetProductsBySubCategoryAsync(UserId, SubCatgId));
         }
 
         [HttpGet(ApiRoutes.Product.ProductsMostRecent)]
@@ -100,9 +108,10 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Condition = productRequest.Condition,
                 Material = productRequest.Material,
                 status = productRequest.status,
-                CreatedAt = productRequest.CreatedAt,
-                CreatedBy = productRequest.CreatedBy,
-                ImgUrl = productRequest.ImgUrl
+                ImgUrl = productRequest.ImgUrl,
+                colorId = productRequest.colorId,
+                sizeId = productRequest.sizeId,
+                CreatedAt = DateTime.Now
             };
 
             var status = await _productService.CreateProductAsync(Product);
@@ -146,9 +155,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Condition = productRequest.Condition,
                 Material = productRequest.Material,
                 status = productRequest.status,
-                UpdatedAt = productRequest.UpdatedAt,
-                UpdatedBy = productRequest.UpdatedBy,
-                ImgUrl = productRequest.ImgUrl
+                ImgUrl = productRequest.ImgUrl,
+                UpdatedAt = DateTime.Now
             };
 
             var status = await _productService.UpdateProductAsync(Product);
@@ -189,6 +197,29 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 message = "Not Found",
                 status = NotFound().StatusCode
             });
+        }
+
+        [HttpPost(ApiRoutes.Product.Upload), DisableRequestSizeLimit]
+        public async Task<IActionResult> Upload()
+        {
+            var file = Request.Form.Files[0];
+            var folderName = Path.Combine("Resources", "Images", "ProductImg");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+            if (file.Length > 0)
+            {
+                var fileName = DateTime.Now.Ticks + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                var fullPath = Path.Combine(pathToSave, fileName);
+                var dbPath = Path.Combine(folderName, fileName);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                return Ok(new { dbPath });
+            }
+            return BadRequest();
         }
     }
 }

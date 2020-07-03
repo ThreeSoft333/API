@@ -20,7 +20,6 @@ namespace ThreeSoftECommAPI.Domain.EComm
         public string EnglishDescription { get; set; }
         public decimal Price { get; set; }
         public decimal SalePrice { get; set; }
-
         public string ImgUrl { get; set; }
 
         [DefaultValue(DefCurr)]
@@ -28,17 +27,23 @@ namespace ThreeSoftECommAPI.Domain.EComm
         public string Condition { get; set; }
         public string Material { get; set; }
         public Int32 Quantity { get; set; }
-
         public Int32 status { get; set; }
-
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
-        public string UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public string UpdatedBy { get; set; }
         public Int64 SubCategoryId { get; set; }
+        public Int64? colorId { get; set; }
+        public Int64? sizeId { get; set; }
 
         [ForeignKey(nameof(SubCategoryId))]
         public SubCategory subCategory { get; set; }
+
+        [ForeignKey(nameof(colorId))]
+        public ProductColors colors { get; set; }
+
+        [ForeignKey(nameof(sizeId))]
+        public ProductSize size { get; set; }
 
     }
 }

@@ -11,6 +11,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
     {
         Task<List<Offers>> GetOffersAsync(int status);
         Task<List<OfferResponse>> GetOffersTopAsync(string UserId, int count);
+        Task<List<OfferResponse>> GetOffersAllForAppAsync(string UserId);
         Task<Offers> GetOffersByIdAsync(Int64 OfferId);
         Task<int> CreateOffersAsync(Offers offer);
         Task<int> UpdateOffersAsync(Offers offer);

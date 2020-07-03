@@ -9,7 +9,6 @@ namespace ThreeSoftECommAPI.Contracts.V1.Requests.EComm.ProductColorReq
     {
         public string ArabicName { get; set; }
         public string EnglishName { get; set; }
-        public Int64 ProductId { get; set; }
-        public Int32 Status { get; set; }
+        public string HexCode { get; set; }
     }
 }

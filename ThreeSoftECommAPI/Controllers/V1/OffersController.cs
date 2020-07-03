@@ -26,6 +26,12 @@ namespace ThreeSoftECommAPI.Controllers.V1
             return Ok(await _OffersService.GetOffersAsync(status));
         }
 
+        [HttpGet(ApiRoutes.Offers.GetForApp)]
+        public async Task<IActionResult> GetAllForApp(string UserId)
+        {
+            return Ok(await _OffersService.GetOffersAllForAppAsync(UserId));
+        }
+
         [HttpGet(ApiRoutes.Offers.Get)]
         public async Task<IActionResult> Get([FromRoute] Int64 offerId)
         {
@@ -50,7 +56,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 EnglishDesc = OffersRequst.EnglishDesc,
                 offerPrice = OffersRequst.offerPrice,
                 ImgUrl = OffersRequst.ImgUrl,
-                ProductId = OffersRequst.ProductId
+                ProductId = OffersRequst.ProductId,
+                status = OffersRequst.status
             };
 
             var status = await _OffersService.CreateOffersAsync(Offers);

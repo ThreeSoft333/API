@@ -18,19 +18,10 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductColorServ
             _dataContext = dbContext;
         }
 
-        public async Task<List<ProductColors>> GetProductColorsAsync(Int64 ProductId, int status)
+        public async Task<List<ProductColors>> GetProductColorsAsync()
         {
-            switch (status)
-            {
-                case 1:
-                    return await _dataContext.ProductColors.Where(p => p.ProductId == ProductId && p.Status == 1).ToListAsync();
-                case 0:
-                    return await _dataContext.ProductColors.Where(p => p.ProductId == ProductId && p.Status == 0).ToListAsync();
-                default:
-                    return await _dataContext.ProductColors.ToListAsync();
-            }
+            return await _dataContext.ProductColors.ToListAsync();
         }
-      
 
         public async Task<ProductColors> GetProductColorsByIdAsync(long Id)
         {
@@ -39,8 +30,9 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductColorServ
 
         public async Task<int> CreateProductColorsAsync(ProductColors productColor)
         {
-            var CheckExist = await _dataContext.ProductColors.Where(p =>p.ProductId == productColor.ProductId)
-                .SingleOrDefaultAsync(x => x.ArabicName == productColor.ArabicName || x.EnglishName == productColor.EnglishName);
+            var CheckExist = await _dataContext.ProductColors
+                .SingleOrDefaultAsync(x => x.ArabicName == productColor.ArabicName || 
+                x.EnglishName == productColor.EnglishName || x.HexCode == productColor.HexCode);
 
             if (CheckExist != null)
                 return -1;
@@ -52,8 +44,9 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductColorServ
 
         public async Task<int> UpdateProductColorsAsync(ProductColors productColor)
         {
-            var CheckExist = await _dataContext.ProductColors.Where(p => p.ProductId == productColor.ProductId && p.Id != productColor.Id)
-              .SingleOrDefaultAsync(x => x.ArabicName == productColor.ArabicName || x.EnglishName == productColor.EnglishName);
+            var CheckExist = await _dataContext.ProductColors.Where(x => x.Id != productColor.Id)
+              .SingleOrDefaultAsync(x => x.ArabicName == productColor.ArabicName || 
+              x.EnglishName == productColor.EnglishName);
 
             if (CheckExist != null)
                 return -1;

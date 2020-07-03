@@ -7,6 +7,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using ThreeSoftECommAPI.Contracts.V1.Requests.Identity;
+using ThreeSoftECommAPI.Contracts.V1.Responses.Identity;
 using ThreeSoftECommAPI.Domain.Identity;
 using ThreeSoftECommAPI.Options;
 
@@ -120,6 +122,60 @@ namespace ThreeSoftECommAPI.Services.Identity
                 ImgCoverUrl = User.CoverImageUrl,
                 Address = User.Address,
             };
+        }
+
+        public async Task<AuthenticationResult> ChangePasswordAsync(string PhoneNumber, string Currentpassword, string NewPassword)
+        {
+            var User = await _userManager.FindByNameAsync(PhoneNumber);
+
+            if (User == null)
+            {
+                return new AuthenticationResult
+                {
+                    Success = false,
+                    Errors = "User does not exists"
+                };
+            }
+
+            var changePass = await _userManager.ChangePasswordAsync(User, Currentpassword, NewPassword);
+
+            if (!changePass.Succeeded)
+            {
+                return new AuthenticationResult
+                {
+                    Success = false,
+                    Errors = changePass.Errors.Select(x => x.Description).FirstOrDefault()
+                };
+            }
+
+            return new AuthenticationResult
+            {
+                Success = true,
+            };
+        }
+
+        public async Task<AuthenticationResult> UpdateUserInfoAsync(AppUser appUser)
+        {
+            var UserUpdate = await _userManager.UpdateAsync(appUser);
+
+            if (!UserUpdate.Succeeded)
+            {
+                return new AuthenticationResult
+                {
+                    Success = false,
+                    Errors = UserUpdate.Errors.Select(x => x.Description).FirstOrDefault()
+                };
+            }
+
+            return new AuthenticationResult
+            {
+                Success = true,
+            };
+        }
+
+        public async Task<AppUser> GetUserById(string UserId)
+        {
+            return await _userManager.FindByIdAsync(UserId);
         }
     }
 }

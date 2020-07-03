@@ -49,7 +49,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 ProductId = productImgRequest.ProductId,
                 ImgUrl = productImgRequest.ImgUrl,
                 Ext = productImgRequest.Ext,
-                CreatedAt = productImgRequest.CreatedAt,
+                CreatedAt = DateTime.Now,
             };
 
             var status = await _productImagesService.CreateProductImageAsync(ProductImage);

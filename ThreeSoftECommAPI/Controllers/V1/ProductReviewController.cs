@@ -14,7 +14,6 @@ namespace ThreeSoftECommAPI.Controllers.V1
     public class ProductReviewController:Controller
     {
         private readonly IProductReviewService _productReviewService;
-
         public ProductReviewController(IProductReviewService productReviewService)
         {
             _productReviewService = productReviewService;
@@ -35,6 +34,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 EnglishDescreption = productReviewRequest.EnglishDescreption,
                 ProductId = productReviewRequest.ProductId,
                 UserId = productReviewRequest.UserId,
+                Rate = productReviewRequest.Rate,
+                Status = 0,
                 CreatedAt = DateTime.Now
             };
 

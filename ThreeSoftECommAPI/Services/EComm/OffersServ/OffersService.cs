@@ -40,6 +40,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
                 var Offers = await (
          from p in _dataContext.product
          join o in _dataContext.Offers on p.Id equals o.ProductId
+         where o.status == 1
          join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
          from x in pf.DefaultIfEmpty()
          where x.UserId == UserId || x.UserId == null
@@ -61,6 +62,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
                 var Offers = await (
         from p in _dataContext.product
         join o in _dataContext.Offers on p.Id equals o.ProductId
+        where o.status == 1
         join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
         from x in pf.DefaultIfEmpty()
         where x.UserId == UserId || x.UserId == null
@@ -78,6 +80,30 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
 
                 return Offers;
             }
+        }
+
+        public async Task<List<OfferResponse>> GetOffersAllForAppAsync(string UserId)
+        {
+            var Offers = await (
+        from p in _dataContext.product
+        join o in _dataContext.Offers on p.Id equals o.ProductId
+        where o.status == 1
+        join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
+        from x in pf.DefaultIfEmpty()
+        where x.UserId == UserId || x.UserId == null
+        select new OfferResponse
+        {
+            Id = o.Id,
+            ArabicDesc = o.ArabicDesc,
+            EnglishDesc = o.EnglishDesc,
+            offerPrice = o.offerPrice,
+            ImgUrl = o.ImgUrl,
+            status = o.status,
+            UserFavId = x.Id,
+            product = p
+        }).ToListAsync();
+
+            return Offers;
         }
 
         public async Task<Offers> GetOffersByIdAsync(Int64 OfferId)
@@ -115,5 +141,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
+
+      
     }
 }

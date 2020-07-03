@@ -19,7 +19,7 @@ namespace ThreeSoftECommAPI.Contracts.V1.Requests.EComm.ProductReq
         public string Material { get; set; }
         public Int32 Quantity { get; set; }
         public Int32 status { get; set; }
-        public string CreatedAt { get; set; }
-        public string CreatedBy { get; set; }
+        public Int64? colorId { get; set; }
+        public Int64? sizeId { get; set; }
     }
 }

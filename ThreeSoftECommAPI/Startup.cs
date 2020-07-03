@@ -30,6 +30,19 @@ using ThreeSoftECommAPI.Services.EComm.OffersServ;
 using ThreeSoftECommAPI.Services.EComm.ProductReviewsServ;
 using ThreeSoftECommAPI.Services.EComm.ProductColorServ;
 using ThreeSoftECommAPI.Services.EComm.ProductSizeServ;
+using ThreeSoftECommAPI.Services.EComm.ProductImageServ;
+using ThreeSoftECommAPI.Services.ProductImageServ;
+using ThreeSoftECommAPI.Services.EComm.CartServ;
+using ThreeSoftECommAPI.Services.EComm.CartItemsServ;
+using ThreeSoftECommAPI.Services.EComm.CartItemItemsServ;
+using ThreeSoftECommAPI.Services.EComm.UserAddressesServ;
+using ThreeSoftECommAPI.Services.EComm.OrderServ;
+using ThreeSoftECommAPI.Services.EComm.OrderItemServ;
+using ThreeSoftECommAPI.Services.EComm.CouponServ;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace ThreeSoftECommAPI
 {
@@ -41,7 +54,7 @@ namespace ThreeSoftECommAPI
         }
 
         public IConfiguration Configuration { get; }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -53,6 +66,14 @@ namespace ThreeSoftECommAPI
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+           
+
+            services.Configure<FormOptions>(o =>
+            {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
 
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IAdvertisingService, AdvertisingService>();
@@ -64,8 +85,21 @@ namespace ThreeSoftECommAPI
             services.AddScoped<IProductReviewService,ProductReviewService>();
             services.AddScoped<IProductColorService,ProductColorService>();
             services.AddScoped<IProductSizeService,ProductSizeService>();
+            services.AddScoped<IProductImagesService,ProductImagesService>();
+            services.AddScoped<ICartService,CartService>();
+            services.AddScoped<ICartItemService,CartItemService>();
+            services.AddScoped<IOrderService,OrderService>();
+            services.AddScoped<IOrderItemService,OrderItemService>();
+            services.AddScoped<IUserAddressesService,UserAddresseService>();
+            services.AddScoped<ICouponServices,CouponServices>();
 
 
+            services.AddCors(o => o.AddPolicy(MyAllowSpecificOrigins, builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
 
             var jwtSettings = new JwtSettings();
             Configuration.Bind(nameof(jwtSettings), jwtSettings);
@@ -160,9 +194,17 @@ namespace ThreeSoftECommAPI
             });
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
             app.UseAuthorization();

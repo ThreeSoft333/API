@@ -20,9 +20,9 @@ namespace ThreeSoftECommAPI.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Product_Sizes.GetAll)]
-        public async Task<IActionResult> GetAll([FromRoute] Int64 productId, [FromQuery] int status)
+        public async Task<IActionResult> GetAll([FromQuery] Int32 categoryId)
         {
-            return Ok(await _productSizeService.GetProductSizeAsync(productId, status));
+            return Ok(await _productSizeService.GetProductSizeAsync(categoryId));
         }
 
         [HttpGet(ApiRoutes.Product_Sizes.Get)]
@@ -45,10 +45,9 @@ namespace ThreeSoftECommAPI.Controllers.V1
         {
             var prodSize = new ProductSize
             {
-                ProductId = productSizeRequest.ProductId,
+                CategoryId = productSizeRequest.CategoryId,
                 Size = productSizeRequest.Size,
                 Unit = productSizeRequest.Unit,
-                Status = productSizeRequest.Status
             };
 
             var status = await _productSizeService.CreateProductSizeAsync(prodSize);
@@ -59,7 +58,6 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 {
                     message = "Dublicate Entry",
                     status = Conflict().StatusCode
-
                 });
             }
 
@@ -81,10 +79,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var prodSize = new ProductSize
             {
                 Id = id,
-                ProductId = productSizeRequest.ProductId,
                 Size = productSizeRequest.Size,
                 Unit = productSizeRequest.Unit,
-                Status = productSizeRequest.Status
             };
 
             var status = await _productSizeService.UpdateProductSizeAsync(prodSize);

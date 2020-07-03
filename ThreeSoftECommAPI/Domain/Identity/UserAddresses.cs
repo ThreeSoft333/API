@@ -25,6 +25,7 @@ namespace ThreeSoftECommAPI.Domain.Identity
         public DateTime UpdateAt { get; set; }
 
         public string UserId { get; set; }
+
         [ForeignKey(nameof(UserId))]
         public AppUser User { get; set; }
 

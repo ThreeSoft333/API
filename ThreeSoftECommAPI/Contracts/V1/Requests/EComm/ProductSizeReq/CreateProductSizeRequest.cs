@@ -9,7 +9,6 @@ namespace ThreeSoftECommAPI.Contracts.V1.Requests.EComm.ProductSizeReq
     {
         public string Size { get; set; }
         public string Unit { get; set; }
-        public Int64 ProductId { get; set; }
-        public Int32 Status { get; set; }
+        public Int32 CategoryId { get; set; }
     }
 }

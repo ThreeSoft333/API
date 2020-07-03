@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Contracts.V1.Requests.EComm.BrandReq;
@@ -13,7 +15,7 @@ using ThreeSoftECommAPI.Services.EComm.BrandServ;
 
 namespace ThreeSoftECommAPI.Controllers.V1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BrandController : Controller
     {
         private readonly IBrandService _brandService;
@@ -37,6 +39,29 @@ namespace ThreeSoftECommAPI.Controllers.V1
             if (brand == null)
                 return NotFound();
             return Ok(brand);
+        }
+
+        [HttpPost(ApiRoutes.Brands.Upload), DisableRequestSizeLimit]
+        public async Task<IActionResult> Upload()
+        {
+            var file = Request.Form.Files[0];
+            var folderName = Path.Combine("Resources", "Images","BrandImg");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+            if (file.Length > 0)
+            {
+                var fileName = DateTime.Now.Ticks + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                var fullPath = Path.Combine(pathToSave, fileName);
+                var dbPath = Path.Combine(folderName, fileName);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                return Ok(new { dbPath});
+            }
+            return BadRequest();
         }
 
         [HttpPost(ApiRoutes.Brands.Create)]

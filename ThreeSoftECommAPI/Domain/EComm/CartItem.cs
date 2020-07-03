@@ -14,8 +14,8 @@ namespace ThreeSoftECommAPI.Domain.EComm
         public Int64 CartId { get; set; }
         public Int64 ProductId { get; set; }
         public Int32 Quantity { get; set; }
-        public string CreatedAt { get; set; }
-        public string UpdatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         [ForeignKey(nameof(CartId))]
         public Cart cart { get; set; }

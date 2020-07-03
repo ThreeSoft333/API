@@ -8,7 +8,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductSizeServ
 {
    public interface IProductSizeService
     {
-        Task<List<ProductSize>> GetProductSizeAsync(long productId, Int32 Status);
+        Task<List<ProductSize>> GetProductSizeAsync(Int32 CategoryId);
         Task<ProductSize> GetProductSizeByIdAsync(long id);
         Task<int> CreateProductSizeAsync(ProductSize productSize);
         Task<int> UpdateProductSizeAsync(ProductSize productSize);

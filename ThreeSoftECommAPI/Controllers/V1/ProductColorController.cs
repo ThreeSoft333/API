@@ -20,9 +20,9 @@ namespace ThreeSoftECommAPI.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Product_Colors.GetAll)]
-        public async Task<IActionResult> GetAll([FromRoute] Int64 productId, [FromQuery] int status)
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(await _productColorService.GetProductColorsAsync(productId,status));
+            return Ok(await _productColorService.GetProductColorsAsync());
         }
 
         [HttpGet(ApiRoutes.Product_Colors.Get)]
@@ -45,10 +45,9 @@ namespace ThreeSoftECommAPI.Controllers.V1
         {
             var prodColor = new ProductColors
             {
-                ProductId = productColorRequest.ProductId,
                 ArabicName = productColorRequest.ArabicName,
                 EnglishName = productColorRequest.EnglishName,
-                Status = productColorRequest.Status,
+                HexCode = productColorRequest.HexCode,
                 CreatedAt = DateTime.Now
             };
 
@@ -82,11 +81,10 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var prodColor = new ProductColors
             {
                 Id = id,
-                ProductId = productColorRequest.ProductId,
                 ArabicName = productColorRequest.ArabicName,
                 EnglishName = productColorRequest.EnglishName,
-                Status = productColorRequest.Status,
-                CreatedAt = DateTime.Now
+                HexCode = productColorRequest.HexCode,
+                UpdatedAt = DateTime.Now
             };
 
             var status = await _productColorService.UpdateProductColorsAsync(prodColor);
