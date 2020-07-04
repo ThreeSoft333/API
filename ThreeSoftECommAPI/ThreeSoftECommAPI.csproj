@@ -82,6 +82,7 @@
   <ItemGroup>
     <Folder Include="Resources\Images\BrandImg\" />
     <Folder Include="Resources\Images\CategoryImg\" />
+    <Folder Include="Resources\Images\UserImage\" />
     <Folder Include="Resources\Images\ProductImg\" />
     <Folder Include="Resources\Images\SubCatgImg\" />
   </ItemGroup>

@@ -13,5 +13,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductImageServ
         Task<int> CreateProductImageAsync(ProductImage productImage);
         Task<int> UpdateProductImageAsync(ProductImage productImage);
         Task<bool> DeleteProductImageAsync(Int64 Id);
+        Task<bool> DeleteProductImageByProductIdAsync(Int64 ProductId);
     }
 }

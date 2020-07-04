@@ -53,5 +53,17 @@ namespace ThreeSoftECommAPI.Services.ProductImageServ
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
+
+        public async Task<bool> DeleteProductImageByProductIdAsync(Int64 ProductId)
+        {
+            var ProdImg = await GetProductImageAsync(ProductId);
+
+            if (ProdImg == null)
+                return false;
+
+            _dataContext.ProductImages.RemoveRange(ProdImg);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
+        }
     }
 }

@@ -53,9 +53,10 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                    Price = p.Price,
                                    SalePrice = p.SalePrice,
                                    UserFavId = x.Id,
-                                   ProductRate = Math.Round(Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x=>x.ProductId ==p.Id).Select(t => t.Rate).Sum() / _dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Count()),2).ToString(),
+                                   ProductRate = string.Format("{0:0.0}",Convert.ToDecimal(_dataContext.ProductReviews.Where(
+                                       x=>x.ProductId ==p.Id).Select(t => t.Rate).Sum()) /
+                                       Convert.ToDecimal(_dataContext.ProductReviews.Where(
+                                       x => x.ProductId == p.Id).Count())),
                                    productColor = (from c in _dataContext.ProductColors
                                                    where c.Id == p.colorId
                                                    select new ProductColors
@@ -120,9 +121,9 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                    Price = p.Price,
                                    SalePrice = p.SalePrice,
                                    UserFavId = x.Id,
-                                   ProductRate = Math.Round(Convert.ToDecimal(_dataContext.ProductReviews.Where(
+                                   ProductRate = string.Format("{0:0.0}",Convert.ToDecimal(_dataContext.ProductReviews.Where(
                                        x => x.ProductId == p.Id).Select(t => t.Rate).Sum() / _dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Count()), 2).ToString(),
+                                       x => x.ProductId == p.Id).Count())),
                                    productColor = (from c in _dataContext.ProductColors
                                                    where c.Id == p.colorId
                                                    select new ProductColors
@@ -188,9 +189,9 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                    Price = p.Price,
                                    SalePrice = p.SalePrice,
                                    UserFavId = x.Id,
-                                   ProductRate = Math.Round(Convert.ToDecimal(_dataContext.ProductReviews.Where(
+                                   ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
                                        x => x.ProductId == p.Id).Select(t => t.Rate).Sum() / _dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Count()), 2).ToString(),
+                                       x => x.ProductId == p.Id).Count())),
                                    productColor = (from c in _dataContext.ProductColors
                                                    where c.Id == p.colorId
                                                    select new ProductColors
@@ -253,9 +254,9 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                    Price = p.Price,
                                    SalePrice = p.SalePrice,
                                    UserFavId = x.Id,
-                                   ProductRate = Math.Round(Convert.ToDecimal(_dataContext.ProductReviews.Where(
+                                   ProductRate = string.Format("{0:0.0}",Convert.ToDecimal(_dataContext.ProductReviews.Where(
                                        x => x.ProductId == p.Id).Select(t => t.Rate).Sum() / _dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Count()), 2).ToString(),
+                                       x => x.ProductId == p.Id).Count())),
                                    productColor = (from c in _dataContext.ProductColors
                                                    where c.Id == p.colorId
                                                    select new ProductColors

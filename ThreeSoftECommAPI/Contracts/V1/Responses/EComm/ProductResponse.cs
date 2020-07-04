@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Domain.EComm;
@@ -17,7 +18,6 @@ namespace ThreeSoftECommAPI.Contracts.V1.Responses.EComm
         public decimal SalePrice { get; set; }
         public string ImgUrl { get; set; }
         public Int64 UserFavId { get; set; }
-
         public string ProductRate { get; set; }
         public List<ProductImage> productImages { get; set; }
         public ProductColors productColor { get; set; }

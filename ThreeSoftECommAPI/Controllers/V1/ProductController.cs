@@ -11,6 +11,7 @@ using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Contracts.V1.Requests.EComm.ProductReq;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Domain.EComm;
+using ThreeSoftECommAPI.Services.EComm.ProductImageServ;
 using ThreeSoftECommAPI.Services.EComm.ProductServ;
 
 namespace ThreeSoftECommAPI.Controllers.V1
@@ -19,10 +20,12 @@ namespace ThreeSoftECommAPI.Controllers.V1
     public class ProductController:Controller
     {
         private readonly IProductService _productService;
+        private readonly IProductImagesService _productImagesService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IProductImagesService productImagesService)
         {
             _productService = productService;
+            _productImagesService = productImagesService;
         }
 
         [HttpGet(ApiRoutes.Product.GetAll)]
@@ -187,11 +190,15 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var deleted = await _productService.DeleteProductAsync(productId);
 
             if (deleted)
+            {
+                await _productImagesService.DeleteProductImageByProductIdAsync(productId);
+
                 return Ok(new SuccessResponse
                 {
                     message = "Successfully Deleted",
                     status = Ok().StatusCode
                 });
+            }
             return NotFound(new ErrorResponse
             {
                 message = "Not Found",
@@ -218,6 +225,45 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 }
 
                 return Ok(new { dbPath });
+            }
+            return BadRequest();
+        }
+
+        [HttpPost(ApiRoutes.Product.UploadImages), DisableRequestSizeLimit]
+        public async Task<IActionResult> UploadImages([FromRoute]Int64 productId)
+        {
+            var files = Request.Form.Files;
+            var folderName = Path.Combine("Resources", "Images", "ProductImg");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            var dbPath = "";
+
+            if (files.Count > 0) {
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        var fileName = DateTime.Now.Ticks + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                        var fullPath = Path.Combine(pathToSave, fileName);
+                        dbPath = Path.Combine(folderName, fileName);
+
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        var ProductImage = new ProductImage
+                        {
+                            ProductId = productId,
+                            ImgUrl = dbPath,
+                            Ext = Path.GetExtension(file.FileName),
+                            CreatedAt = DateTime.Now,
+                        };
+
+                        await _productImagesService.CreateProductImageAsync(ProductImage);
+                    }
+                }
+                
+                return Ok(new { status = Ok().StatusCode,message="Uploade Successfully" });
             }
             return BadRequest();
         }

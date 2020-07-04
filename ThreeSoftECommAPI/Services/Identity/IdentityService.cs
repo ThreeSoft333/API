@@ -94,6 +94,7 @@ namespace ThreeSoftECommAPI.Services.Identity
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
 
+            
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -176,6 +177,23 @@ namespace ThreeSoftECommAPI.Services.Identity
         public async Task<AppUser> GetUserById(string UserId)
         {
             return await _userManager.FindByIdAsync(UserId);
+        }
+        public async Task<bool> AddUserRole(AppUser appUser,string Role)
+        {
+            var UserUpdate = await _userManager.AddToRoleAsync(appUser, Role);
+
+            if (!UserUpdate.Succeeded)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<string> GetUserRole(AppUser appUser)
+        {
+            var UserRole = await _userManager.GetRolesAsync(appUser);
+            return UserRole[0];
         }
     }
 }

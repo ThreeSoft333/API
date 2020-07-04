@@ -19,6 +19,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string ChangePassword = Base + "/identity/changepassword";
             public const string CreateRole = Base + "/identity/role";
             public const string GetRole = Base + "/identity/role/{roleId}";
+            public const string Upload = Base + "/identity/upload";
         }
 
         public static class Dashboard
@@ -77,6 +78,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Create = Base + "/product";
             public const string Update = Base + "/product/{productId}";
             public const string Upload = Base + "/product/upload";
+            public const string UploadImages = Base + "/product/uploadimages/{productId}";
             public const string Delete = Base + "/product/{productId}";
             public const string ViewProduct = Base + "/viewproduct/{productId}";
         }

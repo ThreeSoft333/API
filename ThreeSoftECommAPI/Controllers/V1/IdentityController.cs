@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Contracts.V1.Requests.Identity;
@@ -41,6 +44,24 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 });
             }
 
+            var appUser = await _identityService.GetUserById(authResponse.UserId);
+            string UserRole = "";
+            switch (request.Role)
+            {
+                case 1:
+                    await _identityService.AddUserRole(appUser, "Owner");
+                    UserRole = "Owner";
+                    break;
+                case 2:
+                    await _identityService.AddUserRole(appUser, "Admin");
+                    UserRole = "Admin";
+                    break;
+                default:
+                    await _identityService.AddUserRole(appUser, "Customer");
+                    UserRole = "Customer";
+                    break;
+            }
+           
             return Ok(new AuthSuccessResponse
             {
                 Token = authResponse.Token,
@@ -49,12 +70,13 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Email = authResponse.Email,
                 Address = authResponse.Address,
                 ImgUrl = authResponse.ImgUrl,
-                ImgCoverUrl = authResponse.ImgCoverUrl
+                ImgCoverUrl = authResponse.ImgCoverUrl,
+                Role = UserRole
             });
         }
 
         [HttpPost(ApiRoutes.Identity.Login)]
-        public async Task<IActionResult> Login([FromBody] UserRegistrationRequest request)
+        public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
             var authResponse = await _identityService.LoginAsync(request.Email, request.MobileNo, request.Password);
 
@@ -67,6 +89,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 });
             }
 
+            var appUser = await _identityService.GetUserById(authResponse.UserId);
+
             return Ok(new AuthSuccessResponse
             {
                 Token = authResponse.Token,
@@ -75,7 +99,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Email = authResponse.Email,
                 Address = authResponse.Address,
                 ImgUrl = authResponse.ImgUrl,
-                ImgCoverUrl = authResponse.ImgCoverUrl
+                ImgCoverUrl = authResponse.ImgCoverUrl,
+                Role = await _identityService.GetUserRole(appUser)
             });
         }
 
@@ -137,6 +162,51 @@ namespace ThreeSoftECommAPI.Controllers.V1
             {
                 status = Ok().StatusCode,
                 message = "User Info Updated Successfully"
+            });
+        }
+
+        [HttpPost(ApiRoutes.Identity.Upload), DisableRequestSizeLimit]
+        public async Task<IActionResult> Upload()
+        {
+            string ApiPath = "http://husamalraie-001-site3.gtempurl.com/";
+            var ProfileImage = Request.Form.Files["profile_image"];
+            var CoverImage = Request.Form.Files["cover_image"];
+
+            var folderName = Path.Combine("Resources", "Images", "UserImage");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+            var dbPath_ProfileImage = "";
+            var dbPath_CoverImage = "";
+
+
+            if (ProfileImage.Length > 0)
+            {
+                var fileName = DateTime.Now.Ticks + "_" + ContentDispositionHeaderValue.Parse(ProfileImage.ContentDisposition).FileName.Trim('"');
+                var fullPath = Path.Combine(pathToSave, fileName);
+                dbPath_ProfileImage = Path.Combine(folderName, fileName);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await ProfileImage.CopyToAsync(stream);
+                }
+            }
+
+            if (CoverImage.Length > 0)
+            {
+                var fileName = DateTime.Now.Ticks + "_" + ContentDispositionHeaderValue.Parse(CoverImage.ContentDisposition).FileName.Trim('"');
+                var fullPath = Path.Combine(pathToSave, fileName);
+                dbPath_CoverImage = Path.Combine(folderName, fileName);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await CoverImage.CopyToAsync(stream);
+                }
+            }
+
+            return Ok(new
+            {
+                ProfileImage_Path = ApiPath+ dbPath_ProfileImage,
+                CoverImagePath = ApiPath+ dbPath_CoverImage
             });
         }
     }

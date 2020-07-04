@@ -14,5 +14,8 @@ namespace ThreeSoftECommAPI.Services.Identity
         Task<AuthenticationResult> ChangePasswordAsync(string PhoneNumber, string Currentpassword,string NewPassword);
         Task<AuthenticationResult> UpdateUserInfoAsync(AppUser appUser);
         Task<AppUser> GetUserById(string UserId);
+        Task<bool> AddUserRole(AppUser appUser, string Role);
+        Task<string> GetUserRole(AppUser appUser);
+
     }
 }

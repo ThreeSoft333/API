@@ -13,5 +13,6 @@ namespace ThreeSoftECommAPI.Contracts.V1.Requests.Identity
         [Phone]
         public string MobileNo { get; set; }
         public string Password { get; set; }
+        public Int32 Role { get; set; }
     }
 }
