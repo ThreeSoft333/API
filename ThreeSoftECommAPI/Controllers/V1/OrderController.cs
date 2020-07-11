@@ -10,6 +10,7 @@ using ThreeSoftECommAPI.Services.EComm.CartItemsServ;
 using ThreeSoftECommAPI.Services.EComm.CartServ;
 using ThreeSoftECommAPI.Services.EComm.OrderItemServ;
 using ThreeSoftECommAPI.Services.EComm.OrderServ;
+using ThreeSoftECommAPI.Services.EComm.ProductServ;
 
 namespace ThreeSoftECommAPI.Controllers.V1
 {
@@ -19,13 +20,19 @@ namespace ThreeSoftECommAPI.Controllers.V1
         private readonly IOrderItemService _orderItemService;
         private readonly ICartService _cartService;
         private readonly ICartItemService _cartItemService;
+        private readonly IProductService _productService;
 
-        public OrderController(IOrderService orderService, IOrderItemService orderItemService, ICartService cartService, ICartItemService cartItemService)
+        public OrderController(IOrderService orderService,
+                               IOrderItemService orderItemService,
+                               ICartService cartService,
+                               ICartItemService cartItemService,
+                               IProductService productService)
         {
             _orderService = orderService;
             _orderItemService = orderItemService;
             _cartService = cartService;
             _cartItemService = cartItemService;
+            _productService = productService;
         }
 
         [HttpPost(ApiRoutes.OrderRoute.Create)]
@@ -38,7 +45,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 PaymentMethod = orderRequest.PaymentMethod,
                 CouponId = orderRequest.CouponId,
                 UserAddressesId = orderRequest.UserAddressesId,
-                Status = 0,
+                Status = 1,
                 CreatedAt = DateTime.Now
             };
 
@@ -55,6 +62,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                         OrderId = order.Id,
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
+                        Price = (item.product.SalePrice != 0 ? item.product.SalePrice : item.product.Price),
+                        Total = (item.product.SalePrice != 0 ? item.product.SalePrice : item.product.Price) * item.Quantity,
                         CreatedAt = DateTime.Now
                     };
 
@@ -74,14 +83,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
 
                 return Ok(resp);
             }
-            else if (AddOrder == -1)
-            {
-                return Conflict(new
-                {
-                    status = Conflict().StatusCode,
-                    message = "You have a previous incomplete order"
-                });
-            }
+           
             return BadRequest(new
             {
                 status = BadRequest().StatusCode,
@@ -99,6 +101,38 @@ namespace ThreeSoftECommAPI.Controllers.V1
         public async Task<IActionResult> GetOrderStatus(string userId)
         {
             return Ok(await _orderService.GetOrderStatusAsync(userId));
+        }
+
+        [HttpGet(ApiRoutes.OrderRoute.OrdersForAdmin)]
+        public async Task<IActionResult> GetOrderForAdmin([FromRoute] Int32 status)
+        {
+            return Ok(await _orderService.GetOrdersForAdmin(status));
+        }
+
+        [HttpGet(ApiRoutes.OrderRoute.orderItems)]
+        public async Task<IActionResult> GetOrderItemsForAdmin([FromRoute] Int64 orderId)
+        {
+            return Ok(await _orderItemService.GetOrderItemForAdmin(orderId));
+        }
+
+        [HttpGet(ApiRoutes.OrderRoute.CheckPreviousOrder)]
+        public async Task<IActionResult> CheckPreviousOrder([FromRoute] string userId)
+        {
+            var Check = await _orderService.CheckPreviousOrder(userId);
+
+             if (!Check)
+            {
+                return Conflict(new
+                {
+                    status = Conflict().StatusCode,
+                    message = "You have a previous incomplete order"
+                });
+            }
+            return Ok(new {
+
+                status = Ok().StatusCode,
+                message = ""
+            });
         }
     }
 }

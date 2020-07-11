@@ -96,6 +96,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Token = authResponse.Token,
                 UserId = authResponse.UserId,
                 UserName = authResponse.UserName,
+                FullName = authResponse.FullName,
                 Email = authResponse.Email,
                 Address = authResponse.Address,
                 ImgUrl = authResponse.ImgUrl,
@@ -134,6 +135,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
             {
                 User.Address = request.Address;
                 User.FullName = request.FullName;
+                User.Email = request.Email;
                 User.DateOfBirth = request.DateOfBirth;
                 User.CoverImageUrl = request.CoverImageUrl;
                 User.ProfileImageUrl = request.ProfileImageUrl;
@@ -172,7 +174,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var ProfileImage = Request.Form.Files["profile_image"];
             var CoverImage = Request.Form.Files["cover_image"];
 
-            var folderName = Path.Combine("Resources", "Images", "UserImage");
+            var folderName = Path.Combine("Resources/Images/UserImage/");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
             var dbPath_ProfileImage = "";

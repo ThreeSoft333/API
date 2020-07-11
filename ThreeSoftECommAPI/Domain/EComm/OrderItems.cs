@@ -12,6 +12,8 @@ namespace ThreeSoftECommAPI.Domain.EComm
         [Key]
         public Int64 Id  { get; set; }
         public Int32 Quantity { get; set; }
+        public decimal Price { get; set; }
+        public decimal Total { get; set; }
         public Int64 OrderId { get; set; }
         public Int64 ProductId { get; set; }
         public DateTime CreatedAt { get; set; }

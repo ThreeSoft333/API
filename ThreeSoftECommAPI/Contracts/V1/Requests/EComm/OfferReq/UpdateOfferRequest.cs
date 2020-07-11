@@ -12,5 +12,9 @@ namespace ThreeSoftECommAPI.Contracts.V1.Requests.EComm.OfferReq
         public string ImgUrl { get; set; }
         public int status { get; set; }
         public decimal offerPrice { get; set; }
+
+        public Int64 ProductId { get; set; }
+
+
     }
 }

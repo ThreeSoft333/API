@@ -67,6 +67,12 @@
     <Compile Remove="Data\Migrations\20200620214419_addEcomm5.Designer.cs" />
     <Compile Remove="Data\Migrations\20200622204523_addEcomm7.cs" />
     <Compile Remove="Data\Migrations\20200622204523_addEcomm7.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200708185736_addEcomm16.cs" />
+    <Compile Remove="Data\Migrations\20200708185736_addEcomm16.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200710234607_addEcomm17.cs" />
+    <Compile Remove="Data\Migrations\20200710234607_addEcomm17.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200710234839_addEcomm17.cs" />
+    <Compile Remove="Data\Migrations\20200710234839_addEcomm17.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -82,6 +88,7 @@
   <ItemGroup>
     <Folder Include="Resources\Images\BrandImg\" />
     <Folder Include="Resources\Images\CategoryImg\" />
+    <Folder Include="Resources\Images\OffersImg\" />
     <Folder Include="Resources\Images\UserImage\" />
     <Folder Include="Resources\Images\ProductImg\" />
     <Folder Include="Resources\Images\SubCatgImg\" />

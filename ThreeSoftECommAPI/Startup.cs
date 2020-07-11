@@ -43,6 +43,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using ThreeSoftECommAPI.Services.EComm.ContactUsServ;
 
 namespace ThreeSoftECommAPI
 {
@@ -93,6 +94,8 @@ namespace ThreeSoftECommAPI
             services.AddScoped<IOrderItemService,OrderItemService>();
             services.AddScoped<IUserAddressesService,UserAddresseService>();
             services.AddScoped<ICouponServices,CouponServices>();
+            services.AddScoped<IContactUsService,ContactUsService>();
+            
 
 
             services.AddCors(o => o.AddPolicy(MyAllowSpecificOrigins, builder =>

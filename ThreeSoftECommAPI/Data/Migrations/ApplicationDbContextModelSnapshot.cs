@@ -301,6 +301,30 @@ namespace ThreeSoftECommAPI.Data.Migrations
                     b.ToTable("category");
                 });
 
+            modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.ContactUs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebSite")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactUs");
+                });
+
             modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.Coupon", b =>
                 {
                     b.Property<int>("Id")
@@ -448,11 +472,17 @@ namespace ThreeSoftECommAPI.Data.Migrations
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("DECIMAL (25,3)");
+
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("DECIMAL (25,3)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -539,7 +569,9 @@ namespace ThreeSoftECommAPI.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("SalePrice")
-                        .HasColumnType("DECIMAL (25,3)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DECIMAL (25,3)")
+                        .HasDefaultValue(0m);
 
                     b.Property<long>("SubCategoryId")
                         .HasColumnType("bigint");
@@ -928,6 +960,9 @@ namespace ThreeSoftECommAPI.Data.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

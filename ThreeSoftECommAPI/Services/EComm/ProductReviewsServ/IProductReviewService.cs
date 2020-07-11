@@ -10,5 +10,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductReviewsServ
     {
         Task<int> CreateProductReviewAsync(ProductReviews productReviews);
         Task<List<ProductReviews>> GetProductReviews(Int64 ProductId);
+        Task<List<ProductReviews>> GetNewProductReviews();
+        Task<int> UpdateStatus(Int64 Id);
     }
 }

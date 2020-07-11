@@ -18,16 +18,9 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         }
         public async Task<int> CreateOrderAsync(Order order)
         {
-            var checkBrevOrderStatus = await _dataContext.Orders
-                .Where(x => x.UserId == order.UserId && x.Status != 4).FirstOrDefaultAsync();
-
-            if (checkBrevOrderStatus == null)
-            {
-                await _dataContext.Orders.AddAsync(order);
-                var created = await _dataContext.SaveChangesAsync();
-                return created;
-            }
-            return -1;
+            await _dataContext.Orders.AddAsync(order);
+            var created = await _dataContext.SaveChangesAsync();
+            return created;
         }
 
         public Task<bool> DeleteOrderAsync(long OrderId)
@@ -38,8 +31,13 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         public async Task<List<MyOrderResponse>> GetMyOrdersAsync(string UserId)
         {
 
+            //_dataContext.Orders
+            //                       .Join(_dataContext.OrderItems, o => o.Id, oi => oi.OrderId, (o, oi) => new { o, oi })
+            //                       .Join(_dataContext.product, ooi => ooi.oi.ProductId, p => p.Id, (ooi, p) => new { ooi, p })
+            //                       .Where(x => x.ooi.o.UserId == UserId).Select(x => x.p.SalePrice != 0 ? x.p.SalePrice : x.p.Price).Sum(),
+
             var query = await (from o in _dataContext.Orders
-                               where o.UserId == UserId
+                               where o.UserId == UserId && o.Status == 4
 
 
                                select new MyOrderResponse
@@ -48,10 +46,10 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
                                    OrderStatus = o.Status,
                                    OrderDate = o.CreatedAt,
                                    ProductCount = _dataContext.OrderItems.Where(x => x.OrderId == o.Id).Count(),
-                                   Total = _dataContext.Orders
-                                   .Join(_dataContext.OrderItems,o => o.Id,oi => oi.OrderId ,(o,oi) => new {o,oi})
-                                   .Join(_dataContext.product, ooi => ooi.oi.ProductId, p => p.Id, (ooi, p) => new { ooi, p })
-                                   .Where(x => x.ooi.o.UserId == UserId).Select(x => x.p.SalePrice != 0 ? x.p.SalePrice: x.p.Price).Sum(),
+                                   Total = _dataContext.OrderItems.Where(x => x.OrderId == o.Id)
+                                   .Select(x => x.Total).Sum(),
+
+                                   
                                    userAddresse = _dataContext.UserAddresses.SingleOrDefault(x => x.Id == o.UserAddressesId),
                                    orderItems = ((List<OrderItems>)(from i in _dataContext.OrderItems
                                                                     where i.OrderId == o.Id
@@ -65,6 +63,8 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
                                                                     {
                                                                         Id = i.Id,
                                                                         Quantity = i.Quantity,
+                                                                        Price = i.Price,
+                                                                        Total = i.Total,
                                                                         product = new Product
                                                                         {
                                                                             Id = prod.Id,
@@ -88,6 +88,13 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
             return query;
         }
 
+        public async Task<List<Order>> GetOrdersForAdmin(int status)
+        {
+            return await _dataContext.Orders.Include(x => x.userAddresses)
+                .Include(x => x.User)
+                .Where(x => x.Status == status).ToListAsync();
+        }
+
         public Task<List<Order>> GetOrdersAsync(string UserId)
         {
             throw new NotImplementedException();
@@ -105,10 +112,8 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
                                    OrderStatus = p.Status,
                                    OrderDate = p.CreatedAt,
                                    ProductCount = _dataContext.OrderItems.Where(x => x.OrderId == p.Id).Count(),
-                                   Total = _dataContext.Orders
-                                   .Join(_dataContext.OrderItems, o => o.Id, oi => oi.OrderId, (o, oi) => new { o, oi })
-                                   .Join(_dataContext.product, ooi => ooi.oi.ProductId, p => p.Id, (ooi, p) => new { ooi, p })
-                                   .Where(x => x.ooi.o.UserId == UserId).Select(x => x.p.SalePrice != 0 ? x.p.SalePrice : x.p.Price).Sum(),
+                                   Total = _dataContext.OrderItems.Where(x => x.OrderId == p.Id)
+                                   .Select(x => x.Total).Sum(),
                                    userAddresse = _dataContext.UserAddresses.SingleOrDefault(x => x.Id == p.UserAddressesId),
                                    orderItems = ((List<OrderItems>)(from i in _dataContext.OrderItems
                                                                     join prod in _dataContext.product on i.ProductId equals prod.Id
@@ -118,14 +123,28 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
                                                                     {
                                                                         Id = i.Id,
                                                                         Quantity = i.Quantity,
-                                                                        product = prod
+                                                                        product = prod,
+                                                                        Price = i.Price,
+                                                                        Total = i.Total
                                                                     })
                                                                          )
 
 
-                               }).FirstOrDefaultAsync();
+                               }).LastAsync();
 
             return query;
+        }
+
+        public async Task<bool> CheckPreviousOrder(string UserId)
+        {
+            var checkBrevOrderStatus = await _dataContext.Orders
+               .Where(x => x.UserId == UserId && x.Status != 4).FirstOrDefaultAsync();
+
+            if (checkBrevOrderStatus == null)
+                return true;
+
+            return false;
+
         }
     }
 }

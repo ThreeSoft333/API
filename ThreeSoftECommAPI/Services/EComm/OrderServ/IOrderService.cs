@@ -14,5 +14,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         Task<List<MyOrderResponse>> GetMyOrdersAsync(string UserId);
         Task<MyOrderResponse> GetOrderStatusAsync(string UserId);
         Task<bool> DeleteOrderAsync(long OrderId);
+        Task<List<Order>> GetOrdersForAdmin(int status);
+        Task<bool> CheckPreviousOrder(string UserId);
     }
 }

@@ -412,6 +412,16 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             return await entryPoint.ToListAsync();
         }
 
+        public async Task<int> UpdateProductSalePriceAsync(long ProductId, decimal salePrice)
+        {
+            var product = await _dataContext.product.SingleOrDefaultAsync(x => x.Id == ProductId);
+            product.SalePrice = salePrice;
+
+            _dataContext.product.Update(product);
+            var Updated = await _dataContext.SaveChangesAsync();
+            return Updated;
+        }
+
 
 
 

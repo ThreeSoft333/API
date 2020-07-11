@@ -142,6 +142,9 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
             return deleted > 0;
         }
 
-      
+        public async Task<List<Offers>> GetOffersByProductIdAsync(long ProductId)
+        {
+            return await _dataContext.Offers.Include(x =>x.Product).Where(x => x.ProductId == ProductId).ToListAsync();
+        }
     }
 }

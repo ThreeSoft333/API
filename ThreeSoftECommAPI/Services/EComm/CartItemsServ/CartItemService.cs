@@ -22,7 +22,7 @@ namespace ThreeSoftECommAPI.Services.EComm.CartItemItemsServ
 
         public async Task<List<CartItem>> GetCartItemAsync(long CartId)
         {
-            return await _dataContext.cartItems.Where(x => x.CartId == CartId).ToListAsync();
+            return await _dataContext.cartItems.Include(x => x.product).Where(x => x.CartId == CartId).ToListAsync();
         }
 
         public async Task<List<CartItemResponse>> GetCartItemByUserIdAsync(string UserId)
@@ -72,6 +72,8 @@ namespace ThreeSoftECommAPI.Services.EComm.CartItemItemsServ
 
         public async Task<int> CreateCartItemAsync(CartItem CartItem)
         {
+            //var checkBrevOrderStatus = await _dataContext.Orders
+            //   .Where(x => x.UserId == order.UserId && x.Status != 4).FirstOrDefaultAsync();
 
             await _dataContext.cartItems.AddAsync(CartItem);
             var created = await _dataContext.SaveChangesAsync();

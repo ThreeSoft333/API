@@ -19,7 +19,7 @@ namespace ThreeSoftECommAPI.Services.EComm.UserAddressesServ
 
         public async Task<List<UserAddresses>> GetUserAddressesAsync(string UserId)
         {
-          return await _dataContext.UserAddresses.Where(x => x.UserId == UserId).ToListAsync();
+          return await _dataContext.UserAddresses.Where(x => x.UserId == UserId && x.status == 1).ToListAsync();
         }
       
         public async Task<UserAddresses> GetUserAddresseByIdAsync(int id)

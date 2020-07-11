@@ -23,9 +23,30 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductReviewsServ
             return created;
         }
 
+        public async Task<List<ProductReviews>> GetNewProductReviews()
+        {
+            return await _dataContext.ProductReviews.Include(x => x.User)
+               .Include(x => x.product).Where(x => x.Status == 0).ToListAsync();
+        }
+
         public async Task<List<ProductReviews>> GetProductReviews(long ProductId)
         {
-           return await _dataContext.ProductReviews.Include(y => y.User).Where(x => x.ProductId == ProductId).ToListAsync();
+           return await _dataContext.ProductReviews.Include(y => y.User)
+                .Where(x => x.ProductId == ProductId && x.Status == 1).ToListAsync();
+        }
+
+        public async Task<int> UpdateStatus(long Id)
+        {
+            var ProdReview = await _dataContext.ProductReviews.SingleOrDefaultAsync(x => x.Id == Id);
+
+            if(ProdReview != null)
+            {
+                ProdReview.Status = 1;
+                _dataContext.ProductReviews.Update(ProdReview);
+                var updated = await _dataContext.SaveChangesAsync();
+                return updated;
+            }
+            return 0;
         }
     }
 }

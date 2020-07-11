@@ -35,6 +35,7 @@ namespace ThreeSoftECommAPI.Data
         public DbSet<TransactionType> TransactionTypes { get; set; }
         public DbSet<UserFavourites> UserFavourites { get; set; }
         public DbSet<Offers> Offers { get; set; }
+        public DbSet<ContactUs> ContactUs { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -87,8 +88,10 @@ namespace ThreeSoftECommAPI.Data
             modelBuilder.Entity<Coupon>().Property(x => x.Amount).HasColumnType("DECIMAL (25,3)");
             modelBuilder.Entity<Payment>().Property(x => x.Amount).HasColumnType("DECIMAL (25,3)");
             modelBuilder.Entity<Offers>().Property(x => x.offerPrice).HasColumnType("DECIMAL (25,3)");
+            modelBuilder.Entity<OrderItems>().Property(x => x.Price).HasColumnType("DECIMAL (25,3)");
+            modelBuilder.Entity<OrderItems>().Property(x => x.Total).HasColumnType("DECIMAL (25,3)");
 
-
+            modelBuilder.Entity<Product>().Property(x => x.SalePrice).HasDefaultValue(0);
 
 
         }

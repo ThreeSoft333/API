@@ -56,6 +56,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 PostCode = addresseRequest.PostCode,
                 Lat = addresseRequest.Lat,
                 Lon = addresseRequest.Lon,
+                status = addresseRequest.status,
                 CreateAt = DateTime.Now
             };
 

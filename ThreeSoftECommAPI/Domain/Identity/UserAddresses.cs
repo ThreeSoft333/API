@@ -21,9 +21,9 @@ namespace ThreeSoftECommAPI.Domain.Identity
         public string PostCode { get; set; }
         public decimal Lon { get; set; }
         public decimal Lat { get; set; }
+        public Int32? status { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
-
         public string UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]

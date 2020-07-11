@@ -21,8 +21,6 @@ namespace ThreeSoftECommAPI.Domain.EComm
         public Int32 PaymentMethod { get; set; } // 1-cash 2- visa
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-
-
         [ForeignKey(nameof(UserId))]
         public AppUser User { get; set; }
 
@@ -31,10 +29,5 @@ namespace ThreeSoftECommAPI.Domain.EComm
 
         [ForeignKey(nameof(CouponId))]
         public Coupon coupon { get; set; }
-
-       
-
-
-
     }
 }

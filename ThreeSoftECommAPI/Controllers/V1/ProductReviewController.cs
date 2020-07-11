@@ -25,6 +25,12 @@ namespace ThreeSoftECommAPI.Controllers.V1
             return Ok(await _productReviewService.GetProductReviews(productId));
         }
 
+        [HttpGet(ApiRoutes.Product_Review.GetNew)]
+        public async Task<IActionResult> GetNew()
+        {
+            return Ok(await _productReviewService.GetNewProductReviews());
+        }
+
         [HttpPost(ApiRoutes.Product_Review.Create)]
         public async Task<IActionResult> Create([FromBody] CreateProductReviewRequest productReviewRequest)
         {
@@ -45,6 +51,26 @@ namespace ThreeSoftECommAPI.Controllers.V1
             {
                 var response = new ProductReviewResponse { Id = ProdReview.Id };
                 return Ok(response);
+            }
+            return BadRequest(new ErrorResponse
+            {
+                message = "Internal Server Error",
+                status = BadRequest().StatusCode
+            });
+        }
+
+        [HttpPost(ApiRoutes.Product_Review.Update)]
+        public async Task<IActionResult> Update([FromRoute] Int64 id)
+        {
+            var status = await _productReviewService.UpdateStatus(id);
+
+            if (status == 1)
+            {
+                return Ok(new
+                {
+                    status = Ok().StatusCode,
+                    message = "Status Changed Successfully"
+                });
             }
             return BadRequest(new ErrorResponse
             {

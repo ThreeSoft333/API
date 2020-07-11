@@ -92,10 +92,12 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class Offers
         {
             public const string GetAll = Base + "/offers";
+            public const string GetByProduct = Base + "/offers/{productId}";
             public const string GetForApp = Base + "/getoffersApp";
             public const string Get = Base + "/offers/{offerId}";
             public const string Create = Base + "/offers";
             public const string Update = Base + "/offers/{offerId}";
+            public const string Upload = Base + "/offers/upload";
             public const string Delete = Base + "/offers/{offerId}";
         }
 
@@ -121,6 +123,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
         {
             public const string GetAll = Base + "/productReview/{productId}";
             public const string Get = Base + "/productReview/{id}";
+            public const string GetNew = Base + "/productReview";
             public const string Create = Base + "/productReview";
             public const string Update = Base + "/productReview/{id}";
             public const string Delete = Base + "/productReview/{id}";
@@ -158,7 +161,10 @@ namespace ThreeSoftECommAPI.Contracts.V1
         {
             public const string Create = Base + "/order";
             public const string MyOrder = Base + "/myorder/{userId}";
+            public const string OrdersForAdmin = Base + "/getorderforadmin/{status}";
             public const string OrderStatus = Base + "/orderstatus/{userId}";
+            public const string CheckPreviousOrder = Base + "/checkpreviousorder/{userId}";
+            public const string orderItems = Base + "/orderitems/{orderId}";
         }
 
         public static class UserAddresse
@@ -167,6 +173,21 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Get = Base + "/useraddresse/{id}";
             public const string Create = Base + "/useraddresses";
             public const string Delete = Base + "/useraddresse/{id}";
+        }
+
+        public static class ContactUsRout
+        {
+            public const string Get = Base + "/contactus";
+            public const string Create = Base + "/contactus";
+            public const string Update = Base + "/contactus/{id}";
+        }
+
+        public static class Product_Attr
+        {
+            public const string GetAll = Base + "/productattribute/{productId}";
+            public const string Create = Base + "/productattribute";
+            public const string Update = Base + "/productattribute/{id}";
+            public const string Delete = Base + "/productattribute/{id}";
         }
 
 

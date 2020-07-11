@@ -118,6 +118,7 @@ namespace ThreeSoftECommAPI.Services.Identity
                 Token = tokenHandler.WriteToken(token),
                 UserId = User.Id,
                 UserName = User.UserName,
+                FullName = User.FullName,
                 Email = User.Email,
                 ImgUrl = User.ProfileImageUrl,
                 ImgCoverUrl = User.CoverImageUrl,

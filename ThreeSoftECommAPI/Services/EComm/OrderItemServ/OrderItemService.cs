@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,9 +23,10 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderItemServ
             return created;
         }
 
-        //public Task<int> CreateOrderItemAsync(OrderItems orderItems)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<List<OrderItems>> GetOrderItemForAdmin(long orderId)
+        {
+            return await _dataContext.OrderItems.Include(x => x.product)
+                   .Where(x => x.OrderId == orderId).ToListAsync();
+        }
     }
 }

@@ -9,5 +9,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderItemServ
    public interface IOrderItemService
     {
         Task<int> CreateOrderItemAsync(OrderItems orderItems);
+        Task<List<OrderItems>> GetOrderItemForAdmin(Int64 orderId);
+
     }
 }

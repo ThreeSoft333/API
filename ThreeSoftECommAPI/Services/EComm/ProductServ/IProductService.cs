@@ -19,6 +19,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
         Task<ViewProductResponse> ViewProductAsync(Int64 ProductId);
         Task<int> CreateProductAsync(Product  product);
         Task<int> UpdateProductAsync(Product product);
+        Task<int> UpdateProductSalePriceAsync(Int64 ProductId,decimal salePrice);
         Task<bool> DeleteProductAsync(Int64 ProductId);
         //Task<ReviewProductResponse> ReviewProduct(Int64 ProductId);
 

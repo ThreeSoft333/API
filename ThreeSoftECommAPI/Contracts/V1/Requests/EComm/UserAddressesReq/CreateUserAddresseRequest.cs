@@ -17,5 +17,6 @@ namespace ThreeSoftECommAPI.Contracts.V1.Requests.EComm.UserAddressesReq
         public string PostCode { get; set; }
         public decimal Lon { get; set; }
         public decimal Lat { get; set; }
+        public int status { get; set; }
     }
 }
