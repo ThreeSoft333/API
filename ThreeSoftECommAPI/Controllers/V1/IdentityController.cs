@@ -97,6 +97,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 UserId = authResponse.UserId,
                 UserName = authResponse.UserName,
                 FullName = authResponse.FullName,
+                DateOfBirth = authResponse.DateOfBirth,
                 Email = authResponse.Email,
                 Address = authResponse.Address,
                 ImgUrl = authResponse.ImgUrl,

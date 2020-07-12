@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Services.EComm.AdvertisingServ;
+using ThreeSoftECommAPI.Services.EComm.CartItemsServ;
 using ThreeSoftECommAPI.Services.EComm.CategoryServ;
 using ThreeSoftECommAPI.Services.EComm.OffersServ;
 using ThreeSoftECommAPI.Services.EComm.ProductServ;
@@ -20,14 +21,19 @@ namespace ThreeSoftECommAPI.Controllers.V1
         private readonly IAdvertisingService _AdvertisingService;
         private readonly IProductService _ProductService;
         private readonly IOffersService _OffersService;
+        private readonly ICartItemService _cartItemService;
 
-        public DashboardController(ICategoryService CategoryService, IAdvertisingService advertisingService, 
-            IProductService productService,IOffersService offersService)
+        public DashboardController(ICategoryService CategoryService,
+                                   IAdvertisingService advertisingService, 
+                                   IProductService productService,
+                                   IOffersService offersService,
+                                   ICartItemService cartItemService)
         {
             _CategoryService = CategoryService;
             _AdvertisingService = advertisingService;
             _ProductService = productService;
             _OffersService = offersService;
+            _cartItemService = cartItemService;
         }
 
         [HttpGet(ApiRoutes.Dashboard.Get)]
@@ -39,6 +45,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var MostWanted = await _ProductService.GetProductsMostWantedAsync(UserId,8);
             var TopRated = await _ProductService.GetProductsTopRatedAsync(UserId,8);
             var Offers = await _OffersService.GetOffersTopAsync(UserId,8);
+            var CartItem = await _cartItemService.GetCartItemByUserIdAsync(UserId);
 
             var obj = new
             {
@@ -47,7 +54,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Product_Most_Recent = ProdMostRecent,
                 Product_Most_Wanted = MostWanted,
                 Product_TopRated = TopRated,
-                Offers = Offers
+                Offers = Offers,
+                Cart_Items_Count = CartItem.Count
             };
 
             return Ok(obj);

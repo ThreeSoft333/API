@@ -28,5 +28,11 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderItemServ
             return await _dataContext.OrderItems.Include(x => x.product)
                    .Where(x => x.OrderId == orderId).ToListAsync();
         }
+
+        public async Task<List<OrderItems>> GetOrderItems(long orderId)
+        {
+            return await _dataContext.OrderItems.Include(x => x.product)
+                   .Where(x => x.OrderId == orderId).ToListAsync();
+        }
     }
 }

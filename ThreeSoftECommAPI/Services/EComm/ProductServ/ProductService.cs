@@ -19,7 +19,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
         {
             _dataContext = dbContext;
         }
-
         public async Task<List<Product>> GetProductsAsync(Int64 subCategoryId, int status)
         {
             switch (status)
@@ -32,7 +31,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                     return await _dataContext.product.Where(c => c.SubCategoryId == subCategoryId).ToListAsync();
             }
         }
-
         public async Task<List<ProductResponse>> GetProductsBySubCategoryAsync(string UserId, long SubCatgId)
         {
             var query = await (from p in _dataContext.product
@@ -166,7 +164,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
 
             return query;
         }
-
         public async Task<List<ProductResponse>> GetProductsMostWantedAsync(string UserId, int count)
         {
 
@@ -232,16 +229,16 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
 
             return query;
         }
-
         public async Task<List<ProductResponse>> GetProductsTopRatedAsync(string UserId, int count)
         {
             var query = await (from p in _dataContext.product
                                where p.status == 1
+                               join r in _dataContext.ProductReviews on p.Id equals r.ProductId
                                join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
                                from x in pf.DefaultIfEmpty()
 
-                               where x.UserId == UserId || x.UserId == null
 
+                               where x.UserId == UserId || x.UserId == null
 
                                select new ProductResponse
                                {
@@ -297,12 +294,10 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
 
             return query;
         }
-
         public async Task<Product> GetProductByIdAsync(Int64 ProductId)
         {
             return await _dataContext.product.SingleOrDefaultAsync(x => x.Id == ProductId);
         }
-
         public async Task<ViewProductResponse> ViewProductAsync(long ProductId)
         {
 
@@ -363,7 +358,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             //    productImage = ProductImages
             //}).ToListAsync();
         }
-
         public async Task<int> CreateProductAsync(Product Product)
         {
             //var CheckArName = await _dataContext.product.SingleOrDefaultAsync(x => x.ArabicName == Product.ArabicName);
@@ -376,7 +370,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             var created = await _dataContext.SaveChangesAsync();
             return created;
         }
-
         public async Task<int> UpdateProductAsync(Product Product)
         {
             var CheckArName = await _dataContext.product.Where(y => y.Id != Product.Id).SingleOrDefaultAsync(x => x.ArabicName == Product.ArabicName);
@@ -389,7 +382,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             var Updated = await _dataContext.SaveChangesAsync();
             return Updated;
         }
-
         public async Task<bool> DeleteProductAsync(Int64 ProductId)
         {
             var Product = await GetProductByIdAsync(ProductId);
@@ -401,7 +393,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
-
         public async Task<List<Product>> GetProductsUserFavAsync(string UserId)
         {
             var entryPoint = (from p in _dataContext.product
@@ -411,7 +402,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
 
             return await entryPoint.ToListAsync();
         }
-
         public async Task<int> UpdateProductSalePriceAsync(long ProductId, decimal salePrice)
         {
             var product = await _dataContext.product.SingleOrDefaultAsync(x => x.Id == ProductId);
@@ -421,11 +411,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             var Updated = await _dataContext.SaveChangesAsync();
             return Updated;
         }
-
-
-
-
-
         //public async Task<ReviewProductResponse> ReviewProduct(long ProductId)
         //{
         //    var query = await (from p in _dataContext.product

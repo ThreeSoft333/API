@@ -10,6 +10,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderItemServ
     {
         Task<int> CreateOrderItemAsync(OrderItems orderItems);
         Task<List<OrderItems>> GetOrderItemForAdmin(Int64 orderId);
+        Task<List<OrderItems>> GetOrderItems(Int64 orderId);
 
     }
 }

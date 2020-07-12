@@ -160,6 +160,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class OrderRoute
         {
             public const string Create = Base + "/order";
+            public const string ReOrder = Base + "/reorder";
             public const string MyOrder = Base + "/myorder/{userId}";
             public const string OrdersForAdmin = Base + "/getorderforadmin/{status}";
             public const string OrderStatus = Base + "/orderstatus/{userId}";

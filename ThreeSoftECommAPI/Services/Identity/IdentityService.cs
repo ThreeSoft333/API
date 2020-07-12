@@ -119,6 +119,7 @@ namespace ThreeSoftECommAPI.Services.Identity
                 UserId = User.Id,
                 UserName = User.UserName,
                 FullName = User.FullName,
+                DateOfBirth = User.DateOfBirth,
                 Email = User.Email,
                 ImgUrl = User.ProfileImageUrl,
                 ImgCoverUrl = User.CoverImageUrl,

@@ -134,5 +134,37 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 message = ""
             });
         }
+
+        [HttpPost(ApiRoutes.OrderRoute.ReOrder)]
+        public async Task<IActionResult> ReOrder([FromBody] ReorderRequest reorderRequest)
+        {
+            var Cart = await _cartService.GetCartByUserIdAsync(reorderRequest.UserId);
+            var orderItems = await _orderItemService.GetOrderItems(reorderRequest.OrderId);
+
+            if (orderItems != null)
+            {
+                for (int i = 0; i < orderItems.Count; i++)
+                {
+                    var CartItem = new CartItem
+                    {
+                        CartId = Cart.Id,
+                        ProductId = orderItems[i].ProductId,
+                        Quantity = orderItems[i].Quantity,
+                        CreatedAt = DateTime.Now
+                    };
+
+                    var createItem = await _cartItemService.CreateCartItemAsync(CartItem);
+                }
+
+                return Ok(await _cartItemService.GetCartItemByUserIdAsync(reorderRequest.UserId));
+            }
+            return NotFound(new
+            {
+                status = NotFound().StatusCode,
+                message = "Not found"
+            });
+
+
+        }
     }
 }

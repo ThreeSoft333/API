@@ -13,6 +13,7 @@ namespace ThreeSoftECommAPI.Domain.Identity
         public string UserId { get; set; }
         public string UserName { get; set; }
         public string FullName { get; set; }
+        public string DateOfBirth { get; set; }
         public string ImgUrl { get; set; }
         public string ImgCoverUrl { get; set; }
         public string Email { get; set; }
