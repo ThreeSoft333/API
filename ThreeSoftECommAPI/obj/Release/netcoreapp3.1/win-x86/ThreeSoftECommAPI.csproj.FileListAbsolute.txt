@@ -90,3 +90,4 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netc
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Microsoft.IdentityModel.Tokens.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Stripe.net.dll

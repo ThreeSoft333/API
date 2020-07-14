@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ip/HFHvF1MSkwwugutnMFJl4QP9FOGj+6Y6YKFzwO0ltXWlrABSazp/dvI1sd0joEjW/vEP1j7I32yQbAG8trw==",
+  "dgSpecHash": "CoZCKBuFLxT/hhs1XpQcHuZDtrroV726KzuUUqODlL4AHWzZl2D2O16Okbe7DDO8/iw12pnVWxyQlBRk7obTCw==",
   "success": true,
   "projectFilePath": "C:\\Users\\husam\\source\\repos\\ThreeSoftECommAPI\\ThreeSoftECommAPI\\ThreeSoftECommAPI.csproj",
   "expectedPackageFiles": [
@@ -74,6 +74,7 @@
     "C:\\Users\\husam\\.nuget\\packages\\runtime.win.system.io.filesystem\\4.3.0\\runtime.win.system.io.filesystem.4.3.0.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\runtime.win.system.net.primitives\\4.3.0\\runtime.win.system.net.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\runtime.win.system.runtime.extensions\\4.3.0\\runtime.win.system.runtime.extensions.4.3.0.nupkg.sha512",
+    "C:\\Users\\husam\\.nuget\\packages\\stripe.net\\37.16.0\\stripe.net.37.16.0.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\swashbuckle.aspnetcore\\5.4.1\\swashbuckle.aspnetcore.5.4.1.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.4.1\\swashbuckle.aspnetcore.swagger.5.4.1.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.4.1\\swashbuckle.aspnetcore.swaggergen.5.4.1.nupkg.sha512",

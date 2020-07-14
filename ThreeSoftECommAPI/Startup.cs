@@ -81,7 +81,7 @@ namespace ThreeSoftECommAPI
             services.AddScoped<IAdvertisingService, AdvertisingService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ISubCategoryService, SubCategoryService>();
-            services.AddScoped<IProductService,ProductService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUserFavService,UserFavService>();
             services.AddScoped<IOffersService,OffersService>();
             services.AddScoped<IProductReviewService,ProductReviewService>();
@@ -168,11 +168,15 @@ namespace ThreeSoftECommAPI
                     }
                 });
             });
+
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Stripe.StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["Secretkey"];
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -184,6 +188,8 @@ namespace ThreeSoftECommAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            
 
             var swaggerOptions = new SwaggerOptions();
             Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);

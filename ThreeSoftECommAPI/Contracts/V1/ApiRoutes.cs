@@ -25,6 +25,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class Dashboard
         {
             public const string Get = Base + "/dashboard";
+            public const string Charge = Base + "/charge";
         }
         public static class Brands
         {
