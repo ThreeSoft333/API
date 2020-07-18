@@ -22,8 +22,8 @@ namespace ThreeSoftECommAPI.Contracts.V1.Responses.EComm
         public Int32 Quantity { get; set; }
 
         public List<ProductAttributes> productAttributes { get; set; }
-        public List<ProductColors> productColors { get; set; }
-        public List<ProductSize> productSize { get; set; }
+        public ProductColors productColors { get; set; }
+        public ProductSize productSize { get; set; }
         public List<ProductImage> productImage { get; set; }
     }
 }

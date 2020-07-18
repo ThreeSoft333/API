@@ -10,6 +10,7 @@ namespace ThreeSoftECommAPI.Services.EComm.CouponServ
     {
         Task<List<Coupon>> GetCouponesAsync(int status);
         Task<Coupon> GetCouponByIdAsync(Int32 CouponId);
+        Task<Coupon> GetCouponByNameAsync(string Name);
         Task<int> CreateCouponAsync(Coupon Coupon);
         Task<int> UpdateCouponAsync(Coupon Coupon);
         Task<bool> DeleteCouponAsync(Int32 CouponId);

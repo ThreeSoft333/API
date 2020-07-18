@@ -24,11 +24,7 @@ namespace ThreeSoftECommAPI.Services.Identity
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
-           
-
         }
-
-
 
         public async Task<AuthenticationResult> RegisterAsync(string email, string MobileNo, string password)
         {

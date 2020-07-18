@@ -16,5 +16,6 @@ namespace ThreeSoftECommAPI.Domain.Identity
         public string ProfileImageUrl { get; set; }
         public string CoverImageUrl { get; set; }
         public string DateOfBirth { get; set; }
+        public string City { get; set; }
     }
 }

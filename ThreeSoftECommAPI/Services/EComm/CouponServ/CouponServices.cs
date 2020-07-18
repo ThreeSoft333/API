@@ -70,5 +70,10 @@ namespace ThreeSoftECommAPI.Services.EComm.CouponServ
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
+
+        public async Task<Coupon> GetCouponByNameAsync(string Name)
+        {
+            return await _dataContext.Coupons.SingleOrDefaultAsync(x => x.EnglishName == Name || x.ArabicName == Name);
+        }
     }
 }

@@ -44,6 +44,7 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using ThreeSoftECommAPI.Services.EComm.ContactUsServ;
+using ThreeSoftECommAPI.Services.EComm.PaymentServ;
 
 namespace ThreeSoftECommAPI
 {
@@ -95,6 +96,7 @@ namespace ThreeSoftECommAPI
             services.AddScoped<IUserAddressesService,UserAddresseService>();
             services.AddScoped<ICouponServices,CouponServices>();
             services.AddScoped<IContactUsService,ContactUsService>();
+            services.AddScoped<IPaymentService,PaymentService>();
             
 
 

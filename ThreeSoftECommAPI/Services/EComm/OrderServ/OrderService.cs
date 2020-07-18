@@ -30,12 +30,6 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
 
         public async Task<List<MyOrderResponse>> GetMyOrdersAsync(string UserId)
         {
-
-            //_dataContext.Orders
-            //                       .Join(_dataContext.OrderItems, o => o.Id, oi => oi.OrderId, (o, oi) => new { o, oi })
-            //                       .Join(_dataContext.product, ooi => ooi.oi.ProductId, p => p.Id, (ooi, p) => new { ooi, p })
-            //                       .Where(x => x.ooi.o.UserId == UserId).Select(x => x.p.SalePrice != 0 ? x.p.SalePrice : x.p.Price).Sum(),
-
             var query = await (from o in _dataContext.Orders
                                where o.UserId == UserId && o.Status == 4
 
@@ -44,12 +38,13 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
                                {
                                    OrderId = o.Id,
                                    OrderStatus = o.Status,
-                                   OrderDate = o.CreatedAt,
+                                   OrderDate = o.CreatedAt.ToString("dd/MM/yyyy hh:mm:ss"),
+                                   CouponId = o.CouponId,
                                    ProductCount = _dataContext.OrderItems.Where(x => x.OrderId == o.Id).Count(),
                                    Total = _dataContext.OrderItems.Where(x => x.OrderId == o.Id)
                                    .Select(x => x.Total).Sum(),
 
-                                   
+
                                    userAddresse = _dataContext.UserAddresses.SingleOrDefault(x => x.Id == o.UserAddressesId),
                                    orderItems = ((List<OrderItems>)(from i in _dataContext.OrderItems
                                                                     where i.OrderId == o.Id
@@ -110,7 +105,8 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
                                {
                                    OrderId = p.Id,
                                    OrderStatus = p.Status,
-                                   OrderDate = p.CreatedAt,
+                                   OrderDate = p.CreatedAt.ToString("dd/MM/yyyy hh:mm:ss"), 
+                                   CouponId = p.CouponId,
                                    ProductCount = _dataContext.OrderItems.Where(x => x.OrderId == p.Id).Count(),
                                    Total = _dataContext.OrderItems.Where(x => x.OrderId == p.Id)
                                    .Select(x => x.Total).Sum(),

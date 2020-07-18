@@ -36,6 +36,7 @@ namespace ThreeSoftECommAPI.Data
         public DbSet<UserFavourites> UserFavourites { get; set; }
         public DbSet<Offers> Offers { get; set; }
         public DbSet<ContactUs> ContactUs { get; set; }
+        public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

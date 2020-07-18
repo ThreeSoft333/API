@@ -12,7 +12,8 @@ namespace ThreeSoftECommAPI.Contracts.V1.Responses.EComm
         public Int64 OrderId { get; set; }
         public Int32 ProductCount { get; set; }
         public Int32 OrderStatus { get; set; }
-        public DateTime OrderDate { get; set; }
+        public Int32? CouponId { get; set; }
+        public string OrderDate { get; set; }
         public decimal Total { get; set; }
         public UserAddresses userAddresse { get; set; }
         public List<OrderItems> orderItems { get; set; }

@@ -40,6 +40,21 @@ namespace ThreeSoftECommAPI.Controllers.V1
             return Ok(Catg);
         }
 
+        [HttpGet(ApiRoutes.Coupon.GetByName)]
+        public async Task<IActionResult> GetByName([FromRoute] string name)
+        {
+            var Copon = await _couponService.GetCouponByNameAsync(name);
+
+            if (Copon == null)
+                return NotFound(new ErrorResponse
+                {
+                    message = "Not Found",
+                    status = NotFound().StatusCode
+                });
+
+            return Ok(Copon);
+        }
+
         [HttpPost(ApiRoutes.Coupon.Create)]
         public async Task<IActionResult> Create([FromBody] CreateCouponRequest CouponRequst)
         {

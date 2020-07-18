@@ -25,7 +25,6 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class Dashboard
         {
             public const string Get = Base + "/dashboard";
-            public const string Charge = Base + "/charge";
         }
         public static class Brands
         {
@@ -106,6 +105,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
         {
             public const string GetAll = Base + "/coupon";
             public const string Get = Base + "/coupon/{couponId}";
+            public const string GetByName = Base + "/chekcoupon/{name}";
             public const string Create = Base + "/coupon";
             public const string Update = Base + "/coupon/{couponId}";
             public const string Delete = Base + "/coupon/{couponId}";
@@ -190,6 +190,11 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Create = Base + "/productattribute";
             public const string Update = Base + "/productattribute/{id}";
             public const string Delete = Base + "/productattribute/{id}";
+        }
+
+        public static class payment
+        {
+            public const string Charge = Base + "/charge";
         }
 
 

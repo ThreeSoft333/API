@@ -102,7 +102,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Address = authResponse.Address,
                 ImgUrl = authResponse.ImgUrl,
                 ImgCoverUrl = authResponse.ImgCoverUrl,
-                Role = await _identityService.GetUserRole(appUser)
+                Role = await _identityService.GetUserRole(appUser),
+                City = authResponse.City
             });
         }
 
@@ -140,6 +141,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 User.DateOfBirth = request.DateOfBirth;
                 User.CoverImageUrl = request.CoverImageUrl;
                 User.ProfileImageUrl = request.ProfileImageUrl;
+                User.City = request.City;
 
                 var UpUser = await _identityService.UpdateUserInfoAsync(User);
 

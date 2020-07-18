@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Data;
@@ -51,8 +52,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                    Price = p.Price,
                                    SalePrice = p.SalePrice,
                                    UserFavId = x.Id,
-                                   ProductRate = string.Format("{0:0.0}",Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x=>x.ProductId ==p.Id).Select(t => t.Rate).Sum()) /
+                                   ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
+                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
                                        Convert.ToDecimal(_dataContext.ProductReviews.Where(
                                        x => x.ProductId == p.Id).Count())),
                                    productColor = (from c in _dataContext.ProductColors
@@ -119,8 +120,9 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                    Price = p.Price,
                                    SalePrice = p.SalePrice,
                                    UserFavId = x.Id,
-                                   ProductRate = string.Format("{0:0.0}",Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum() / _dataContext.ProductReviews.Where(
+                                   ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
+                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
+                                       Convert.ToDecimal(_dataContext.ProductReviews.Where(
                                        x => x.ProductId == p.Id).Count())),
                                    productColor = (from c in _dataContext.ProductColors
                                                    where c.Id == p.colorId
@@ -187,7 +189,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                    SalePrice = p.SalePrice,
                                    UserFavId = x.Id,
                                    ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum() / _dataContext.ProductReviews.Where(
+                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
+                                       Convert.ToDecimal(_dataContext.ProductReviews.Where(
                                        x => x.ProductId == p.Id).Count())),
                                    productColor = (from c in _dataContext.ProductColors
                                                    where c.Id == p.colorId
@@ -251,8 +254,9 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                    Price = p.Price,
                                    SalePrice = p.SalePrice,
                                    UserFavId = x.Id,
-                                   ProductRate = string.Format("{0:0.0}",Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum() / _dataContext.ProductReviews.Where(
+                                   ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
+                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
+                                       Convert.ToDecimal(_dataContext.ProductReviews.Where(
                                        x => x.ProductId == p.Id).Count())),
                                    productColor = (from c in _dataContext.ProductColors
                                                    where c.Id == p.colorId
@@ -301,11 +305,13 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
         public async Task<ViewProductResponse> ViewProductAsync(long ProductId)
         {
 
-            var prod = await _dataContext.product.SingleOrDefaultAsync(x => x.Id == ProductId);
+            var prod = await _dataContext.product.Include(x=>x.colors)
+                .Include(x=>x.size)
+                .SingleOrDefaultAsync(x => x.Id == ProductId);
             var prodAttr = await _dataContext.ProductAttributes.Where(x => x.ProductId == ProductId).ToListAsync();
-            var prodColor = await _dataContext.ProductColors.ToListAsync();
-            var prodSize = await _dataContext.ProductSizes.ToListAsync();
-            //var prodImage = await _dataContext.ProductImages.Where(x => x.ProductId == ProductId).ToListAsync();
+            //var prodColor = await _dataContext.ProductColors.ToListAsync();
+            //var prodSize = await _dataContext.ProductSizes.ToListAsync();
+            var prodImage = await _dataContext.ProductImages.Where(x => x.ProductId == ProductId).ToListAsync();
 
 
             return new ViewProductResponse
@@ -322,41 +328,12 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                 Material = prod.Material,
                 Quantity = prod.Quantity,
                 productAttributes = prodAttr,
-                productColors = prodColor,
-                productSize = prodSize
+                productColors = prod.colors,
+                productSize = prod.size,
+                productImage = prodImage
             };
 
-            //    var Product = await (
-            //from prod in _dataContext.product
-            //join attr in _dataContext.ProductAttributes on prod.Id equals attr.ProductId into prodAttr
-            //from ProductAttributes in prodAttr.DefaultIfEmpty()
-            //join col in _dataContext.ProductColors on prod.Id equals col.ProductId into prodColor
-            //from ProductColors in prodColor.DefaultIfEmpty()
-            //join size in _dataContext.ProductSizes on prod.Id equals size.ProductId into prodSize
-            //from ProductSizes in prodSize.DefaultIfEmpty()
-            //join image in _dataContext.ProductImages on prod.Id equals image.ProductId into prodImage
-            //from ProductImages in prodImage.DefaultIfEmpty()
-
-            //where prod.Id == ProductId
-
-            //select new ViewProductResponse
-            //{
-            //    Id = prod.Id,
-            //    ArabicName = prod.ArabicName,
-            //    EnglishName = prod.EnglishName,
-            //    ArabicDescription = prod.ArabicDescription,
-            //    EnglishDescription = prod.EnglishDescription,
-            //    Price = prod.Price,
-            //    SalePrice = prod.SalePrice,
-            //    ImgUrl = prod.ImgUrl,
-            //    Condition = prod.Condition,
-            //    Material = prod.Material,
-            //    Quantity = prod.Quantity,
-            //    productAttributes = ProductAttributes,
-            //    productColors = ProductColors,
-            //    productSize = ProductSizes,
-            //    productImage = ProductImages
-            //}).ToListAsync();
+          
         }
         public async Task<int> CreateProductAsync(Product Product)
         {
@@ -393,14 +370,60 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
-        public async Task<List<Product>> GetProductsUserFavAsync(string UserId)
+        public async Task<List<ProductResponse>> GetProductsUserFavAsync(string UserId)
         {
-            var entryPoint = (from p in _dataContext.product
-                              join uf in _dataContext.UserFavourites on p.Id equals uf.ProductId
-                              where uf.UserId == UserId
-                              select p);
 
-            return await entryPoint.ToListAsync();
+
+            //var ProdFav = _dataContext.product
+            //.Join(_dataContext.UserFavourites, p => p.Id, uf => uf.ProductId, 
+            //(p, uf) => new { p, uf }).Select(x => new Product { 
+            // ArabicName = x.p.ArabicName,
+            //    EnglishName = x.p.EnglishName,
+            //    ArabicDescription = x.p.ArabicDescription,
+            //     EnglishDescription = x.p.EnglishDescription,
+            //   Condition = x.p.Condition,
+            //    Material = x.p.Material,
+            //     Price = x.p.Price,
+            //      Quantity = x.p.Quantity,
+            //       SalePrice = x.p.SalePrice,
+            //        colors = _dataContext.ProductColors.Where(c => c.Id == x.p.colorId).DefaultIfEmpty().SingleOrDefault(),
+            //         size = _dataContext.ProductSizes.Where(c => c.Id == x.p.sizeId).DefaultIfEmpty().SingleOrDefault(),
+
+
+
+            //});
+            var ProdFav = await (from p in _dataContext.product
+                           join uf in _dataContext.UserFavourites on p.Id equals uf.ProductId
+                           where uf.UserId == UserId
+                           join col in _dataContext.ProductColors on p.colorId equals col.Id into ProdCol
+                           from productColor in ProdCol.DefaultIfEmpty()
+                           join size in _dataContext.ProductSizes on p.sizeId equals size.Id into ProdSize
+                           from productSize in ProdSize.DefaultIfEmpty()
+                          
+
+                           select new ProductResponse
+                           {
+                               Id = p.Id,
+                               ArabicName = p.ArabicName,
+                               EnglishName = p.EnglishName,
+                               ArabicDescription = p.ArabicDescription,
+                               EnglishDescription = p.EnglishDescription,
+                               Price = p.Price,
+                               SalePrice = p.SalePrice,
+                               ImgUrl = p.ImgUrl,
+                               ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
+                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
+                                       Convert.ToDecimal(_dataContext.ProductReviews.Where(
+                                       x => x.ProductId == p.Id).Count())),
+                               productColor = productColor,
+                               productSize = productSize,
+                               productAttributes = _dataContext.ProductAttributes.Where(x => x.ProductId == p.Id).ToList(),
+                               productImages = _dataContext.ProductImages.Where(x => x.ProductId == p.Id).ToList(),
+
+
+                           }).ToListAsync();
+
+            return ProdFav;
         }
         public async Task<int> UpdateProductSalePriceAsync(long ProductId, decimal salePrice)
         {
@@ -439,5 +462,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
 
         //    return query;
         //}
+
+       
     }
 }

@@ -18,5 +18,6 @@ namespace ThreeSoftECommAPI.Contracts.V1.Responses.Identity
         public string Email { get; set; }
         public string Address { get; set; }
         public string Role { get; set; }
+        public string City { get; set; }
     }
 }
