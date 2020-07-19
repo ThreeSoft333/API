@@ -72,9 +72,6 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcor
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.csprojAssemblyReference.cache
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.AssemblyInfoInputs.cache
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.AssemblyInfo.cs
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.csproj.CoreCompileInputs.cache
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.RazorAssemblyInfo.cache
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.RazorAssemblyInfo.cs
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.TagHelpers.input.cache
@@ -98,3 +95,9 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcor
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.pdb
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.genruntimeconfig.cache
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\RestClient.Net.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\RestClient.Net.Abstractions.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Twilio.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.csproj.CoreCompileInputs.cache
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.MvcApplicationPartsAssemblyInfo.cache

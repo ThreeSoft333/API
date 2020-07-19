@@ -410,7 +410,7 @@
           "lib/netcoreapp3.1/Microsoft.Extensions.Logging.dll": {}
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/3.1.4": {
+      "Microsoft.Extensions.Logging.Abstractions/3.1.5": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll": {}
@@ -580,6 +580,31 @@
         },
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "RestClient.Net/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "3.1.5",
+          "RestClient.Net.Abstractions": "4.0.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.0/RestClient.Net.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/RestClient.Net.dll": {}
+        }
+      },
+      "RestClient.Net.Abstractions/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "3.1.5"
+        },
+        "compile": {
+          "lib/netcoreapp3.0/RestClient.Net.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/RestClient.Net.Abstractions.dll": {}
         }
       },
       "runtime.native.System/4.3.0": {
@@ -768,7 +793,7 @@
           "System.Threading": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/System.Collections.Specialized.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Collections.Specialized.dll": {}
@@ -1190,7 +1215,7 @@
           "Microsoft.NETCore.Targets": "1.1.0"
         },
         "compile": {
-          "ref/netstandard1.5/_._": {}
+          "ref/netstandard1.5/System.Runtime.dll": {}
         }
       },
       "System.Runtime.Caching/4.5.0": {
@@ -1619,6 +1644,21 @@
         },
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "Twilio/5.45.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.IdentityModel.Tokens": "5.3.0",
+          "Newtonsoft.Json": "11.0.2",
+          "System.Collections.Specialized": "4.3.0",
+          "System.IdentityModel.Tokens.Jwt": "5.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Twilio.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Twilio.dll": {}
         }
       }
     }
@@ -2299,17 +2339,17 @@
         "microsoft.extensions.logging.nuspec"
       ]
     },
-    "Microsoft.Extensions.Logging.Abstractions/3.1.4": {
-      "sha512": "JNPxhw2XwhjfGFyIkA5eBfzUDPNpa6Q50HJ2F6lCAMoSa1GquAktTrl4PhEyTYFNmu09B0E90WhYsUb3kmSkOA==",
+    "Microsoft.Extensions.Logging.Abstractions/3.1.5": {
+      "sha512": "ZvwowjRSWXewdPI+whPFXgwF4Qme6Q9KV9SCPEITSGiqHLArct7q5hTBtTzj3GPsVLjTqehvTg6Bd/EQk9JS0A==",
       "type": "package",
-      "path": "microsoft.extensions.logging.abstractions/3.1.4",
+      "path": "microsoft.extensions.logging.abstractions/3.1.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "microsoft.extensions.logging.abstractions.3.1.4.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.3.1.5.nupkg.sha512",
         "microsoft.extensions.logging.abstractions.nuspec"
       ]
     },
@@ -2607,6 +2647,40 @@
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
         "newtonsoft.json.12.0.2.nupkg.sha512",
         "newtonsoft.json.nuspec"
+      ]
+    },
+    "RestClient.Net/4.0.0": {
+      "sha512": "N79xd7lTd18xapXCmH+Sw1nNOrzXoY63Hc0ft8ImmOiqVXQ9yX3OmZjT/jaJdBxH4HAJa/LMLqPGMEIbT+15PA==",
+      "type": "package",
+      "path": "restclient.net/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "License.txt",
+        "lib/net45/RestClient.Net.dll",
+        "lib/net47/RestClient.Net.dll",
+        "lib/netcoreapp3.0/RestClient.Net.dll",
+        "lib/netstandard2.0/RestClient.Net.dll",
+        "restclient.net.4.0.0.nupkg.sha512",
+        "restclient.net.nuspec"
+      ]
+    },
+    "RestClient.Net.Abstractions/4.0.0": {
+      "sha512": "ZsErKKdEZ1Vqifv65RLlvOq9zlTk0sJUaRgiqHKt51cJFjG9gU4+jYrVt+/3ckKKZqLRFs1MA24qdAmGmM9zcg==",
+      "type": "package",
+      "path": "restclient.net.abstractions/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "License.txt",
+        "lib/net45/RestClient.Net.Abstractions.dll",
+        "lib/net47/RestClient.Net.Abstractions.dll",
+        "lib/netcoreapp3.0/RestClient.Net.Abstractions.dll",
+        "lib/netstandard2.0/RestClient.Net.Abstractions.dll",
+        "restclient.net.abstractions.4.0.0.nupkg.sha512",
+        "restclient.net.abstractions.nuspec"
       ]
     },
     "runtime.native.System/4.3.0": {
@@ -5875,6 +5949,25 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "Twilio/5.45.0": {
+      "sha512": "f3CSDBsyzJAwz8pjaDv/Itv9c34oTJlzp2KVB1zwHFV4pdAKt0vkAMkllOwRkFRvXnv6alaqVw6yokBMWi/qXw==",
+      "type": "package",
+      "path": "twilio/5.45.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/Twilio.dll",
+        "lib/net35/Twilio.xml",
+        "lib/net451/Twilio.dll",
+        "lib/net451/Twilio.xml",
+        "lib/netstandard1.4/Twilio.dll",
+        "lib/netstandard1.4/Twilio.xml",
+        "lib/netstandard2.0/Twilio.dll",
+        "lib/netstandard2.0/Twilio.xml",
+        "twilio.5.45.0.nupkg.sha512",
+        "twilio.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -5885,8 +5978,10 @@
       "Microsoft.AspNetCore.Identity.UI >= 3.1.4",
       "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.4",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.4",
+      "RestClient.NET >= 4.0.0",
       "Stripe.net >= 37.16.0",
-      "Swashbuckle.AspNetCore >= 5.4.1"
+      "Swashbuckle.AspNetCore >= 5.4.1",
+      "Twilio >= 5.45.0"
     ]
   },
   "packageFolders": {
@@ -5954,6 +6049,10 @@
             "target": "Package",
             "version": "[3.1.4, )"
           },
+          "RestClient.NET": {
+            "target": "Package",
+            "version": "[4.0.0, )"
+          },
           "Stripe.net": {
             "target": "Package",
             "version": "[37.16.0, )"
@@ -5961,6 +6060,10 @@
           "Swashbuckle.AspNetCore": {
             "target": "Package",
             "version": "[5.4.1, )"
+          },
+          "Twilio": {
+            "target": "Package",
+            "version": "[5.45.0, )"
           }
         },
         "imports": [

@@ -16,6 +16,7 @@ namespace ThreeSoftECommAPI.Contracts.V1.Requests.EComm.Payment
         public int ExpYear { get; set; }
         public string Cvc { get; set; }
         public int Amount { get; set; }
+        public string PaymentMethod { get; set; }
       
         
     }

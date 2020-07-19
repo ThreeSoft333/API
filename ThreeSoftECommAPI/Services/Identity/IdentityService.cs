@@ -30,6 +30,7 @@ namespace ThreeSoftECommAPI.Services.Identity
         {
             var User = await _userManager.FindByNameAsync(MobileNo);
 
+            
             if (User != null)
             {
                 return new AuthenticationResult
@@ -55,15 +56,36 @@ namespace ThreeSoftECommAPI.Services.Identity
                     Errors = CreateUser.Errors.Select(x => x.Description).FirstOrDefault()
                 };
             }
-
+            
             return GenerateAuthenticationResultForUser(newUser);
 
         }
+        
+        public async Task<string> GeneratePhoneNumberConfirmedToken(AppUser appUser)
+        {
+            return await _userManager.GenerateChangePhoneNumberTokenAsync(appUser, appUser.PhoneNumber);
+        }
+        public async Task<AuthenticationResult> ConfirmPhone(string UserId,string Token)
+        {
+            var User = await _userManager.FindByIdAsync(UserId);
 
+            var confirmToken = await _userManager.ChangePhoneNumberAsync(User, User.PhoneNumber, Token);
+
+            if (!confirmToken.Succeeded)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = confirmToken.Errors.Select(x => x.Description).FirstOrDefault()
+                };
+            }
+
+            return GenerateAuthenticationResultForUser(User);
+
+        }
         public async Task<AuthenticationResult> LoginAsync(string Email, string PhoneNumber, string password)
         {
             var User = await _userManager.FindByNameAsync(PhoneNumber);
-
+            
             if (User == null)
             {
                 return new AuthenticationResult
@@ -90,7 +112,6 @@ namespace ThreeSoftECommAPI.Services.Identity
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
 
-            
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -108,6 +129,7 @@ namespace ThreeSoftECommAPI.Services.Identity
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
+
             return new AuthenticationResult
             {
                 Success = true,
@@ -120,6 +142,8 @@ namespace ThreeSoftECommAPI.Services.Identity
                 ImgUrl = User.ProfileImageUrl,
                 ImgCoverUrl = User.CoverImageUrl,
                 Address = User.Address,
+                City = User.City,
+                PhoneNumberConfirmed = User.PhoneNumberConfirmed
             };
         }
 

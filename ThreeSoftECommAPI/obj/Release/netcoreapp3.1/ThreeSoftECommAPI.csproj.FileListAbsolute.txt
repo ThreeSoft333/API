@@ -98,3 +98,6 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netc
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\Stripe.net.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\RestClient.Net.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\RestClient.Net.Abstractions.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\Twilio.dll

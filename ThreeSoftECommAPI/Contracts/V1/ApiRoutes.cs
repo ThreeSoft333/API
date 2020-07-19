@@ -17,9 +17,11 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Register = Base + "/identity/register";
             public const string Update = Base + "/identity/update";
             public const string ChangePassword = Base + "/identity/changepassword";
+            public const string ConfirmPhone = Base + "/identity/confirmphone";
             public const string CreateRole = Base + "/identity/role";
             public const string GetRole = Base + "/identity/role/{roleId}";
             public const string Upload = Base + "/identity/upload";
+            public const string SendMessage = Base + "/identity/sendmessage";
         }
 
         public static class Dashboard

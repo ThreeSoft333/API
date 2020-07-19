@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using RestClient.Net;
+using RestClient.Net.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,20 +14,25 @@ using ThreeSoftECommAPI.Contracts.V1.Requests.Identity;
 using ThreeSoftECommAPI.Contracts.V1.Responses.Identity;
 using ThreeSoftECommAPI.Domain.Identity;
 using ThreeSoftECommAPI.Services.Identity;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace ThreeSoftECommAPI.Controllers.V1
 {
     public class IdentityController: Controller
     {
         private readonly IIdentityService _identityService;
-        public IdentityController(IIdentityService identityService)
+        private readonly IConfiguration _configuration;
+        public IdentityController(IIdentityService identityService,IConfiguration configuration)
         {
             _identityService = identityService;
+            _configuration = configuration;
         }
 
         [HttpPost(ApiRoutes.Identity.Register)]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request)
         {
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(new AuthFailedResponse
@@ -33,6 +41,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                     status = BadRequest().StatusCode
                 });
             }
+
             var authResponse = await _identityService.RegisterAsync(request.Email, request.MobileNo, request.Password);
 
             if (!authResponse.Success)
@@ -61,7 +70,11 @@ namespace ThreeSoftECommAPI.Controllers.V1
                     UserRole = "Customer";
                     break;
             }
-           
+
+            var PhoneNumberConfirmed = _identityService.GeneratePhoneNumberConfirmedToken(appUser);
+
+            SendMessage(PhoneNumberConfirmed.Result);
+
             return Ok(new AuthSuccessResponse
             {
                 Token = authResponse.Token,
@@ -91,6 +104,12 @@ namespace ThreeSoftECommAPI.Controllers.V1
 
             var appUser = await _identityService.GetUserById(authResponse.UserId);
 
+            if (!appUser.PhoneNumberConfirmed)
+            {
+                var Token = _identityService.GeneratePhoneNumberConfirmedToken(appUser);
+                SendMessage(Token.Result);
+            }
+
             return Ok(new AuthSuccessResponse
             {
                 Token = authResponse.Token,
@@ -103,7 +122,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 ImgUrl = authResponse.ImgUrl,
                 ImgCoverUrl = authResponse.ImgCoverUrl,
                 Role = await _identityService.GetUserRole(appUser),
-                City = authResponse.City
+                City = authResponse.City,
+                PhoneNumberConfirmed = authResponse.PhoneNumberConfirmed
             });
         }
 
@@ -125,6 +145,27 @@ namespace ThreeSoftECommAPI.Controllers.V1
             {
                 status = Ok().StatusCode,
                 message = "Password Changed Successfully"
+            });
+        }
+
+        [HttpPost(ApiRoutes.Identity.ConfirmPhone)]
+        public async Task<IActionResult> ConfirmPhone([FromBody] ConfirmPhoneRequest request)
+        {
+            var ConfPhone = await _identityService.ConfirmPhone(request.UserId, request.Token);
+
+            if (!ConfPhone.Success)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    message = ConfPhone.Errors,
+                    status = BadRequest().StatusCode
+                });
+            }
+
+            return Ok(new ChangePasswordResponse
+            {
+                status = Ok().StatusCode,
+                message = "Phone Confirmed"
             });
         }
 
@@ -213,6 +254,32 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 ProfileImage_Path = ApiPath+ dbPath_ProfileImage,
                 CoverImagePath = ApiPath+ dbPath_CoverImage
             });
+        }
+
+        [HttpPost(ApiRoutes.Identity.SendMessage)]
+        public IActionResult SendMessage(string Token)
+        {
+            string AccountId = _configuration.GetSection("accountId").Value;
+            string AuthToken = _configuration.GetValue<string>("authToken");
+
+            TwilioClient.Init(AccountId, AuthToken);
+
+            var message = MessageResource.Create(
+                body: Token,
+                from: new Twilio.Types.PhoneNumber("+13344876852"),
+                to: new Twilio.Types.PhoneNumber("+962788966075")
+                );
+
+            return Ok(new
+            {
+                sid = message.Sid,
+                status = message.Status,
+                message = message.ErrorMessage,
+                price = message.Price,
+                priceUnit = message.PriceUnit
+            });
+
+
         }
     }
 }

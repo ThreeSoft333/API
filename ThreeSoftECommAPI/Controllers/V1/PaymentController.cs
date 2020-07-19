@@ -57,7 +57,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                         Number = paymentRequest.CardNumber,
                         ExpMonth = paymentRequest.ExpMonth,
                         ExpYear = paymentRequest.ExpYear,
-                        Cvc = paymentRequest.Cvc,
+                        Cvc = paymentRequest.Cvc
+                        
                     },
                 };
 
@@ -70,6 +71,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                     Amount = paymentRequest.Amount,
                     Currency = "USD",
                     Customer = CustomerId,
+                    PaymentMethod = paymentRequest.PaymentMethod,
+                    Confirm = true,
                     PaymentMethodTypes = new List<string> {
                 "card"
   },
@@ -78,7 +81,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 var service = new PaymentIntentService();
                 var intent = service.Create(options);
 
-                if (intent.Status == "requires_payment_method")
+                if (intent.Status == "succeeded")
                 {
                     var PaymentTrans = new PaymentTransaction
                     {
