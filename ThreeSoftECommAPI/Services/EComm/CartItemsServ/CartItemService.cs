@@ -33,6 +33,7 @@ namespace ThreeSoftECommAPI.Services.EComm.CartItemItemsServ
                 .Join(_dataContext.Cart, cci => cci.ci.CartId, c => c.Id, (cci, c) => new { cci, c })
                 .Join(_dataContext.ProductColors, ppc => ppc.cci.p.colorId, pc => pc.Id, (ppc, pc) => new { ppc, pc })
                 .Join(_dataContext.ProductSizes, pps => pps.ppc.cci.p.sizeId, ps => ps.Id, (pps, ps) => new { pps, ps })
+                .Where(x => x.pps.ppc.c.UserId == UserId)
                 .Select(m => new CartItemResponse
                 {
                     Id = m.pps.ppc.cci.ci.Id,
@@ -137,6 +138,20 @@ namespace ThreeSoftECommAPI.Services.EComm.CartItemItemsServ
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
+
+        public async Task<bool> DeleteCartItemByUserAsync(string UserId)
+        {
+            var cart = _dataContext.Cart.SingleOrDefault(x=>x.UserId == UserId);
+            var cartItem = _dataContext.cartItems.Where(x => x.CartId == cart.Id).ToList();
+
+            if (cartItem == null)
+                return false;
+
+            _dataContext.cartItems.RemoveRange(cartItem);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
+        }
+
 
         public async Task<CartItem> GetCarItemtByValueAsync(long CartId, long? ProductId)
         {

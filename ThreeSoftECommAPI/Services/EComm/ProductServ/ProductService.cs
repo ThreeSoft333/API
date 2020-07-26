@@ -34,269 +34,539 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
         }
         public async Task<List<ProductResponse>> GetProductsBySubCategoryAsync(string UserId, long SubCatgId)
         {
-            var query = await (from p in _dataContext.product
-                               where p.status == 1 && p.SubCategoryId == SubCatgId
-                               join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
-                               from x in pf.DefaultIfEmpty()
+            var product = await _dataContext.product
+                                           .Include(x => x.productAttributes)
+                                           .Include(x => x.productReviews)
+                                            .Include(x => x.userFavourites)
+                                            .Include(x => x.colors)
+                                            .Include(x => x.size)
+                                            .Include(x => x.productImages)
+                                            .ToListAsync();
 
-                               where x.UserId == UserId || x.UserId == null
+            List<ProductResponse> lstproductResponses = new List<ProductResponse>();
 
-                               select new ProductResponse
-                               {
-                                   Id = p.Id,
-                                   ArabicName = p.ArabicName,
-                                   EnglishName = p.EnglishName,
-                                   ArabicDescription = p.ArabicDescription,
-                                   EnglishDescription = p.EnglishDescription,
-                                   ImgUrl = p.ImgUrl,
-                                   Price = p.Price,
-                                   SalePrice = p.SalePrice,
-                                   UserFavId = x.Id,
-                                   ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
-                                       Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Count())),
-                                   productColor = (from c in _dataContext.ProductColors
-                                                   where c.Id == p.colorId
-                                                   select new ProductColors
-                                                   {
-                                                       Id = c.Id,
-                                                       ArabicName = c.ArabicName,
-                                                       EnglishName = c.EnglishName,
-                                                       HexCode = c.HexCode
-                                                   }).Single(),
-                                   productSize = (from s in _dataContext.ProductSizes
-                                                  where s.Id == p.sizeId
-                                                  select new ProductSize
-                                                  {
-                                                      Id = s.Id,
-                                                      Size = s.Size,
-                                                      Unit = s.Unit
-                                                  }).Single(),
+            for (int i = 0; i < product.Count; i++)
+            {
 
-                                   productImages = (from i in _dataContext.ProductImages
-                                                    where i.ProductId == p.Id
-                                                    select new ProductImage
-                                                    {
-                                                        Id = i.Id,
-                                                        ImgUrl = i.ImgUrl,
-                                                        Ext = i.Ext
-                                                    }).ToList(),
-                                   productAttributes = (from a in _dataContext.ProductAttributes
-                                                        where a.ProductId == p.Id
-                                                        select new ProductAttributes
-                                                        {
-                                                            Id = a.Id,
-                                                            ArabicName = a.ArabicName,
-                                                            EnglishName = a.EnglishName,
+                var prodRateSum = Convert.ToDecimal(product[i].productReviews.Where(
+                                            x => x.ProductId == product[i].Id & x.Status == 1).Select(t => t.Rate).Sum());
+                var prodRateCount = Convert.ToDecimal(product[i].productReviews.Where(
+                                             x => x.ProductId == product[i].Id & x.Status == 1).Count());
 
-                                                        }).ToList()
+                decimal ProductRate = 0;
+                if (prodRateSum != 0 && prodRateCount != 0)
+                {
+                    ProductRate = prodRateSum / prodRateCount;
+                }
+                var _rate = string.Format("{0:0.0}", ProductRate);
 
-                               }).ToListAsync();
+                var productRespons = new ProductResponse
+                {
+                    Id = product[i].Id,
+                    ArabicName = product[i].ArabicName,
+                    EnglishName = product[i].EnglishName,
+                    ArabicDescription = product[i].ArabicDescription,
+                    EnglishDescription = product[i].EnglishDescription,
+                    ImgUrl = product[i].ImgUrl,
+                    Price = product[i].Price,
+                    SalePrice = product[i].SalePrice,
+                    UserFavId = product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId) == null ? 0 : product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId).Id,
+                    ProductRate = _rate,
+                    productColor = product[i].colors,
+                    productSize = product[i].size,
+                    productImages = product[i].productImages,
+                    productAttributes = product[i].productAttributes
+
+                };
+                lstproductResponses.Add(productRespons);
+            }
 
 
+            return lstproductResponses;
 
-            return query;
+            //var query = await (from p in _dataContext.product
+            //                   where p.status == 1 && p.SubCategoryId == SubCatgId
+            //                   join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
+            //                   from x in pf.DefaultIfEmpty()
+
+            //                   //where x.UserId == UserId
+
+            //                   select new ProductResponse
+            //                   {
+            //                       Id = p.Id,
+            //                       ArabicName = p.ArabicName,
+            //                       EnglishName = p.EnglishName,
+            //                       ArabicDescription = p.ArabicDescription,
+            //                       EnglishDescription = p.EnglishDescription,
+            //                       ImgUrl = p.ImgUrl,
+            //                       Price = p.Price,
+            //                       SalePrice = p.SalePrice,
+            //                       UserFavId = x.Id,
+            //                       ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
+            //                           x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
+            //                           Convert.ToDecimal(_dataContext.ProductReviews.Where(
+            //                           x => x.ProductId == p.Id).Count())),
+            //                       productColor = (from c in _dataContext.ProductColors
+            //                                       where c.Id == p.colorId
+            //                                       select new ProductColors
+            //                                       {
+            //                                           Id = c.Id,
+            //                                           ArabicName = c.ArabicName,
+            //                                           EnglishName = c.EnglishName,
+            //                                           HexCode = c.HexCode
+            //                                       }).Single(),
+            //                       productSize = (from s in _dataContext.ProductSizes
+            //                                      where s.Id == p.sizeId
+            //                                      select new ProductSize
+            //                                      {
+            //                                          Id = s.Id,
+            //                                          Size = s.Size,
+            //                                          Unit = s.Unit
+            //                                      }).Single(),
+
+            //                       productImages = (from i in _dataContext.ProductImages
+            //                                        where i.ProductId == p.Id
+            //                                        select new ProductImage
+            //                                        {
+            //                                            Id = i.Id,
+            //                                            ImgUrl = i.ImgUrl,
+            //                                            Ext = i.Ext
+            //                                        }).ToList(),
+            //                       productAttributes = (from a in _dataContext.ProductAttributes
+            //                                            where a.ProductId == p.Id
+            //                                            select new ProductAttributes
+            //                                            {
+            //                                                Id = a.Id,
+            //                                                ArabicName = a.ArabicName,
+            //                                                EnglishName = a.EnglishName,
+
+            //                                            }).ToList()
+
+            //                   }).ToListAsync();
+
+
+
+            //return query;
         }
         public async Task<List<ProductResponse>> GetProductsMostRecentAsync(string UserId, int count)
         {
 
-            var query = await (from p in _dataContext.product
-                               where p.status == 1
-                               join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
-                               from x in pf.DefaultIfEmpty()
+            var product = await _dataContext.product
+                                           .Include(x => x.productAttributes)
+                                           .Include(x => x.productReviews)
+                                            .Include(x => x.userFavourites)
+                                            .Include(x => x.colors)
+                                            .Include(x => x.size)
+                                            .Include(x => x.productImages)
+                                            .OrderByDescending(x => x.CreatedAt)
+                                            .Take(count)
+                                            .ToListAsync();
 
-                               where x.UserId == UserId || x.UserId == null
+            List<ProductResponse> lstproductResponses = new List<ProductResponse>();
 
+            for (int i = 0; i < product.Count; i++)
+            {
+                //x.UserId == UserId ? x.Id : 0
 
-                               select new ProductResponse
-                               {
-                                   Id = p.Id,
-                                   ArabicName = p.ArabicName,
-                                   EnglishName = p.EnglishName,
-                                   ArabicDescription = p.ArabicDescription,
-                                   EnglishDescription = p.EnglishDescription,
-                                   ImgUrl = p.ImgUrl,
-                                   Price = p.Price,
-                                   SalePrice = p.SalePrice,
-                                   UserFavId = x.Id,
-                                   ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
-                                       Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Count())),
-                                   productColor = (from c in _dataContext.ProductColors
-                                                   where c.Id == p.colorId
-                                                   select new ProductColors
-                                                   {
-                                                       Id = c.Id,
-                                                       ArabicName = c.ArabicName,
-                                                       EnglishName = c.EnglishName,
-                                                       HexCode = c.HexCode
-                                                   }).Single(),
-                                   productSize = (from s in _dataContext.ProductSizes
-                                                  where s.Id == p.sizeId
-                                                  select new ProductSize
-                                                  {
-                                                      Id = s.Id,
-                                                      Size = s.Size,
-                                                      Unit = s.Unit
-                                                  }).Single(),
+                var prodRateSum = Convert.ToDecimal(product[i].productReviews.Where(
+                                             x => x.ProductId == product[i].Id & x.Status ==1).Select(t => t.Rate).Sum());
+                var prodRateCount = Convert.ToDecimal(product[i].productReviews.Where(
+                                             x => x.ProductId == product[i].Id & x.Status == 1).Count());
 
-                                   productImages = (from i in _dataContext.ProductImages
-                                                    where i.ProductId == p.Id
-                                                    select new ProductImage
-                                                    {
-                                                        Id = i.Id,
-                                                        ImgUrl = i.ImgUrl,
-                                                        Ext = i.Ext
-                                                    }).ToList(),
-                                   productAttributes = (from a in _dataContext.ProductAttributes
-                                                        where a.ProductId == p.Id
-                                                        select new ProductAttributes
-                                                        {
-                                                            Id = a.Id,
-                                                            ArabicName = a.ArabicName,
-                                                            EnglishName = a.EnglishName,
+                decimal ProductRate = 0;
+                if (prodRateSum != 0 && prodRateCount != 0)
+                {
+                    ProductRate = prodRateSum / prodRateCount;
+                }
+                var _rate = string.Format("{0:0.0}", ProductRate);
 
-                                                        }).ToList()
+                var productRespons = new ProductResponse
+                {
+                    Id = product[i].Id,
+                    ArabicName = product[i].ArabicName,
+                    EnglishName = product[i].EnglishName,
+                    ArabicDescription = product[i].ArabicDescription,
+                    EnglishDescription = product[i].EnglishDescription,
+                    ImgUrl = product[i].ImgUrl,
+                    Price = product[i].Price,
+                    SalePrice = product[i].SalePrice,
+                    UserFavId = product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId) == null ? 0 : product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId).Id,
+                    ProductRate = _rate,
+                    productColor = product[i].colors,
+                    productSize = product[i].size,
+                    productImages = product[i].productImages,
+                    productAttributes = product[i].productAttributes,
 
-                               }).Take(count).ToListAsync();
+                };
+                lstproductResponses.Add(productRespons);
+            }
 
 
+            return lstproductResponses;
 
-            return query;
+            //var query = await (from p in _dataContext.product
+            //                   where p.status == 1
+            //                   join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
+            //                   from x in pf.DefaultIfEmpty()
+
+            //                   where x.UserId == UserId || x.UserId == null
+
+
+            //                   select new ProductResponse
+            //                   {
+            //                       Id = p.Id,
+            //                       ArabicName = p.ArabicName,
+            //                       EnglishName = p.EnglishName,
+            //                       ArabicDescription = p.ArabicDescription,
+            //                       EnglishDescription = p.EnglishDescription,
+            //                       ImgUrl = p.ImgUrl,
+            //                       Price = p.Price,
+            //                       SalePrice = p.SalePrice,
+            //                       UserFavId = x.Id,
+            //                       ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
+            //                           x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
+            //                           Convert.ToDecimal(_dataContext.ProductReviews.Where(
+            //                           x => x.ProductId == p.Id).Count())),
+            //                       productColor = (from c in _dataContext.ProductColors
+            //                                       where c.Id == p.colorId
+            //                                       select new ProductColors
+            //                                       {
+            //                                           Id = c.Id,
+            //                                           ArabicName = c.ArabicName,
+            //                                           EnglishName = c.EnglishName,
+            //                                           HexCode = c.HexCode
+            //                                       }).Single(),
+            //                       productSize = (from s in _dataContext.ProductSizes
+            //                                      where s.Id == p.sizeId
+            //                                      select new ProductSize
+            //                                      {
+            //                                          Id = s.Id,
+            //                                          Size = s.Size,
+            //                                          Unit = s.Unit
+            //                                      }).Single(),
+
+            //                       productImages = (from i in _dataContext.ProductImages
+            //                                        where i.ProductId == p.Id
+            //                                        select new ProductImage
+            //                                        {
+            //                                            Id = i.Id,
+            //                                            ImgUrl = i.ImgUrl,
+            //                                            Ext = i.Ext
+            //                                        }).ToList(),
+            //                       productAttributes = (from a in _dataContext.ProductAttributes
+            //                                            where a.ProductId == p.Id
+            //                                            select new ProductAttributes
+            //                                            {
+            //                                                Id = a.Id,
+            //                                                ArabicName = a.ArabicName,
+            //                                                EnglishName = a.EnglishName,
+
+            //                                            }).ToList()
+
+            //                   }).Take(count).ToListAsync();
+
+
+
+            //return query;
         }
         public async Task<List<ProductResponse>> GetProductsMostWantedAsync(string UserId, int count)
         {
+            var orderItem = _dataContext.OrderItems
+                .GroupBy(x => x.ProductId)
+                .OrderByDescending(x => x.Count())
+                .Take(count)
+                .Select(x => x.Key).ToList();
 
-            var query = await (from p in _dataContext.product
-                               where p.status == 1
-                               join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
-                               from x in pf.DefaultIfEmpty()
+            List<ProductResponse> lstproductResponses = new List<ProductResponse>();
 
-                               where x.UserId == UserId || x.UserId == null
+            for (int i = 0; i < orderItem.Count; i++)
+            {
+                var product = await _dataContext.product
+                                          .Include(x => x.productAttributes)
+                                          .Include(x => x.productReviews)
+                                           .Include(x => x.userFavourites)
+                                           .Include(x => x.colors)
+                                           .Include(x => x.size)
+                                           .Include(x => x.productImages)
+                                           .SingleOrDefaultAsync(x => x.Id == orderItem[i]);
+
+                var prodRateSum = Convert.ToDecimal(product.productReviews.Where(
+                                            x => x.ProductId == product.Id & x.Status == 1).Select(t => t.Rate).Sum());
+                var prodRateCount = Convert.ToDecimal(product.productReviews.Where(
+                                             x => x.ProductId == product.Id & x.Status == 1).Count());
+
+                decimal ProductRate = 0;
+                if (prodRateSum != 0 && prodRateCount != 0)
+                {
+                    ProductRate = prodRateSum / prodRateCount;
+                }
+                var _rate = string.Format("{0:0.0}", ProductRate);
+
+                var productRespons = new ProductResponse
+                {
+                    Id = product.Id,
+                    ArabicName = product.ArabicName,
+                    EnglishName = product.EnglishName,
+                    ArabicDescription = product.ArabicDescription,
+                    EnglishDescription = product.EnglishDescription,
+                    ImgUrl = product.ImgUrl,
+                    Price = product.Price,
+                    SalePrice = product.SalePrice,
+                    UserFavId = product.userFavourites.SingleOrDefault(x => x.UserId == UserId) == null ? 0 : product.userFavourites.SingleOrDefault(x => x.UserId == UserId).Id,
+                    ProductRate = _rate,
+                    productColor = product.colors,
+                    productSize = product.size,
+                    productImages = product.productImages,
+                    productAttributes = product.productAttributes
+
+                };
+                lstproductResponses.Add(productRespons);
+            }
 
 
-                               select new ProductResponse
-                               {
-                                   Id = p.Id,
-                                   ArabicName = p.ArabicName,
-                                   EnglishName = p.EnglishName,
-                                   ArabicDescription = p.ArabicDescription,
-                                   EnglishDescription = p.EnglishDescription,
-                                   ImgUrl = p.ImgUrl,
-                                   Price = p.Price,
-                                   SalePrice = p.SalePrice,
-                                   UserFavId = x.Id,
-                                   ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
-                                       Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Count())),
-                                   productColor = (from c in _dataContext.ProductColors
-                                                   where c.Id == p.colorId
-                                                   select new ProductColors
-                                                   {
-                                                       Id = c.Id,
-                                                       ArabicName = c.ArabicName,
-                                                       EnglishName = c.EnglishName,
-                                                       HexCode = c.HexCode
-                                                   }).Single(),
-                                   productSize = (from s in _dataContext.ProductSizes
-                                                  where s.Id == p.sizeId
-                                                  select new ProductSize
-                                                  {
-                                                      Id = s.Id,
-                                                      Size = s.Size,
-                                                      Unit = s.Unit
-                                                  }).Single(),
+            return lstproductResponses;
 
-                                   productImages = (from i in _dataContext.ProductImages
-                                                    where i.ProductId == p.Id
-                                                    select new ProductImage
-                                                    {
-                                                        Id = i.Id,
-                                                        ImgUrl = i.ImgUrl,
-                                                        Ext = i.Ext
-                                                    }).ToList(),
-                                   productAttributes = (from a in _dataContext.ProductAttributes
-                                                        where a.ProductId == p.Id
-                                                        select new ProductAttributes
-                                                        {
-                                                            Id = a.Id,
-                                                            ArabicName = a.ArabicName,
-                                                            EnglishName = a.EnglishName,
+            //var query = await (from p in _dataContext.product
+            //                   where p.status == 1
+            //                   join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
+            //                   from x in pf.DefaultIfEmpty()
 
-                                                        }).ToList()
+            //                   where x.UserId == UserId || x.UserId == null
 
-                               }).Take(count).ToListAsync();
 
-            return query;
+            //                   select new ProductResponse
+            //                   {
+            //                       Id = p.Id,
+            //                       ArabicName = p.ArabicName,
+            //                       EnglishName = p.EnglishName,
+            //                       ArabicDescription = p.ArabicDescription,
+            //                       EnglishDescription = p.EnglishDescription,
+            //                       ImgUrl = p.ImgUrl,
+            //                       Price = p.Price,
+            //                       SalePrice = p.SalePrice,
+            //                       UserFavId = x.Id,
+            //                       ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
+            //                           x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
+            //                           Convert.ToDecimal(_dataContext.ProductReviews.Where(
+            //                           x => x.ProductId == p.Id).Count())),
+            //                       productColor = (from c in _dataContext.ProductColors
+            //                                       where c.Id == p.colorId
+            //                                       select new ProductColors
+            //                                       {
+            //                                           Id = c.Id,
+            //                                           ArabicName = c.ArabicName,
+            //                                           EnglishName = c.EnglishName,
+            //                                           HexCode = c.HexCode
+            //                                       }).Single(),
+            //                       productSize = (from s in _dataContext.ProductSizes
+            //                                      where s.Id == p.sizeId
+            //                                      select new ProductSize
+            //                                      {
+            //                                          Id = s.Id,
+            //                                          Size = s.Size,
+            //                                          Unit = s.Unit
+            //                                      }).Single(),
+
+            //                       productImages = (from i in _dataContext.ProductImages
+            //                                        where i.ProductId == p.Id
+            //                                        select new ProductImage
+            //                                        {
+            //                                            Id = i.Id,
+            //                                            ImgUrl = i.ImgUrl,
+            //                                            Ext = i.Ext
+            //                                        }).ToList(),
+            //                       productAttributes = (from a in _dataContext.ProductAttributes
+            //                                            where a.ProductId == p.Id
+            //                                            select new ProductAttributes
+            //                                            {
+            //                                                Id = a.Id,
+            //                                                ArabicName = a.ArabicName,
+            //                                                EnglishName = a.EnglishName,
+
+            //                                            }).ToList()
+
+            //                   }).Take(count).ToListAsync();
+
+            //return query;
         }
         public async Task<List<ProductResponse>> GetProductsTopRatedAsync(string UserId, int count)
+
         {
-            var query = await (from p in _dataContext.product
-                               where p.status == 1
-                               join r in _dataContext.ProductReviews on p.Id equals r.ProductId
-                               join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
-                               from x in pf.DefaultIfEmpty()
+            var product = await _dataContext.product
+                                             .Include(x => x.productAttributes)
+                                             .Include(x => x.productReviews)
+                                              .Include(x => x.userFavourites)
+                                              .Include(x => x.colors)
+                                              .Include(x => x.size)
+                                              .Include(x => x.productImages)
+                                              .ToListAsync();
+
+            List<ProductResponse> lstproductResponses = new List<ProductResponse>();
+
+            for (int i = 0; i < product.Count; i++)
+            {
+                var prodRateSum = Convert.ToDecimal(product[i].productReviews.Where(
+                                           x => x.ProductId == product[i].Id & x.Status == 1).Select(t => t.Rate).Sum());
+                var prodRateCount = Convert.ToDecimal(product[i].productReviews.Where(
+                                             x => x.ProductId == product[i].Id & x.Status == 1).Count());
+
+                decimal ProductRate = 0;
+                if (prodRateSum != 0 && prodRateCount != 0)
+                {
+                    ProductRate = prodRateSum / prodRateCount;
+                }
+                var _rate = string.Format("{0:0.0}", ProductRate);
+
+                if (_rate != "0.0")
+                {
+                    var productRespons = new ProductResponse
+                    {
+                        Id = product[i].Id,
+                        ArabicName = product[i].ArabicName,
+                        EnglishName = product[i].EnglishName,
+                        ArabicDescription = product[i].ArabicDescription,
+                        EnglishDescription = product[i].EnglishDescription,
+                        ImgUrl = product[i].ImgUrl,
+                        Price = product[i].Price,
+                        SalePrice = product[i].SalePrice,
+                        UserFavId = product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId) == null ? 0 : product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId).Id,
+                        ProductRate = _rate,
+                        productColor = product[i].colors,
+                        productSize = product[i].size,
+                        productImages = product[i].productImages,
+                        productAttributes = product[i].productAttributes
+
+                    };
+                    lstproductResponses.Add(productRespons);
+                }
+        }
 
 
-                               where x.UserId == UserId || x.UserId == null
+            return lstproductResponses.OrderByDescending(x =>x.ProductRate).Take(count).ToList();
 
-                               select new ProductResponse
-                               {
-                                   Id = p.Id,
-                                   ArabicName = p.ArabicName,
-                                   EnglishName = p.EnglishName,
-                                   ArabicDescription = p.ArabicDescription,
-                                   EnglishDescription = p.EnglishDescription,
-                                   ImgUrl = p.ImgUrl,
-                                   Price = p.Price,
-                                   SalePrice = p.SalePrice,
-                                   UserFavId = x.Id,
-                                   ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
-                                       Convert.ToDecimal(_dataContext.ProductReviews.Where(
-                                       x => x.ProductId == p.Id).Count())),
-                                   productColor = (from c in _dataContext.ProductColors
-                                                   where c.Id == p.colorId
-                                                   select new ProductColors
-                                                   {
-                                                       Id = c.Id,
-                                                       ArabicName = c.ArabicName,
-                                                       EnglishName = c.EnglishName,
-                                                       HexCode = c.HexCode
-                                                   }).Single(),
-                                   productSize = (from s in _dataContext.ProductSizes
-                                                  where s.Id == p.sizeId
-                                                  select new ProductSize
-                                                  {
-                                                      Id = s.Id,
-                                                      Size = s.Size,
-                                                      Unit = s.Unit
-                                                  }).Single(),
+            //.Include(x => x.productReviews)
+             //
+             //                                 .Include(x => x.userFavourites)
+             //var query = await (from p in _dataContext.product
+             //                   where p.status == 1
+             //                   join r in _dataContext.ProductReviews on p.Id equals r.ProductId into prodRev
+             //                   from ProductReview in prodRev.DefaultIfEmpty()
+             //                   join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
+             //                   from x in pf.DefaultIfEmpty()
 
-                                   productImages = (from i in _dataContext.ProductImages
-                                                    where i.ProductId == p.Id
-                                                    select new ProductImage
-                                                    {
-                                                        Id = i.Id,
-                                                        ImgUrl = i.ImgUrl,
-                                                        Ext = i.Ext
-                                                    }).ToList(),
-                                   productAttributes = (from a in _dataContext.ProductAttributes
-                                                        where a.ProductId == p.Id
-                                                        select new ProductAttributes
-                                                        {
-                                                            Id = a.Id,
-                                                            ArabicName = a.ArabicName,
-                                                            EnglishName = a.EnglishName,
 
-                                                        }).ToList()
+            //                   //where x.UserId == UserId || x.UserId == null || ProductReview.UserId == UserId 
+            //                   //|| ProductReview.UserId == null
 
-                               }).Take(count).ToListAsync();
+            //                   select new ProductResponse 
+            //                   {
+            //                       Id = p.Id,
+            //                       ArabicName = p.ArabicName,
+            //                       EnglishName = p.EnglishName,
+            //                       ArabicDescription = p.ArabicDescription,
+            //                       EnglishDescription = p.EnglishDescription,
+            //                       ImgUrl = p.ImgUrl,
+            //                       Price = p.Price,
+            //                       SalePrice = p.SalePrice,
+            //                       UserFavId = x.UserId == UserId ? x.Id : 0,
+            //                       ProductRate = string.Format("{0:0.0}", Convert.ToDecimal(_dataContext.ProductReviews.Where(
+            //                           x => x.ProductId == p.Id).Select(t => t.Rate).Sum()) /
+            //                           Convert.ToDecimal(_dataContext.ProductReviews.Where(
+            //                           x => x.ProductId == p.Id).Count())),
+            //                       productColor = (from c in _dataContext.ProductColors
+            //                                       where c.Id == p.colorId
+            //                                       select new ProductColors
+            //                                       {
+            //                                           Id = c.Id,
+            //                                           ArabicName = c.ArabicName,
+            //                                           EnglishName = c.EnglishName,
+            //                                           HexCode = c.HexCode
+            //                                       }).Single(),
+            //                       productSize = (from s in _dataContext.ProductSizes
+            //                                      where s.Id == p.sizeId
+            //                                      select new ProductSize
+            //                                      {
+            //                                          Id = s.Id,
+            //                                          Size = s.Size,
+            //                                          Unit = s.Unit
+            //                                      }).Single(),
 
-            return query;
+            //                       productImages = (from i in _dataContext.ProductImages
+            //                                        where i.ProductId == p.Id
+            //                                        select new ProductImage
+            //                                        {
+            //                                            Id = i.Id,
+            //                                            ImgUrl = i.ImgUrl,
+            //                                            Ext = i.Ext
+            //                                        }).ToList(),
+            //                       productAttributes = (from a in _dataContext.ProductAttributes
+            //                                            where a.ProductId == p.Id
+            //                                            select new ProductAttributes
+            //                                            {
+            //                                                Id = a.Id,
+            //                                                ArabicName = a.ArabicName,
+            //                                                EnglishName = a.EnglishName,
+
+            //                                            }).ToList()
+
+            //                   }).Distinct().Take(count).ToListAsync();
+
+            //return query;
+        }
+        public async Task<List<ProductResponse>> SearchProductsAsync(string UserId, string SearchText)
+        {
+            var product = await _dataContext.product
+                                            .Include(x => x.productAttributes)
+                                            .Include(x => x.productReviews)
+                                             .Include(x => x.userFavourites)
+                                             .Include(x => x.colors)
+                                             .Include(x => x.size)
+                                             .Include(x => x.productImages)
+                                             .Where(x => x.ArabicName.Contains(SearchText)
+                                                    || x.EnglishName.Contains(SearchText)
+                                                    || x.ArabicDescription.Contains(SearchText)
+                                                    || x.EnglishDescription.Contains(SearchText))
+                                             .ToListAsync();
+
+            List<ProductResponse> lstproductResponses = new List<ProductResponse>();
+
+            for (int i = 0; i < product.Count; i++)
+            {
+                var prodRateSum = Convert.ToDecimal(product[i].productReviews.Where(
+                                          x => x.ProductId == product[i].Id & x.Status == 1).Select(t => t.Rate).Sum());
+                var prodRateCount = Convert.ToDecimal(product[i].productReviews.Where(
+                                             x => x.ProductId == product[i].Id & x.Status == 1).Count());
+
+                decimal ProductRate = 0;
+                if (prodRateSum != 0 && prodRateCount != 0)
+                {
+                    ProductRate = prodRateSum / prodRateCount;
+                }
+                var _rate = string.Format("{0:0.0}", ProductRate);
+
+                var productRespons = new ProductResponse
+                {
+                    Id = product[i].Id,
+                    ArabicName = product[i].ArabicName,
+                    EnglishName = product[i].EnglishName,
+                    ArabicDescription = product[i].ArabicDescription,
+                    EnglishDescription = product[i].EnglishDescription,
+                    ImgUrl = product[i].ImgUrl,
+                    Price = product[i].Price,
+                    SalePrice = product[i].SalePrice,
+                    UserFavId = product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId) == null ? 0 : product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId).Id,
+                    ProductRate = _rate,
+                    productColor = product[i].colors,
+                    productSize = product[i].size,
+                    productImages = product[i].productImages,
+                    productAttributes = product[i].productAttributes
+
+                };
+                lstproductResponses.Add(productRespons);
+            }
+
+
+            return lstproductResponses;
         }
         public async Task<Product> GetProductByIdAsync(Int64 ProductId)
         {
@@ -434,6 +704,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             var Updated = await _dataContext.SaveChangesAsync();
             return Updated;
         }
+
+      
         //public async Task<ReviewProductResponse> ReviewProduct(long ProductId)
         //{
         //    var query = await (from p in _dataContext.product
@@ -463,6 +735,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
         //    return query;
         //}
 
-       
+
     }
 }

@@ -45,6 +45,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using ThreeSoftECommAPI.Services.EComm.ContactUsServ;
 using ThreeSoftECommAPI.Services.EComm.PaymentServ;
+using ThreeSoftECommAPI.Services.EComm.ProductAttributeServ;
 
 namespace ThreeSoftECommAPI
 {
@@ -69,7 +70,7 @@ namespace ThreeSoftECommAPI
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-           
+
 
             services.Configure<FormOptions>(o =>
             {
@@ -83,21 +84,22 @@ namespace ThreeSoftECommAPI
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ISubCategoryService, SubCategoryService>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IUserFavService,UserFavService>();
-            services.AddScoped<IOffersService,OffersService>();
-            services.AddScoped<IProductReviewService,ProductReviewService>();
-            services.AddScoped<IProductColorService,ProductColorService>();
-            services.AddScoped<IProductSizeService,ProductSizeService>();
-            services.AddScoped<IProductImagesService,ProductImagesService>();
-            services.AddScoped<ICartService,CartService>();
-            services.AddScoped<ICartItemService,CartItemService>();
-            services.AddScoped<IOrderService,OrderService>();
-            services.AddScoped<IOrderItemService,OrderItemService>();
-            services.AddScoped<IUserAddressesService,UserAddresseService>();
-            services.AddScoped<ICouponServices,CouponServices>();
-            services.AddScoped<IContactUsService,ContactUsService>();
-            services.AddScoped<IPaymentService,PaymentService>();
-            
+            services.AddScoped<IUserFavService, UserFavService>();
+            services.AddScoped<IOffersService, OffersService>();
+            services.AddScoped<IProductReviewService, ProductReviewService>();
+            services.AddScoped<IProductColorService, ProductColorService>();
+            services.AddScoped<IProductSizeService, ProductSizeService>();
+            services.AddScoped<IProductImagesService, ProductImagesService>();
+            services.AddScoped<IProductAttributeService, ProductAttributeService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderItemService, OrderItemService>();
+            services.AddScoped<IUserAddressesService, UserAddresseService>();
+            services.AddScoped<ICouponServices, CouponServices>();
+            services.AddScoped<IContactUsService, ContactUsService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+
 
 
             services.AddCors(o => o.AddPolicy(MyAllowSpecificOrigins, builder =>
@@ -172,6 +174,10 @@ namespace ThreeSoftECommAPI
             });
 
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -191,7 +197,7 @@ namespace ThreeSoftECommAPI
                 app.UseHsts();
             }
 
-            
+
 
             var swaggerOptions = new SwaggerOptions();
             Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);

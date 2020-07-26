@@ -94,3 +94,6 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netc
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\RestClient.Net.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\RestClient.Net.Abstractions.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Twilio.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Newtonsoft.Json.Bson.dll

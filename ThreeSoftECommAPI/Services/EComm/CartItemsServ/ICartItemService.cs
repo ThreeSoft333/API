@@ -17,5 +17,6 @@ namespace ThreeSoftECommAPI.Services.EComm.CartItemsServ
         //Task<int> UpdateCartItemAsync(Int64 cartItemId, Int32 quantity);
         Task<int> UpdateCartItemAsync(CartItem cartItem);
         Task<bool> DeleteCartItemAsync(Int64 cartItemId);
+        Task<bool> DeleteCartItemByUserAsync(string UserId);
     }
 }

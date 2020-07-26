@@ -15,6 +15,8 @@ namespace ThreeSoftECommAPI.Contracts.V1.Responses.EComm
         public Int32? CouponId { get; set; }
         public string OrderDate { get; set; }
         public decimal Total { get; set; }
+        public decimal discount { get; set; }
+        public decimal GrandTotal { get; set; }
         public UserAddresses userAddresse { get; set; }
         public List<OrderItems> orderItems { get; set; }
     }

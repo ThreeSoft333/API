@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "h3rFVyxxBxfZWn6gAuIY1pLIj9s1XDfHP1ENEL/jYfA8uVz2H/DAn+Wml/WUKnqGA1+vIM1s4pZJdSsndrzbCQ==",
+  "dgSpecHash": "swpPVCW8DxpVCrX75zoaE7pI4cboyHfouwAEIyTGvY/KY+hkH5uCquaOC/YdF1A64GsiHteHprvDFjRrEIkJVw==",
   "success": true,
   "projectFilePath": "C:\\Users\\husam\\source\\repos\\ThreeSoftECommAPI\\ThreeSoftECommAPI\\ThreeSoftECommAPI.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,8 @@
     "C:\\Users\\husam\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\3.1.4\\microsoft.aspnetcore.diagnostics.entityframeworkcore.3.1.4.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\3.1.4\\microsoft.aspnetcore.identity.entityframeworkcore.3.1.4.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\3.1.4\\microsoft.aspnetcore.identity.ui.3.1.4.nupkg.sha512",
+    "C:\\Users\\husam\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.6\\microsoft.aspnetcore.jsonpatch.3.1.6.nupkg.sha512",
+    "C:\\Users\\husam\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.6\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.6.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
@@ -49,6 +51,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\husam\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\restclient.net\\4.0.0\\restclient.net.4.0.0.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\restclient.net.abstractions\\4.0.0\\restclient.net.abstractions.4.0.0.nupkg.sha512",
     "C:\\Users\\husam\\.nuget\\packages\\runtime.any.system.collections\\4.3.0\\runtime.any.system.collections.4.3.0.nupkg.sha512",

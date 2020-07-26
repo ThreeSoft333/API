@@ -19,11 +19,11 @@ using Twilio.Rest.Api.V2010.Account;
 
 namespace ThreeSoftECommAPI.Controllers.V1
 {
-    public class IdentityController: Controller
+    public class IdentityController : Controller
     {
         private readonly IIdentityService _identityService;
         private readonly IConfiguration _configuration;
-        public IdentityController(IIdentityService identityService,IConfiguration configuration)
+        public IdentityController(IIdentityService identityService, IConfiguration configuration)
         {
             _identityService = identityService;
             _configuration = configuration;
@@ -32,7 +32,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpPost(ApiRoutes.Identity.Register)]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request)
         {
-            
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(new AuthFailedResponse
@@ -92,7 +92,6 @@ namespace ThreeSoftECommAPI.Controllers.V1
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
             var authResponse = await _identityService.LoginAsync(request.Email, request.MobileNo, request.Password);
-
             if (!authResponse.Success)
             {
                 return BadRequest(new AuthFailedResponse
@@ -148,6 +147,38 @@ namespace ThreeSoftECommAPI.Controllers.V1
             });
         }
 
+        [HttpPost(ApiRoutes.Identity.ResetPassword)]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            var token = await _identityService.GeneratePasswordResetToken(request.PhoneNumber);
+
+            if (token != null)
+            {
+                string NewPassword = GeneratePassword();
+
+                var ResetPass = await _identityService.ResetPasswordAsync(request.PhoneNumber, token, NewPassword);
+
+                if (ResetPass == 1)
+                {
+                    SendMessage(NewPassword);
+                    return Ok(new
+                    {
+                        message = "Password Changed Successfully",
+                        status = Ok().StatusCode
+                    });
+                }
+            }
+            return BadRequest(new AuthFailedResponse
+            {
+                message = "Invalid User",
+                status = BadRequest().StatusCode
+            });
+
+          
+
+            
+        }
+
         [HttpPost(ApiRoutes.Identity.ConfirmPhone)]
         public async Task<IActionResult> ConfirmPhone([FromBody] ConfirmPhoneRequest request)
         {
@@ -155,6 +186,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
 
             if (!ConfPhone.Success)
             {
+
                 return BadRequest(new AuthFailedResponse
                 {
                     message = ConfPhone.Errors,
@@ -174,7 +206,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
         {
             var User = await _identityService.GetUserById(request.Id);
 
-            if(User != null)
+            if (User != null)
             {
                 User.Address = request.Address;
                 User.FullName = request.FullName;
@@ -251,12 +283,10 @@ namespace ThreeSoftECommAPI.Controllers.V1
 
             return Ok(new
             {
-                ProfileImage_Path = ApiPath+ dbPath_ProfileImage,
-                CoverImagePath = ApiPath+ dbPath_CoverImage
+                ProfileImage_Path = ApiPath + dbPath_ProfileImage,
+                CoverImagePath = ApiPath + dbPath_CoverImage
             });
         }
-
-        [HttpPost(ApiRoutes.Identity.SendMessage)]
         public IActionResult SendMessage(string Token)
         {
             string AccountId = _configuration.GetSection("accountId").Value;
@@ -266,8 +296,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
 
             var message = MessageResource.Create(
                 body: Token,
-                from: new Twilio.Types.PhoneNumber("+13344876852"),
-                to: new Twilio.Types.PhoneNumber("+962788966075")
+                from: new Twilio.Types.PhoneNumber("+12564459076"),
+                to: new Twilio.Types.PhoneNumber("+962798246472")
                 );
 
             return Ok(new
@@ -278,8 +308,97 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 price = message.Price,
                 priceUnit = message.PriceUnit
             });
+        }
+
+        [HttpPost(ApiRoutes.Identity.ResendPhoneToken)]
+        public async Task<IActionResult> ResendPhoneToken([FromRoute] string userId)
+        {
+            try
+            {
+                var appUser = await _identityService.GetUserById(userId);
+
+                if (appUser != null)
+                {
+                    var Token = _identityService.GeneratePhoneNumberConfirmedToken(appUser);
+                    SendMessage(Token.Result);
+
+                    return Ok(new
+                    {
+                        status = Ok().StatusCode,
+                        message = "Token Resend successfully",
+                    });
+                }
+
+                return NotFound(new
+                {
+                    status = NotFound().StatusCode,
+                    message = "Not Found User",
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    status = BadRequest().StatusCode,
+                    message = ex.Message,
+                });
+            }
+        }
+
+        public string GeneratePassword()
+        {
+            int r, k;
+            int passwordLength = 8;
+            string password = "";
+            char[] upperCase = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+            char[] lowerCase = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+            int[] numbers = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            char[] spichal = { '@','!','£','$','%','&'};
+            Random rRandom = new Random();
 
 
+            
+            //for (int i = 0; i < passwordLength; i++)
+            //{
+               // r = rRandom.Next(4);
+
+                //if (r == 0)
+                //{
+                    k = rRandom.Next(0, 25);
+                    password += upperCase[k];
+               // }
+
+                //else if (r == 1)
+                //{
+                    k = rRandom.Next(0, 25);
+                    password += lowerCase[k];
+               // }
+
+                //else if (r == 2)
+                //{
+                    k = rRandom.Next(0, 9);
+                    password += numbers[k];
+
+            k = rRandom.Next(0, 25);
+            password += upperCase[k];
+            //}
+            //else if (r == 3)
+            //{
+            k = rRandom.Next(0, 5);
+                    password += spichal[k];
+            //}
+            k = rRandom.Next(0, 25);
+            password += lowerCase[k];
+
+            k = rRandom.Next(0, 9);
+            password += numbers[k];
+
+            k = rRandom.Next(0, 25);
+            password += upperCase[k];
+
+            //}
+
+            return password;
         }
     }
 }

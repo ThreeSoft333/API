@@ -24,23 +24,32 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpPost(ApiRoutes.UserFav.Create)]
         public async Task<IActionResult> Create([FromBody] UserFavRequest userFavRequest)
         {
-            var UserFav = new UserFavourites
+            var checkFav = await _userFavService.GetAsync(userFavRequest.UserId, userFavRequest.ProductId);
+            if (checkFav == null)
             {
-                 UserId = userFavRequest.UserId,
-                 ProductId = userFavRequest.ProductId
-            };
+                var UserFav = new UserFavourites
+                {
+                    UserId = userFavRequest.UserId,
+                    ProductId = userFavRequest.ProductId
+                };
 
-            var status = await _userFavService.CreateUserFavAsync(UserFav);
+                var status = await _userFavService.CreateUserFavAsync(UserFav);
 
-            if (status == 1)
-            {
-                var response = new UserFavResponse { Id = UserFav.Id };
-                return Ok(response);
+                if (status == 1)
+                {
+                    var response = new UserFavResponse { Id = UserFav.Id };
+                    return Ok(response);
+                }
+                return NotFound(new ErrorResponse
+                {
+                    message = "Not Found",
+                    status = NotFound().StatusCode
+                });
             }
-            return NotFound(new ErrorResponse
+            return Conflict(new ErrorResponse
             {
-                message = "Not Found",
-                status = NotFound().StatusCode
+                message = "Dublicate Entry",
+                status = Conflict().StatusCode
             });
         }
 

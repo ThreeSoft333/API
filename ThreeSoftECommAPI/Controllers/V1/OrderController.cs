@@ -152,6 +152,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                         Quantity = orderItems[i].Quantity,
                         CreatedAt = DateTime.Now
                     };
+                    await _cartItemService.DeleteCartItemByUserAsync(reorderRequest.UserId);
 
                     var createItem = await _cartItemService.CreateCartItemAsync(CartItem);
                 }

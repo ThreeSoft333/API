@@ -45,5 +45,11 @@ namespace ThreeSoftECommAPI.Domain.EComm
         [ForeignKey(nameof(sizeId))]
         public ProductSize size { get; set; }
 
+        public List<ProductReviews> productReviews { get; set; }
+        public List<ProductImage>  productImages { get; set; }
+        public List<UserFavourites> userFavourites { get; set; }
+
+        public List<ProductAttributes> productAttributes {get;set;}
+
     }
 }

@@ -15,6 +15,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
         Task<List<ProductResponse>> GetProductsMostWantedAsync(string UserId, int count);
         Task<List<ProductResponse>> GetProductsUserFavAsync(string UserId);
         Task<List<ProductResponse>> GetProductsTopRatedAsync(string UserId, int count);
+        Task<List<ProductResponse>> SearchProductsAsync(string UserId,string SearchText);
         Task<Product> GetProductByIdAsync(Int64 ProductId);
         Task<ViewProductResponse> ViewProductAsync(Int64 ProductId);
         Task<int> CreateProductAsync(Product  product);

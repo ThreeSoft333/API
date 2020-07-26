@@ -46,6 +46,12 @@ namespace ThreeSoftECommAPI.Controllers.V1
             return Ok(await _productService.GetProductsMostRecentAsync(UserId,count));
         }
 
+        [HttpGet(ApiRoutes.Product.SearchProduct)]
+        public async Task<IActionResult> SearchProducts([FromRoute] string UserId,[FromQuery] string searchtext)
+        {
+            return Ok(await _productService.SearchProductsAsync(UserId,searchtext));
+        }
+
         [HttpGet(ApiRoutes.Product.ProductMostWanted)]
         public async Task<IActionResult> GetProductsMostWantedAsync([FromQuery] string UserId, [FromQuery] int count)
         {

@@ -70,7 +70,7 @@ namespace ThreeSoftECommAPI.Services.Identity
             var User = await _userManager.FindByIdAsync(UserId);
 
             var confirmToken = await _userManager.ChangePhoneNumberAsync(User, User.PhoneNumber, Token);
-
+            
             if (!confirmToken.Succeeded)
             {
                 return new AuthenticationResult
@@ -175,6 +175,39 @@ namespace ThreeSoftECommAPI.Services.Identity
             {
                 Success = true,
             };
+        }
+
+        public async Task<string> GeneratePasswordResetToken(string PhoneNumber)
+        {
+            var User = await _userManager.FindByNameAsync(PhoneNumber);
+
+            if (User == null)
+            {
+                return null;
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(User);
+
+            return token;
+        }
+
+        public async Task<Int32> ResetPasswordAsync(string PhoneNumber,string Token,string NewPassword)
+        {
+            var User = await _userManager.FindByNameAsync(PhoneNumber);
+
+            if (User == null)
+            {
+                return 0;
+            }
+
+            var resetPass = await _userManager.ResetPasswordAsync(User, Token, NewPassword);
+
+            if (resetPass.Succeeded)
+            {
+                return 1;
+            }
+
+            return -1;
         }
 
         public async Task<AuthenticationResult> UpdateUserInfoAsync(AppUser appUser)

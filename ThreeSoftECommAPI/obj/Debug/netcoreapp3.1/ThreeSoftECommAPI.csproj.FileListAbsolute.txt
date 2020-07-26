@@ -20,6 +20,8 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcor
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.Views.V3.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.Views.V4.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
@@ -51,6 +53,9 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcor
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\RestClient.Net.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\RestClient.Net.Abstractions.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Stripe.net.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
@@ -61,6 +66,7 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcor
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\System.Runtime.Caching.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Twilio.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
@@ -69,9 +75,11 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcor
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.csprojAssemblyReference.cache
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.AssemblyInfoInputs.cache
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.AssemblyInfo.cs
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.csproj.CoreCompileInputs.cache
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.RazorAssemblyInfo.cache
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.RazorAssemblyInfo.cs
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.TagHelpers.input.cache
@@ -95,9 +103,3 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcor
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.pdb
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.genruntimeconfig.cache
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\RestClient.Net.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\RestClient.Net.Abstractions.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Debug\netcoreapp3.1\Twilio.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.csproj.CoreCompileInputs.cache
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.MvcApplicationPartsAssemblyInfo.cache

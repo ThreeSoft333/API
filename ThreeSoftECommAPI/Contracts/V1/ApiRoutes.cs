@@ -17,11 +17,13 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Register = Base + "/identity/register";
             public const string Update = Base + "/identity/update";
             public const string ChangePassword = Base + "/identity/changepassword";
+            public const string ResetPassword = Base + "/identity/resetpassword";
             public const string ConfirmPhone = Base + "/identity/confirmphone";
             public const string CreateRole = Base + "/identity/role";
             public const string GetRole = Base + "/identity/role/{roleId}";
             public const string Upload = Base + "/identity/upload";
             public const string SendMessage = Base + "/identity/sendmessage";
+            public const string ResendPhoneToken = Base + "/identity/resendphonetoken/{userId}";
         }
 
         public static class Dashboard
@@ -72,6 +74,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
         {
             public const string GetAll = Base + "/productsbycategory/{SubCatgId}";
             public const string GetAllforApp = Base + "/productsbysubcategory/{SubCatgId}";
+            public const string SearchProduct = Base + "/searchproduct/{UserId}";
             public const string ProductsMostRecent = Base + "/productmostrecent";
             public const string ProductMostWanted = Base + "/productmostwanted";
             public const string GetProductTopRated = Base + "/producttoprated";
