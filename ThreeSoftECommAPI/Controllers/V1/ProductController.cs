@@ -216,7 +216,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
         public async Task<IActionResult> Upload()
         {
             var file = Request.Form.Files[0];
-            var folderName = Path.Combine("Resources/Images/ProductImg/");
+            var folderName = Path.Combine("wwwroot/Resources/Images/ProductImg/");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
             if (file.Length > 0)
@@ -239,7 +239,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
         public async Task<IActionResult> UploadImages([FromRoute]Int64 productId)
         {
             var files = Request.Form.Files;
-            var folderName = Path.Combine("Resources/Images/ProductImg/");
+            var folderName = Path.Combine("wwwroot/Resources/Images/ProductImg/");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             var dbPath = "";
 
@@ -260,7 +260,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                         var ProductImage = new ProductImage
                         {
                             ProductId = productId,
-                            ImgUrl = dbPath,
+                            ImgUrl = "http://husamalraie-001-site3.gtempurl.com/" + dbPath,
                             Ext = Path.GetExtension(file.FileName),
                             CreatedAt = DateTime.Now,
                         };

@@ -83,8 +83,8 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
                                                     Material = prod.Material,
                                                     Price = prod.Price,
                                                     ImgUrl = prod.ImgUrl,
-                                                    colors = c,
-                                                    size = s
+                                                    productColor = c,
+                                                    productSize = s
                                                 }
                                             }).ToListAsync();
 
@@ -203,8 +203,6 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         {
             var order = await _dataContext.Orders.Where(x => x.UserId == UserId).OrderByDescending(x => x.Id).FirstAsync();
 
-
-
             var copoun = await _dataContext.Coupons.SingleOrDefaultAsync(x => x.Id == order.CouponId);
             var orderItems = await _dataContext.OrderItems.Where(x => x.OrderId == order.Id).ToListAsync();
             var userAddresse = _dataContext.UserAddresses.SingleOrDefault(x => x.Id == order.UserAddressesId);
@@ -233,8 +231,8 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
                                                 Material = prod.Material,
                                                 Price = prod.Price,
                                                 ImgUrl = prod.ImgUrl,
-                                                colors = c,
-                                                size = s
+                                                productColor = c,
+                                                productSize = s
                                             }
                                         }).ToListAsync();
 
@@ -272,7 +270,6 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
                 GrandTotal = grandTotal,
                 userAddresse = userAddresse,
                 orderItems = (List<OrderItems>)orderItemQuery
-
             };
 
 
@@ -321,6 +318,34 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
 
             return false;
 
+        }
+
+        public async Task<int> UpdateOrderAsync(long orderId,Int32 status,string RejectReason)
+        {
+            var order = await _dataContext.Orders.SingleOrDefaultAsync(x => x.Id == orderId);
+
+            order.Status = status;
+            order.RejectReason = RejectReason;
+
+            _dataContext.Orders.Update(order);
+            var updated = await _dataContext.SaveChangesAsync();
+            return updated;
+
+        }
+
+        public async Task<List<OrderStatusChartResponse>> OrderStatusChart()
+        {
+            
+
+            var x= await( from order in  _dataContext.Orders
+                          group order by order.Status into g
+                          select new OrderStatusChartResponse
+                          {
+                              status = g.Key,
+                              count = g.Count()
+                          }).ToListAsync();
+
+            return x;
         }
     }
 }

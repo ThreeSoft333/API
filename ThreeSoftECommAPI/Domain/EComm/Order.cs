@@ -13,7 +13,7 @@ namespace ThreeSoftECommAPI.Domain.EComm
         [Key]
         public Int64 Id { get; set; }
         public string RejectReason { get; set; }
-        public Int32 Status { get; set; } // 1-pinding 2-accepted 3-rejected 4-delivering 5-delivered
+        public Int32 Status { get; set; } // 1-Received 2-In Progress Now 3-Ready for Delivery 4-The order was delivered 5-Rejected
         public Int32 DeliveryMethod { get; set; } // 1-pickup 2-delivery
         public string UserId { get; set; }
         public Int32? UserAddressesId { get; set; }

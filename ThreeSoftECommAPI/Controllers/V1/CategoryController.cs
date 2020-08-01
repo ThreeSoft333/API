@@ -144,7 +144,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
         public async Task<IActionResult> Upload()
         {
             var file = Request.Form.Files[0];
-            var folderName = Path.Combine("Resources/Images/CategoryImg/");
+            var folderName = Path.Combine("wwwroot/Resources/Images/CategoryImg/");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
             if (file.Length > 0)

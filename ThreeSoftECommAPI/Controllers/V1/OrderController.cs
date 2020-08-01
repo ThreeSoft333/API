@@ -167,5 +167,42 @@ namespace ThreeSoftECommAPI.Controllers.V1
 
 
         }
+
+        [HttpPost(ApiRoutes.OrderRoute.Update)]
+        public async Task<IActionResult> Update([FromBody] UpdateOrderRequest updateOrder)
+        {
+            try
+            {
+                var updated = await _orderService.UpdateOrderAsync(updateOrder.orderId, updateOrder.status, updateOrder.rejectReason);
+                if (updated == 1)
+                {
+                    return Ok(new
+                    {
+                        status = Ok().StatusCode,
+                        message = "order update Successfully"
+                    });
+                }
+
+                return NotFound(new
+                {
+                    status = NotFound().StatusCode,
+                    message = "Internal Server error"
+                });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new
+                {
+                    status = BadRequest().StatusCode,
+                    message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet(ApiRoutes.OrderRoute.OrderStatusChart)]
+        public async Task<IActionResult> OrderStatusChart()
+        {
+            return Ok(await _orderService.OrderStatusChart());
+        }
     }
 }

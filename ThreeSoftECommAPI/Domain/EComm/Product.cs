@@ -40,13 +40,13 @@ namespace ThreeSoftECommAPI.Domain.EComm
         public SubCategory subCategory { get; set; }
 
         [ForeignKey(nameof(colorId))]
-        public ProductColors colors { get; set; }
+        public ProductColors productColor { get; set; }
 
         [ForeignKey(nameof(sizeId))]
-        public ProductSize size { get; set; }
+        public ProductSize productSize { get; set; }
 
         public List<ProductReviews> productReviews { get; set; }
-        public List<ProductImage>  productImages { get; set; }
+        public List<ProductImage> productImages { get; set; }
         public List<UserFavourites> userFavourites { get; set; }
 
         public List<ProductAttributes> productAttributes {get;set;}

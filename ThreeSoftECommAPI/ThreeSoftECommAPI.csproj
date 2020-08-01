@@ -90,12 +90,47 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Images\BrandImg\" />
-    <Folder Include="Resources\Images\CategoryImg\" />
-    <Folder Include="Resources\Images\OffersImg\" />
-    <Folder Include="Resources\Images\UserImage\" />
-    <Folder Include="Resources\Images\ProductImg\" />
-    <Folder Include="Resources\Images\SubCatgImg\" />
+    <Folder Include="wwwroot\Resources\Images\Advertizing\" />
+    <Folder Include="wwwroot\Resources\Images\OffersImg\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Resources\Images\BrandImg\637289842938209354_Capture999.JPG" />
+    <None Include="wwwroot\Resources\Images\BrandImg\637290696202776495_ALSHUROOQ PVT SCHOOL - BANK TRANSFER .JPG" />
+    <None Include="wwwroot\Resources\Images\CategoryImg\637289986128930995_WhatsApp Image 2020-05-03 at 3.16.34 AM.jpeg" />
+    <None Include="wwwroot\Resources\Images\CategoryImg\637289988319638361_download.png" />
+    <None Include="wwwroot\Resources\Images\CategoryImg\637298316032021784_maxresdefault.jpg" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294236452046760_download.png" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294241691652041_download.png" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294241707466274_Capture333.JPG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294241707478820_Capture999.JPG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294241707495046_Capture112.JPG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294246175693677_download.png" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294246184262623_Capture1.PNG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294246184383048_Capture22.JPG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294246184456423_Capture11.JPG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294247461274677_download.png" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294247476293174_ecLogin.JPG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294247477085986_hostinfo.JPG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294247477305582_ecMain.JPG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294248127336147_ALSHUROOQ PVT SCHOOL - BANK TRANSFER .JPG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294248127396642_Capture.PNG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294248500629023_Capture33.JPG" />
+    <None Include="wwwroot\Resources\Images\ProductImg\637294248500942305_Capture112.JPG" />
+    <None Include="wwwroot\Resources\Images\SubCatgImg\637290377816801742_Capture999.JPG" />
+    <None Include="wwwroot\Resources\Images\SubCatgImg\637290379294269310_ecMain.JPG" />
+    <None Include="wwwroot\Resources\Images\SubCatgImg\637290382809282189_ecMain.JPG" />
+    <None Include="wwwroot\Resources\Images\SubCatgImg\637290392466896612_hostinfo.JPG" />
+    <None Include="wwwroot\Resources\Images\SubCatgImg\637290393711929422_Capture.PNG" />
+    <None Include="wwwroot\Resources\Images\SubCatgImg\637290394958054306_userfav.JPG" />
+    <None Include="wwwroot\Resources\Images\SubCatgImg\637290407915933135_hostinfo.JPG" />
+    <None Include="wwwroot\Resources\Images\SubCatgImg\637290409110754842_ecMain.JPG" />
+    <None Include="wwwroot\Resources\Images\UserImage\637294314097122169_Capture11.JPG" />
+    <None Include="wwwroot\Resources\Images\UserImage\637294314098107414_Capture112.JPG" />
+    <None Include="wwwroot\Resources\Images\UserImage\637294317567910050_Capture11.JPG" />
+    <None Include="wwwroot\Resources\Images\UserImage\637294317568145539_Capture112.JPG" />
+    <None Include="wwwroot\Resources\Images\UserImage\637301892155214097_Capture11.JPG" />
+    <None Include="wwwroot\Resources\Images\UserImage\637301892156266765_Capture112.JPG" />
   </ItemGroup>
 
 </Project>

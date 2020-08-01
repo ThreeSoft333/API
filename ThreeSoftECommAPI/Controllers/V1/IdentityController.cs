@@ -250,7 +250,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var ProfileImage = Request.Form.Files["profile_image"];
             var CoverImage = Request.Form.Files["cover_image"];
 
-            var folderName = Path.Combine("Resources/Images/UserImage/");
+            var folderName = Path.Combine("wwwroot/Resources/Images/UserImage/");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
             var dbPath_ProfileImage = "";

@@ -46,6 +46,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Get = Base + "/advertising/{advertiseId}";
             public const string Create = Base + "/advertising";
             public const string Update = Base + "/advertising/{advertiseId}";
+            public const string Upload = Base + "/advertising/upload";
             public const string Delete = Base + "/advertising/{advertiseId}";
         }
 
@@ -166,10 +167,12 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class OrderRoute
         {
             public const string Create = Base + "/order";
+            public const string Update = Base + "/updateorder";
             public const string ReOrder = Base + "/reorder";
             public const string MyOrder = Base + "/myorder/{userId}";
             public const string OrdersForAdmin = Base + "/getorderforadmin/{status}";
             public const string OrderStatus = Base + "/orderstatus/{userId}";
+            public const string OrderStatusChart = Base + "/orderstatuschart";
             public const string CheckPreviousOrder = Base + "/checkpreviousorder/{userId}";
             public const string orderItems = Base + "/orderitems/{orderId}";
         }

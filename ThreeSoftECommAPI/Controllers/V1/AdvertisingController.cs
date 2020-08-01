@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Contracts.V1.Requests.EComm.AdvertisingReq;
@@ -13,7 +15,7 @@ using ThreeSoftECommAPI.Services.EComm.AdvertisingServ;
 
 namespace ThreeSoftECommAPI.Controllers.V1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AdvertisingController:Controller
     {
         private readonly IAdvertisingService _advertisingService;
@@ -24,7 +26,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Advertise.GetAll)]
-        public async Task<IActionResult> GetAll([FromHeader] int status)
+        public async Task<IActionResult> GetAll([FromQuery] int status)
         {
             return Ok(await _advertisingService.GetAdvertisingAsync(status));
         }
@@ -127,6 +129,35 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 message = "Not Found",
                 status = NotFound().StatusCode
             });
+        }
+
+        [HttpPost(ApiRoutes.Advertise.Upload), DisableRequestSizeLimit]
+        public async Task<IActionResult> Upload()
+        {
+            string folderPath = "wwwroot/Resources/Images/Advertizing/";
+            bool exists = Directory.Exists(folderPath);
+
+            if (!exists)
+                Directory.CreateDirectory(folderPath);
+
+            var file = Request.Form.Files[0];
+            var folderName = Path.Combine(folderPath);
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+            if (file.Length > 0)
+            {
+                var fileName = DateTime.Now.Ticks + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                var fullPath = Path.Combine(pathToSave, fileName);
+                var dbPath = Path.Combine(folderName, fileName);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                return Ok(new { dbPath });
+            }
+            return BadRequest();
         }
     }
 }

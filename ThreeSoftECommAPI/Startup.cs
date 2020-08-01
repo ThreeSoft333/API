@@ -216,8 +216,8 @@ namespace ThreeSoftECommAPI
 
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-                RequestPath = new PathString("/Resources")
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/Resources")),
+                RequestPath = new PathString("/wwwroot/Resources")
             });
 
             app.UseRouting();

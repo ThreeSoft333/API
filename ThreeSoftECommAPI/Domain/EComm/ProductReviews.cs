@@ -18,6 +18,8 @@ namespace ThreeSoftECommAPI.Domain.EComm
         public string UserId { get; set; }
         public Int64 ProductId { get; set; }
         public Int32 Status { get; set; }
+
+       
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 

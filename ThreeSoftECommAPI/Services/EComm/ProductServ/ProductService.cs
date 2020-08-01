@@ -38,9 +38,10 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                            .Include(x => x.productAttributes)
                                            .Include(x => x.productReviews)
                                             .Include(x => x.userFavourites)
-                                            .Include(x => x.colors)
-                                            .Include(x => x.size)
+                                            .Include(x => x.productColor)
+                                            .Include(x => x.productSize)
                                             .Include(x => x.productImages)
+                                            .Where(x=>x.SubCategoryId == SubCatgId)
                                             .ToListAsync();
 
             List<ProductResponse> lstproductResponses = new List<ProductResponse>();
@@ -72,8 +73,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                     SalePrice = product[i].SalePrice,
                     UserFavId = product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId) == null ? 0 : product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId).Id,
                     ProductRate = _rate,
-                    productColor = product[i].colors,
-                    productSize = product[i].size,
+                    productColor = product[i].productColor,
+                    productSize = product[i].productSize,
                     productImages = product[i].productImages,
                     productAttributes = product[i].productAttributes
 
@@ -155,8 +156,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                            .Include(x => x.productAttributes)
                                            .Include(x => x.productReviews)
                                             .Include(x => x.userFavourites)
-                                            .Include(x => x.colors)
-                                            .Include(x => x.size)
+                                            .Include(x => x.productColor)
+                                            .Include(x => x.productSize)
                                             .Include(x => x.productImages)
                                             .OrderByDescending(x => x.CreatedAt)
                                             .Take(count)
@@ -192,8 +193,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                     SalePrice = product[i].SalePrice,
                     UserFavId = product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId) == null ? 0 : product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId).Id,
                     ProductRate = _rate,
-                    productColor = product[i].colors,
-                    productSize = product[i].size,
+                    productColor = product[i].productColor,
+                    productSize = product[i].productSize,
                     productImages = product[i].productImages,
                     productAttributes = product[i].productAttributes,
 
@@ -285,8 +286,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                           .Include(x => x.productAttributes)
                                           .Include(x => x.productReviews)
                                            .Include(x => x.userFavourites)
-                                           .Include(x => x.colors)
-                                           .Include(x => x.size)
+                                           .Include(x => x.productColor)
+                                           .Include(x => x.productSize)
                                            .Include(x => x.productImages)
                                            .SingleOrDefaultAsync(x => x.Id == orderItem[i]);
 
@@ -314,11 +315,10 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                     SalePrice = product.SalePrice,
                     UserFavId = product.userFavourites.SingleOrDefault(x => x.UserId == UserId) == null ? 0 : product.userFavourites.SingleOrDefault(x => x.UserId == UserId).Id,
                     ProductRate = _rate,
-                    productColor = product.colors,
-                    productSize = product.size,
+                    productColor = product.productColor,
+                    productSize = product.productSize,
                     productImages = product.productImages,
                     productAttributes = product.productAttributes
-
                 };
                 lstproductResponses.Add(productRespons);
             }
@@ -390,14 +390,14 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             //return query;
         }
         public async Task<List<ProductResponse>> GetProductsTopRatedAsync(string UserId, int count)
-
+             
         {
             var product = await _dataContext.product
                                              .Include(x => x.productAttributes)
                                              .Include(x => x.productReviews)
                                               .Include(x => x.userFavourites)
-                                              .Include(x => x.colors)
-                                              .Include(x => x.size)
+                                              .Include(x => x.productColor)
+                                              .Include(x => x.productSize)
                                               .Include(x => x.productImages)
                                               .ToListAsync();
 
@@ -431,8 +431,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                         SalePrice = product[i].SalePrice,
                         UserFavId = product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId) == null ? 0 : product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId).Id,
                         ProductRate = _rate,
-                        productColor = product[i].colors,
-                        productSize = product[i].size,
+                        productColor = product[i].productColor,
+                        productSize = product[i].productSize,
                         productImages = product[i].productImages,
                         productAttributes = product[i].productAttributes
 
@@ -519,8 +519,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                             .Include(x => x.productAttributes)
                                             .Include(x => x.productReviews)
                                              .Include(x => x.userFavourites)
-                                             .Include(x => x.colors)
-                                             .Include(x => x.size)
+                                             .Include(x => x.productColor)
+                                             .Include(x => x.productSize)
                                              .Include(x => x.productImages)
                                              .Where(x => x.ArabicName.Contains(SearchText)
                                                     || x.EnglishName.Contains(SearchText)
@@ -556,8 +556,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                     SalePrice = product[i].SalePrice,
                     UserFavId = product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId) == null ? 0 : product[i].userFavourites.SingleOrDefault(x => x.UserId == UserId).Id,
                     ProductRate = _rate,
-                    productColor = product[i].colors,
-                    productSize = product[i].size,
+                    productColor = product[i].productColor,
+                    productSize = product[i].productSize,
                     productImages = product[i].productImages,
                     productAttributes = product[i].productAttributes
 
@@ -570,17 +570,18 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
         }
         public async Task<Product> GetProductByIdAsync(Int64 ProductId)
         {
-            return await _dataContext.product.SingleOrDefaultAsync(x => x.Id == ProductId);
+            return await _dataContext.product.Include(x=>x.productImages)
+                .Include(x=>x.productAttributes)
+                .SingleOrDefaultAsync(x => x.Id == ProductId);
         }
         public async Task<ViewProductResponse> ViewProductAsync(long ProductId)
         {
 
-            var prod = await _dataContext.product.Include(x=>x.colors)
-                .Include(x=>x.size)
+            var prod = await _dataContext.product.Include(x=>x.productColor)
+                .Include(x=>x.productSize)
                 .SingleOrDefaultAsync(x => x.Id == ProductId);
             var prodAttr = await _dataContext.ProductAttributes.Where(x => x.ProductId == ProductId).ToListAsync();
-            //var prodColor = await _dataContext.ProductColors.ToListAsync();
-            //var prodSize = await _dataContext.ProductSizes.ToListAsync();
+            
             var prodImage = await _dataContext.ProductImages.Where(x => x.ProductId == ProductId).ToListAsync();
 
 
@@ -598,8 +599,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                 Material = prod.Material,
                 Quantity = prod.Quantity,
                 productAttributes = prodAttr,
-                productColors = prod.colors,
-                productSize = prod.size,
+                productColors = prod.productColor,
+                productSize = prod.productSize,
                 productImage = prodImage
             };
 

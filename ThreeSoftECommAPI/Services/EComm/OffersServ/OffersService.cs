@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Data;
@@ -32,7 +33,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
             }
         }
 
-        public async Task<List<OfferResponse>> GetOffersTopAsync(string UserId,int count)
+        public async Task<List<OfferResponse>> GetOffersTopAsync(string UserId, int count)
         {
 
             if (count != 0)
@@ -41,17 +42,18 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
          from p in _dataContext.product
          join o in _dataContext.Offers on p.Id equals o.ProductId
          where o.status == 1
-         join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
+         /*join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
          from x in pf.DefaultIfEmpty()
-         where x.UserId == UserId || x.UserId == null
+         where x.UserId == UserId || x.UserId == null*/
          select new OfferResponse
          {
+              Id = o.Id,
              ArabicDesc = o.ArabicDesc,
              EnglishDesc = o.EnglishDesc,
              offerPrice = o.offerPrice,
              ImgUrl = o.ImgUrl,
              status = o.status,
-             UserFavId = x.Id,
+             UserFavId =_dataContext.UserFavourites.SingleOrDefault(x=>x.UserId == UserId && x.ProductId == p.Id).Id,
              product = p
          }).Take(count).ToListAsync();
 
@@ -84,13 +86,14 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
 
         public async Task<List<OfferResponse>> GetOffersAllForAppAsync(string UserId)
         {
+
             var Offers = await (
         from p in _dataContext.product
         join o in _dataContext.Offers on p.Id equals o.ProductId
         where o.status == 1
-        join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
-        from x in pf.DefaultIfEmpty()
-        where x.UserId == UserId || x.UserId == null
+        //join f in _dataContext.UserFavourites on p.Id equals f.ProductId into pf
+        //from x in pf.DefaultIfEmpty()
+        //where x.UserId == UserId || x.UserId == null
         select new OfferResponse
         {
             Id = o.Id,
@@ -99,8 +102,26 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
             offerPrice = o.offerPrice,
             ImgUrl = o.ImgUrl,
             status = o.status,
-            UserFavId = x.Id,
-            product = p
+            UserFavId = _dataContext.UserFavourites.SingleOrDefault(x => x.UserId == UserId && x.ProductId == p.Id).Id,
+            product = new Product
+            {
+                Id = p.Id,
+                ArabicName = p.ArabicName,
+                EnglishName = p.EnglishName,
+                ArabicDescription = p.ArabicDescription,
+                EnglishDescription = p.EnglishDescription,
+                Quantity = p.Quantity,
+                Price = p.Price,
+                SalePrice = p.SalePrice,
+                Condition = p.Condition,
+                Material = p.Material,
+                ImgUrl = p.ImgUrl,
+                productColor = p.productColor,
+                productSize = p.productSize,
+                productImages = p.productImages,
+                productAttributes = p.productAttributes,
+
+            }
         }).ToListAsync();
 
             return Offers;
@@ -144,7 +165,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
 
         public async Task<List<Offers>> GetOffersByProductIdAsync(long ProductId)
         {
-            return await _dataContext.Offers.Include(x =>x.Product).Where(x => x.ProductId == ProductId).ToListAsync();
+            return await _dataContext.Offers.Include(x => x.Product).Where(x => x.ProductId == ProductId).ToListAsync();
         }
     }
 }

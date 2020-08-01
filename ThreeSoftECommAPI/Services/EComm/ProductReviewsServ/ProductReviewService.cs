@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Data;
 using ThreeSoftECommAPI.Domain.EComm;
 
@@ -29,10 +30,18 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductReviewsServ
                .Include(x => x.product).Where(x => x.Status == 0).ToListAsync();
         }
 
-        public async Task<List<ProductReviews>> GetProductReviews(long ProductId)
+        public async Task<List<ProductReviewResponse>> GetProductReviews(long ProductId)
         {
-           return await _dataContext.ProductReviews.Include(y => y.User)
-                .Where(x => x.ProductId == ProductId && x.Status == 1).ToListAsync();
+            return await _dataContext.ProductReviews.Include(y => y.User)
+                 .Where(x => x.ProductId == ProductId && x.Status == 1).Select(x => new ProductReviewResponse
+                 {
+                     ArabicDescreption = x.ArabicDescreption,
+                     EnglishDescreption = x.EnglishDescreption,
+                     Rate = x.Rate,
+                     Status = x.Status,
+                     CreatedAt = x.CreatedAt.ToString("dd/MM/yyyy hh:mm:tt"),
+                      user = x.User
+                 }).ToListAsync();
         }
 
         public async Task<int> UpdateStatus(long Id)
