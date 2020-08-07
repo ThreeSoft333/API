@@ -11,6 +11,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
     {
         Task<int> CreateOrderAsync(Order order);
         Task<int> UpdateOrderAsync(long orderId, Int32 status,string RejectReason);
+        Task<int> GetLastOrderStatusNo(string UserId);
         Task<List<Order>> GetOrdersAsync(string UserId);
         Task<List<MyOrderResponse>> GetMyOrdersAsync(string UserId);
         Task<MyOrderResponse> GetOrderStatusAsync(string UserId);

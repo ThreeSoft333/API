@@ -53,8 +53,25 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
              offerPrice = o.offerPrice,
              ImgUrl = o.ImgUrl,
              status = o.status,
-             UserFavId =_dataContext.UserFavourites.SingleOrDefault(x=>x.UserId == UserId && x.ProductId == p.Id).Id,
-             product = p
+             product = new ProductResponse
+             {
+                 Id = p.Id,
+                 ArabicName = p.ArabicName,
+                 EnglishName = p.EnglishName,
+                 ArabicDescription = p.ArabicDescription,
+                 EnglishDescription = p.EnglishDescription,
+                 Quantity = p.Quantity,
+                 Price = p.Price,
+                 SalePrice = p.SalePrice,
+                 UserFavId = _dataContext.UserFavourites.SingleOrDefault(x => x.UserId == UserId && x.ProductId == p.Id).Id,
+                 Condition = p.Condition,
+                 Material = p.Material,
+                 ImgUrl = p.ImgUrl,
+                 productColor = p.productColor,
+                 productSize = p.productSize,
+                 productImages = p.productImages,
+                 productAttributes = p.productAttributes,
+             }
          }).Take(count).ToListAsync();
 
                 return Offers;
@@ -76,8 +93,25 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
             offerPrice = o.offerPrice,
             ImgUrl = o.ImgUrl,
             status = o.status,
-            UserFavId = x.Id,
-            product = p
+            product = new ProductResponse
+            {
+                Id = p.Id,
+                ArabicName = p.ArabicName,
+                EnglishName = p.EnglishName,
+                ArabicDescription = p.ArabicDescription,
+                EnglishDescription = p.EnglishDescription,
+                Quantity = p.Quantity,
+                Price = p.Price,
+                SalePrice = p.SalePrice,
+                UserFavId = _dataContext.UserFavourites.SingleOrDefault(x => x.UserId == UserId && x.ProductId == p.Id).Id,
+                Condition = p.Condition,
+                Material = p.Material,
+                ImgUrl = p.ImgUrl,
+                productColor = p.productColor,
+                productSize = p.productSize,
+                productImages = p.productImages,
+                productAttributes = p.productAttributes,
+            }
         }).ToListAsync();
 
                 return Offers;
@@ -102,8 +136,8 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
             offerPrice = o.offerPrice,
             ImgUrl = o.ImgUrl,
             status = o.status,
-            UserFavId = _dataContext.UserFavourites.SingleOrDefault(x => x.UserId == UserId && x.ProductId == p.Id).Id,
-            product = new Product
+            
+            product = new ProductResponse
             {
                 Id = p.Id,
                 ArabicName = p.ArabicName,
@@ -113,6 +147,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
                 Quantity = p.Quantity,
                 Price = p.Price,
                 SalePrice = p.SalePrice,
+                UserFavId = _dataContext.UserFavourites.SingleOrDefault(x => x.UserId == UserId && x.ProductId == p.Id).Id,
                 Condition = p.Condition,
                 Material = p.Material,
                 ImgUrl = p.ImgUrl,
@@ -120,6 +155,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
                 productSize = p.productSize,
                 productImages = p.productImages,
                 productAttributes = p.productAttributes,
+                
 
             }
         }).ToListAsync();

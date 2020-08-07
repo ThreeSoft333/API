@@ -335,17 +335,29 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
 
         public async Task<List<OrderStatusChartResponse>> OrderStatusChart()
         {
-            
-
-            var x= await( from order in  _dataContext.Orders
+            //1 - Received 2 - In Progress Now 3 - Ready for Delivery 4 - The order was delivered 5 - Rejected
+      
+                  var x= await( from order in  _dataContext.Orders
                           group order by order.Status into g
                           select new OrderStatusChartResponse
                           {
-                              status = g.Key,
+                              status = g.Key == 1 ? "Received":
+                                       g.Key == 2 ? "In Progress Now" :
+                                       g.Key == 3 ? "Ready for Delivery" :
+                                       g.Key == 4 ? "delivered" :
+                                       "Rejected",
                               count = g.Count()
                           }).ToListAsync();
 
             return x;
+        }
+
+        public async Task<int> GetLastOrderStatusNo(string UserId)
+        {
+            var status = await _dataContext.Orders.Where(x => x.UserId == UserId)
+                .OrderByDescending(x => x.Id).Select(x =>x.Status).FirstOrDefaultAsync();
+
+            return status;
         }
     }
 }

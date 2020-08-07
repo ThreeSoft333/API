@@ -11,6 +11,7 @@ using ThreeSoftECommAPI.Services.EComm.AdvertisingServ;
 using ThreeSoftECommAPI.Services.EComm.CartItemsServ;
 using ThreeSoftECommAPI.Services.EComm.CategoryServ;
 using ThreeSoftECommAPI.Services.EComm.OffersServ;
+using ThreeSoftECommAPI.Services.EComm.OrderServ;
 using ThreeSoftECommAPI.Services.EComm.ProductServ;
 
 namespace ThreeSoftECommAPI.Controllers.V1
@@ -23,18 +24,21 @@ namespace ThreeSoftECommAPI.Controllers.V1
         private readonly IProductService _ProductService;
         private readonly IOffersService _OffersService;
         private readonly ICartItemService _cartItemService;
+        private readonly IOrderService _orderService;
 
         public DashboardController(ICategoryService CategoryService,
                                    IAdvertisingService advertisingService,
                                    IProductService productService,
                                    IOffersService offersService,
-                                   ICartItemService cartItemService)
+                                   ICartItemService cartItemService,
+                                   IOrderService orderService)
         {
             _CategoryService = CategoryService;
             _AdvertisingService = advertisingService;
             _ProductService = productService;
             _OffersService = offersService;
             _cartItemService = cartItemService;
+            _orderService = orderService;
         }
 
         [HttpGet(ApiRoutes.Dashboard.Get)]
@@ -47,6 +51,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var TopRated = await _ProductService.GetProductsTopRatedAsync(UserId, 8);
             var Offers = await _OffersService.GetOffersTopAsync(UserId, 8);
             var CartItem = await _cartItemService.GetCartItemByUserIdAsync(UserId);
+            var OrderStatus = await _orderService.GetLastOrderStatusNo(UserId);
 
             int ItemCount = 0;
             for (int i = 0; i < CartItem.Count; i++)
@@ -61,7 +66,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Product_Most_Wanted = MostWanted,
                 Product_TopRated = TopRated,
                 Offers = Offers,
-                Cart_Items_Count = ItemCount
+                Cart_Items_Count = ItemCount,
+                Order_Status = OrderStatus
             };
 
             return Ok(obj);

@@ -14,7 +14,6 @@ namespace ThreeSoftECommAPI.Contracts.V1.Responses.EComm
         public string ImgUrl { get; set; }
         public int status { get; set; }
         public decimal offerPrice { get; set; }
-        public Int64 UserFavId { get; set; }
-        public Product product { get; set; }
+        public ProductResponse product { get; set; }
     }
 }
