@@ -26,9 +26,9 @@ namespace ThreeSoftECommAPI.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Product_Review.GetNew)]
-        public async Task<IActionResult> GetNew()
+        public async Task<IActionResult> GetNew([FromQuery] int status)
         {
-            return Ok(await _productReviewService.GetNewProductReviews());
+            return Ok(await _productReviewService.GetNewProductReviews(status));
         }
 
         [HttpPost(ApiRoutes.Product_Review.Create)]
@@ -42,7 +42,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 UserId = productReviewRequest.UserId,
                 Rate = productReviewRequest.Rate,
                 Status = 0,
-                CreatedAt = DateTime.Now
+                CreatedAt = productReviewRequest.CreatedAt
             };
 
             var status = await _productReviewService.CreateProductReviewAsync(ProdReview);
@@ -76,6 +76,24 @@ namespace ThreeSoftECommAPI.Controllers.V1
             {
                 message = "Internal Server Error",
                 status = BadRequest().StatusCode
+            });
+        }
+
+        [HttpDelete(ApiRoutes.Product_Review.Delete)]
+        public async Task<IActionResult> Delete([FromRoute] Int64 id)
+        {
+            var deleted = await _productReviewService.Delete(id);
+
+            if (deleted)
+                return Ok(new SuccessResponse
+                {
+                    message = "Successfully Deleted",
+                    status = Ok().StatusCode
+                });
+            return NotFound(new ErrorResponse
+            {
+                message = "Not Found",
+                status = NotFound().StatusCode
             });
         }
     }

@@ -24,6 +24,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Upload = Base + "/identity/upload";
             public const string SendMessage = Base + "/identity/sendmessage";
             public const string ResendPhoneToken = Base + "/identity/resendphonetoken/{userId}";
+            public const string CustomerList = Base + "/identity/customerlist";
         }
 
         public static class Dashboard
@@ -124,6 +125,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Create = Base + "/productImage";
             public const string Update = Base + "/productImage/{id}";
             public const string Delete = Base + "/productImage/{id}";
+            public const string DeleteByProduct = Base + "/DeleteByproduct/{productId}";
         }
 
         public static class Product_Review
@@ -169,6 +171,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Create = Base + "/order";
             public const string Update = Base + "/updateorder";
             public const string ReOrder = Base + "/reorder";
+            public const string ReOrderActive = Base + "/reorderactive";
             public const string MyOrder = Base + "/myorder/{userId}";
             public const string OrdersForAdmin = Base + "/getorderforadmin/{status}";
             public const string OrderStatus = Base + "/orderstatus/{userId}";

@@ -147,28 +147,38 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpPost(ApiRoutes.Offers.Upload), DisableRequestSizeLimit]
         public async Task<IActionResult> Upload()
         {
-            string folderPath = "wwwroot/Resources/Images/OffersImg/";
-            bool exists = Directory.Exists(folderPath);
-
-            if (!exists)
-                Directory.CreateDirectory(folderPath);
-
-            var file = Request.Form.Files[0];
-            var folderName = Path.Combine(folderPath);
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
-            if (file.Length > 0)
+            try
             {
-                var fileName = DateTime.Now.Ticks + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                var fullPath = Path.Combine(pathToSave, fileName);
-                var dbPath = Path.Combine(folderName, fileName);
+                string folderPath = "wwwroot/Resources/Images/OffersImg/";
+                bool exists = Directory.Exists(folderPath);
 
-                using (var stream = new FileStream(fullPath, FileMode.Create))
+                if (!exists)
+                    Directory.CreateDirectory(folderPath);
+                var x = Request.Form.Files;
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine(folderPath);
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+                if (file.Length > 0)
                 {
-                    await file.CopyToAsync(stream);
-                }
+                    var fileName = DateTime.Now.Ticks + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
 
-                return Ok(new { dbPath });
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    return Ok(new { dbPath });
+                }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { 
+                    status = BadRequest().StatusCode,
+                    message = ex.Message
+                }); 
             }
             return BadRequest();
         }

@@ -24,7 +24,7 @@ namespace ThreeSoftECommAPI.Services.EComm.SubSubCategoryServ
             switch (status)
             {
                 case 1:
-                    return await _dataContext.subCategory.Where(c => c.CategoryId == CategoryId).Where(x => x.Status == 1).ToListAsync();
+                    return await _dataContext.subCategory.Where(c => c.CategoryId == CategoryId && c.Status == 1).ToListAsync();
                 case 0:
                     return await _dataContext.subCategory.Where(c => c.CategoryId == CategoryId).Where(x => x.Status == 0).ToListAsync();
                 default:

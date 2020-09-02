@@ -246,6 +246,12 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpPost(ApiRoutes.Identity.Upload), DisableRequestSizeLimit]
         public async Task<IActionResult> Upload()
         {
+            string folderPath = "wwwroot/Resources/Images/UserImage/";
+            bool exists = Directory.Exists(folderPath);
+
+            if (!exists)
+                Directory.CreateDirectory(folderPath);
+
             string ApiPath = "http://husamalraie-001-site3.gtempurl.com/";
             var ProfileImage = Request.Form.Files["profile_image"];
             var CoverImage = Request.Form.Files["cover_image"];
@@ -296,8 +302,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
 
             var message = MessageResource.Create(
                 body: Token,
-                from: new Twilio.Types.PhoneNumber("+12564459076"),
-                to: new Twilio.Types.PhoneNumber("+962798246472")
+                from: new Twilio.Types.PhoneNumber("+13344876852"),
+                to: new Twilio.Types.PhoneNumber("+962788966075")
                 );
 
             return Ok(new
@@ -399,6 +405,13 @@ namespace ThreeSoftECommAPI.Controllers.V1
             //}
 
             return password;
+        }
+
+        [HttpGet(ApiRoutes.Identity.CustomerList)]
+        public async Task<IActionResult> CustomerList()
+        {
+            var CustomerList = await _identityService.customerList();
+            return Ok(CustomerList);
         }
     }
 }

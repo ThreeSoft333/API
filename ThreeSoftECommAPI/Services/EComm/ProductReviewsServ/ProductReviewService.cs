@@ -24,10 +24,27 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductReviewsServ
             return created;
         }
 
-        public async Task<List<ProductReviews>> GetNewProductReviews()
+        public async Task<ProductReviews> GetById(Int64 Id)
+        {
+            return await _dataContext.ProductReviews.SingleOrDefaultAsync(x => x.Id == Id);
+        }
+
+        public async Task<bool> Delete(long Id)
+        {
+            var ProdRev = await GetById(Id);
+
+            if (ProdRev == null)
+                return false;
+
+            _dataContext.ProductReviews.Remove(ProdRev);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
+        }
+
+        public async Task<List<ProductReviews>> GetNewProductReviews(int Status)
         {
             return await _dataContext.ProductReviews.Include(x => x.User)
-               .Include(x => x.product).Where(x => x.Status == 0).ToListAsync();
+               .Include(x => x.product).Where(x => x.Status == Status).ToListAsync();
         }
 
         public async Task<List<ProductReviewResponse>> GetProductReviews(long ProductId)
@@ -40,7 +57,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductReviewsServ
                      Rate = x.Rate,
                      Status = x.Status,
                      CreatedAt = x.CreatedAt.ToString("dd/MM/yyyy hh:mm:tt"),
-                      user = x.User
+                     user = x.User
                  }).ToListAsync();
         }
 

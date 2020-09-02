@@ -73,6 +73,5 @@ namespace ThreeSoftECommAPI.Controllers.V1
             return Ok(obj);
         }
 
-      
     }
 }

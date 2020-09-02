@@ -55,8 +55,7 @@ namespace ThreeSoftECommAPI.Data
             modelBuilder.Entity<Brand>(entity => {entity.HasIndex(e => e.ArabicName).IsUnique();});
             modelBuilder.Entity<Brand>(entity => {entity.HasIndex(e => e.EnglishName).IsUnique();});
 
-            modelBuilder.Entity<Coupon>(entity => {entity.HasIndex(e => e.ArabicName).IsUnique();});
-            modelBuilder.Entity<Coupon>(entity => {entity.HasIndex(e => e.EnglishName).IsUnique();});
+            modelBuilder.Entity<Coupon>(entity => {entity.HasIndex(e => e.Code).IsUnique();});
 
             modelBuilder.Entity<ProductAttributes>(entity => {entity.HasIndex(e => e.ArabicName).IsUnique();});
             modelBuilder.Entity<ProductAttributes>(entity => {entity.HasIndex(e => e.EnglishName).IsUnique();});

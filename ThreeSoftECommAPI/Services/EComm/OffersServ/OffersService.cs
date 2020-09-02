@@ -25,11 +25,25 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
             switch (status)
             {
                 case 1:
-                    return await _dataContext.Offers.Include(p => p.Product).Where(x => x.status == 1).ToListAsync();
+                    return await _dataContext.Offers.Include(p => p.Product)
+                        .Include("Product.productColor")
+                        .Include("Product.productSize")
+                        .Include("Product.productImages")
+                        .Where(x => x.status == 1)
+                        .ToListAsync();
                 case 0:
-                    return await _dataContext.Offers.Include(p => p.Product).Where(x => x.status == 0).ToListAsync();
+                    return await _dataContext.Offers.Include(p => p.Product)
+                         .Include("Product.productColor")
+                        .Include("Product.productSize")
+                        .Include("Product.productImages")
+                        .Where(x => x.status == 0)
+                        .ToListAsync();
                 default:
-                    return await _dataContext.Offers.Include(p => p.Product).ToListAsync();
+                    return await _dataContext.Offers.Include(p => p.Product)
+                         .Include("Product.productColor")
+                        .Include("Product.productSize")
+                        .Include("Product.productImages")
+                        .ToListAsync();
             }
         }
 
@@ -69,8 +83,14 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
                  ImgUrl = p.ImgUrl,
                  productColor = p.productColor,
                  productSize = p.productSize,
-                 productImages = p.productImages,
-                 productAttributes = p.productAttributes,
+                 productImages = p.productImages.Select(x => new ProductImageResponse { 
+                  ImgUrl = x.ImgUrl,
+                   Ext = x.Ext
+                 }).ToList(),
+                 productAttributes = p.productAttributes.Select(x => new ProductAttributesResponse { 
+                  ArabicName = x.ArabicName,
+                   EnglishName = x.EnglishName
+                 }).ToList(),
              }
          }).Take(count).ToListAsync();
 
@@ -107,10 +127,10 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
                 Condition = p.Condition,
                 Material = p.Material,
                 ImgUrl = p.ImgUrl,
-                productColor = p.productColor,
-                productSize = p.productSize,
-                productImages = p.productImages,
-                productAttributes = p.productAttributes,
+                //productColor = p.productColor,
+                //productSize = p.productSize,
+                //productImages = p.productImages,
+                //productAttributes = p.productAttributes,
             }
         }).ToListAsync();
 
@@ -136,7 +156,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
             offerPrice = o.offerPrice,
             ImgUrl = o.ImgUrl,
             status = o.status,
-            
+
             product = new ProductResponse
             {
                 Id = p.Id,
@@ -153,10 +173,16 @@ namespace ThreeSoftECommAPI.Services.EComm.OffersServ
                 ImgUrl = p.ImgUrl,
                 productColor = p.productColor,
                 productSize = p.productSize,
-                productImages = p.productImages,
-                productAttributes = p.productAttributes,
-                
-
+                productImages = p.productImages.Select(x => new ProductImageResponse
+                {
+                    ImgUrl = x.ImgUrl,
+                    Ext = x.Ext
+                }).ToList(),
+                productAttributes = p.productAttributes.Select(x => new ProductAttributesResponse
+                {
+                    ArabicName = x.ArabicName,
+                    EnglishName = x.EnglishName
+                }).ToList(),
             }
         }).ToListAsync();
 

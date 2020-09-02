@@ -50,7 +50,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         }
         public async Task<List<MyOrderResponse>> GetMyOrdersAsync(string UserId)
         {
-            var orders = await _dataContext.Orders.Where(x => x.UserId == UserId).ToListAsync();
+            var orders = await _dataContext.Orders.Where(x => x.UserId == UserId && x.Status > 4).ToListAsync();
 
             List<MyOrderResponse> _lstOrderResp = new List<MyOrderResponse>();
             for (int j = 0; j < orders.Count(); j++)
@@ -189,9 +189,16 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
 
         public async Task<List<Order>> GetOrdersForAdmin(int status)
         {
-            return await _dataContext.Orders.Include(x => x.userAddresses)
-                .Include(x => x.User)
-                .Where(x => x.Status == status).ToListAsync();
+            if (status == 4)
+            {
+                return await _dataContext.Orders.Include(x => x.User).Include(x => x.userAddresses)
+                    .Where(x => x.Status == 4 || x.Status == 6).ToListAsync();
+            }
+            else
+            {
+                return await _dataContext.Orders.Include(x => x.User).Include(x => x.userAddresses)
+                    .Where(x => x.Status == status).ToListAsync();
+            }
         }
 
         public Task<List<Order>> GetOrdersAsync(string UserId)
@@ -201,77 +208,81 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
 
         public async Task<MyOrderResponse> GetOrderStatusAsync(string UserId)
         {
-            var order = await _dataContext.Orders.Where(x => x.UserId == UserId).OrderByDescending(x => x.Id).FirstAsync();
+            var order = await _dataContext.Orders.Where(x => x.UserId == UserId).OrderByDescending(x => x.Id).FirstOrDefaultAsync();
 
-            var copoun = await _dataContext.Coupons.SingleOrDefaultAsync(x => x.Id == order.CouponId);
-            var orderItems = await _dataContext.OrderItems.Where(x => x.OrderId == order.Id).ToListAsync();
-            var userAddresse = _dataContext.UserAddresses.SingleOrDefault(x => x.Id == order.UserAddressesId);
-            var orderItemQuery = await (from i in _dataContext.OrderItems
-                                        where i.OrderId == order.Id
-                                        join prod in _dataContext.product on i.ProductId equals prod.Id
-                                        join col in _dataContext.ProductColors on prod.colorId equals col.Id into prodcol
-                                        from c in prodcol.DefaultIfEmpty()
-                                        join size in _dataContext.ProductSizes on prod.sizeId equals size.Id into prodsize
-                                        from s in prodsize.DefaultIfEmpty()
+            var myOrderResponse = new MyOrderResponse();
 
-                                        select new OrderItems
-                                        {
-                                            Id = i.Id,
-                                            Quantity = i.Quantity,
-                                            Price = i.Price,
-                                            Total = i.Total,
-                                            product = new Product
-                                            {
-                                                Id = prod.Id,
-                                                ArabicName = prod.ArabicName,
-                                                EnglishName = prod.EnglishName,
-                                                ArabicDescription = prod.ArabicDescription,
-                                                EnglishDescription = prod.EnglishDescription,
-                                                Condition = prod.Condition,
-                                                Material = prod.Material,
-                                                Price = prod.Price,
-                                                ImgUrl = prod.ImgUrl,
-                                                productColor = c,
-                                                productSize = s
-                                            }
-                                        }).ToListAsync();
-
-            decimal grandTotal = 0;
-            decimal discount = 0;
-            var Ordertotal = orderItems.Select(x => x.Total).Sum();
-            if (copoun != null)
+            if (order != null)
             {
+                var copoun = await _dataContext.Coupons.SingleOrDefaultAsync(x => x.Id == order.CouponId);
+                var orderItems = await _dataContext.OrderItems.Where(x => x.OrderId == order.Id).ToListAsync();
+                var userAddresse = _dataContext.UserAddresses.SingleOrDefault(x => x.Id == order.UserAddressesId);
+                var orderItemQuery = await (from i in _dataContext.OrderItems
+                                            where i.OrderId == order.Id
+                                            join prod in _dataContext.product on i.ProductId equals prod.Id
+                                            join col in _dataContext.ProductColors on prod.colorId equals col.Id into prodcol
+                                            from c in prodcol.DefaultIfEmpty()
+                                            join size in _dataContext.ProductSizes on prod.sizeId equals size.Id into prodsize
+                                            from s in prodsize.DefaultIfEmpty()
 
-                if (copoun.Type == 1)
+                                            select new OrderItems
+                                            {
+                                                Id = i.Id,
+                                                Quantity = i.Quantity,
+                                                Price = i.Price,
+                                                Total = i.Total,
+                                                product = new Product
+                                                {
+                                                    Id = prod.Id,
+                                                    ArabicName = prod.ArabicName,
+                                                    EnglishName = prod.EnglishName,
+                                                    ArabicDescription = prod.ArabicDescription,
+                                                    EnglishDescription = prod.EnglishDescription,
+                                                    Condition = prod.Condition,
+                                                    Material = prod.Material,
+                                                    Price = prod.Price,
+                                                    ImgUrl = prod.ImgUrl,
+                                                    productColor = c,
+                                                    productSize = s
+                                                }
+                                            }).ToListAsync();
+
+                decimal grandTotal = 0;
+                decimal discount = 0;
+                var Ordertotal = orderItems.Select(x => x.Total).Sum();
+                if (copoun != null)
                 {
-                    grandTotal = Ordertotal - copoun.Amount;
+
+                    if (copoun.Type == 1)
+                    {
+                        grandTotal = Ordertotal - copoun.Amount;
+                    }
+                    else
+                    {
+                        decimal percnDisc = Convert.ToDecimal(copoun.Percentage * 0.01);
+                        discount = Ordertotal * percnDisc;
+                        grandTotal = Ordertotal - discount;
+                    }
                 }
                 else
                 {
-                    decimal percnDisc = Convert.ToDecimal(copoun.Percentage * 0.01);
-                    discount = Ordertotal * percnDisc;
-                    grandTotal = Ordertotal - discount;
+                    grandTotal = Ordertotal;
                 }
-            }
-            else
-            {
-                grandTotal = Ordertotal;
-            }
 
-            var myOrderResponse = new MyOrderResponse
-            {
-                OrderId = order.Id,
-                OrderStatus = order.Status,
-                OrderDate = order.CreatedAt.ToString("dd/MM/yyyy hh:mm:ss"),
-                CouponId = order.CouponId,
-                ProductCount = orderItems.Count(),
-                Total = Ordertotal,
-                discount = discount,
-                GrandTotal = grandTotal,
-                userAddresse = userAddresse,
-                orderItems = (List<OrderItems>)orderItemQuery
-            };
-
+                myOrderResponse = new MyOrderResponse
+                {
+                    OrderId = order.Id,
+                    OrderStatus = order.Status,
+                    OrderDate = order.CreatedAt.ToString("dd/MM/yyyy hh:mm:ss"),
+                    CouponId = order.CouponId,
+                    ProductCount = orderItems.Count(),
+                    Total = Ordertotal,
+                    discount = discount,
+                    GrandTotal = grandTotal,
+                    userAddresse = userAddresse,
+                    orderItems = (List<OrderItems>)orderItemQuery
+                };
+            }
 
 
             //var query = await (from p in _dataContext.Orders
@@ -311,7 +322,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         public async Task<bool> CheckPreviousOrder(string UserId)
         {
             var checkBrevOrderStatus = await _dataContext.Orders
-               .Where(x => x.UserId == UserId && x.Status != 4).FirstOrDefaultAsync();
+               .Where(x => x.UserId == UserId && x.Status <= 4).FirstOrDefaultAsync();
 
             if (checkBrevOrderStatus == null)
                 return true;

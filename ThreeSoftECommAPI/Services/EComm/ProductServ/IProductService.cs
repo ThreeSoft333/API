@@ -22,6 +22,16 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
         Task<int> UpdateProductAsync(Product product);
         Task<int> UpdateProductSalePriceAsync(Int64 ProductId,decimal salePrice);
         Task<bool> DeleteProductAsync(Int64 ProductId);
+        Task<bool> CheckProductsIfActive(long ProductId);
+
+
+
+
+
+
+
+
+
 
     }
 }

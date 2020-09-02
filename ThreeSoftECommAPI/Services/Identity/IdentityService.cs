@@ -11,6 +11,7 @@ using ThreeSoftECommAPI.Contracts.V1.Requests.Identity;
 using ThreeSoftECommAPI.Contracts.V1.Responses.Identity;
 using ThreeSoftECommAPI.Domain.Identity;
 using ThreeSoftECommAPI.Options;
+using Twilio.Rest.Accounts.V1.Credential;
 
 namespace ThreeSoftECommAPI.Services.Identity
 {
@@ -29,7 +30,6 @@ namespace ThreeSoftECommAPI.Services.Identity
         public async Task<AuthenticationResult> RegisterAsync(string email, string MobileNo, string password)
         {
             var User = await _userManager.FindByNameAsync(MobileNo);
-
             
             if (User != null)
             {
@@ -249,6 +249,12 @@ namespace ThreeSoftECommAPI.Services.Identity
         {
             var UserRole = await _userManager.GetRolesAsync(appUser);
             return UserRole[0];
+        }
+
+        public async Task<IList<AppUser>> customerList()
+        {
+            var x = await _userManager.GetUsersInRoleAsync("Customer");
+            return x;
         }
     }
 }

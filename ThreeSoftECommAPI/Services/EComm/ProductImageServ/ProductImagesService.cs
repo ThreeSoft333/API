@@ -58,8 +58,8 @@ namespace ThreeSoftECommAPI.Services.ProductImageServ
         {
             var ProdImg = await GetProductImageAsync(ProductId);
 
-            if (ProdImg == null)
-                return false;
+            if (ProdImg.Count == 0)
+                return true;
 
             _dataContext.ProductImages.RemoveRange(ProdImg);
             var deleted = await _dataContext.SaveChangesAsync();

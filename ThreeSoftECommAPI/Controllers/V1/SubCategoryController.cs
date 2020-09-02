@@ -138,8 +138,14 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpPost(ApiRoutes.SubCategory.Upload), DisableRequestSizeLimit]
         public async Task<IActionResult> Upload()
         {
+            string folderPath = "wwwroot/Resources/Images/SubCatgImg/";
+            bool exists = Directory.Exists(folderPath);
+
+            if (!exists)
+                Directory.CreateDirectory(folderPath);
+
             var file = Request.Form.Files[0];
-            var folderName = Path.Combine("wwwroot/Resources/Images/SubCatgImg/");
+            var folderName = Path.Combine(folderPath);
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
             if (file.Length > 0)

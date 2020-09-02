@@ -9,5 +9,6 @@ namespace ThreeSoftECommAPI.Contracts.V1.Requests.EComm.ProductAttr
     {
         public string ArabicName { get; set; }
         public string EnglishName { get; set; }
+        public Int64 ProductId { get; set; }
     }
 }

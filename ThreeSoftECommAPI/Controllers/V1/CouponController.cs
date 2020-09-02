@@ -60,8 +60,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
         {
             var coupon = new Coupon
             {
-                ArabicName = CouponRequst.ArabicName,
-                EnglishName = CouponRequst.EnglishName,
+                Code = CouponRequst.Code,
                 Status = CouponRequst.Status,
                 Quantity = CouponRequst.Quantity,
                 Type = CouponRequst.Type,
@@ -104,8 +103,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var coupon = new Coupon
             {
                 Id = couponId,
-                ArabicName = CouponRequst.ArabicName,
-                EnglishName = CouponRequst.EnglishName,
+                Code = CouponRequst.Code,
                 Status = CouponRequst.Status,
                 Quantity = CouponRequst.Quantity,
                 Type = CouponRequst.Type,

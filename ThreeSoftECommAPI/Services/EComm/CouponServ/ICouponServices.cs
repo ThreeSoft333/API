@@ -14,5 +14,6 @@ namespace ThreeSoftECommAPI.Services.EComm.CouponServ
         Task<int> CreateCouponAsync(Coupon Coupon);
         Task<int> UpdateCouponAsync(Coupon Coupon);
         Task<bool> DeleteCouponAsync(Int32 CouponId);
+        Task<bool> SubTrackNumberOfPromoCode(Int32 CouponId);
     }
 }

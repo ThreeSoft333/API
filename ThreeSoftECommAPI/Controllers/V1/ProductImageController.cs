@@ -106,5 +106,23 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 status = NotFound().StatusCode
             });
         }
+
+        [HttpDelete(ApiRoutes.Product_Image.DeleteByProduct)]
+        public async Task<IActionResult> DeleteByProduct([FromRoute] Int64 productId)
+        {
+            var deleted = await _productImagesService.DeleteProductImageByProductIdAsync(productId);
+
+            if (deleted)
+                return Ok(new SuccessResponse
+                {
+                    message = "Successfully Deleted",
+                    status = Ok().StatusCode
+                });
+            return NotFound(new ErrorResponse
+            {
+                message = "Not Found",
+                status = NotFound().StatusCode
+            });
+        }
     }
 }

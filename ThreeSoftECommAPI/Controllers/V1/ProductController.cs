@@ -164,6 +164,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Condition = productRequest.Condition,
                 Material = productRequest.Material,
                 status = productRequest.status,
+                colorId = productRequest.colorId,
+                sizeId = productRequest.sizeId,
                 ImgUrl = productRequest.ImgUrl,
                 UpdatedAt = DateTime.Now
             };
@@ -193,30 +195,46 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpDelete(ApiRoutes.Product.Delete)]
         public async Task<IActionResult> Delete([FromRoute] Int64 productId)
         {
-            var deleted = await _productService.DeleteProductAsync(productId);
-
-            if (deleted)
+            try
             {
                 await _productImagesService.DeleteProductImageByProductIdAsync(productId);
+                var deleted = await _productService.DeleteProductAsync(productId);
 
-                return Ok(new SuccessResponse
+                if (deleted)
                 {
-                    message = "Successfully Deleted",
-                    status = Ok().StatusCode
+                    return Ok(new SuccessResponse
+                    {
+                        message = "Successfully Deleted",
+                        status = Ok().StatusCode
+                    });
+                }
+                return NotFound(new ErrorResponse
+                {
+                    message = "Not Found",
+                    status = NotFound().StatusCode
                 });
             }
-            return NotFound(new ErrorResponse
+            catch(Exception ex)
             {
-                message = "Not Found",
-                status = NotFound().StatusCode
-            });
+                return BadRequest(new ErrorResponse
+                {
+                    message = ex.Message,
+                    status = BadRequest().StatusCode
+                });
+            }
         }
 
         [HttpPost(ApiRoutes.Product.Upload), DisableRequestSizeLimit]
         public async Task<IActionResult> Upload()
         {
+            string folderPath = "wwwroot/Resources/Images/ProductImg/";
+            bool exists = Directory.Exists(folderPath);
+
+            if (!exists)
+                Directory.CreateDirectory(folderPath);
+
             var file = Request.Form.Files[0];
-            var folderName = Path.Combine("wwwroot/Resources/Images/ProductImg/");
+            var folderName = Path.Combine(folderPath);
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
             if (file.Length > 0)
@@ -238,11 +256,17 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpPost(ApiRoutes.Product.UploadImages), DisableRequestSizeLimit]
         public async Task<IActionResult> UploadImages([FromRoute]Int64 productId)
         {
+            string folderPath = "wwwroot/Resources/Images/ProductImg/";
+            bool exists = Directory.Exists(folderPath);
+
+            if (!exists)
+                Directory.CreateDirectory(folderPath);
+
             var files = Request.Form.Files;
-            var folderName = Path.Combine("wwwroot/Resources/Images/ProductImg/");
+            var folderName = Path.Combine(folderPath);
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             var dbPath = "";
-
+            
             if (files.Count > 0) {
                 foreach (var file in files)
                 {
@@ -261,6 +285,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                         {
                             ProductId = productId,
                             ImgUrl = "http://husamalraie-001-site3.gtempurl.com/" + dbPath,
+                            //ImgUrl = "https://localhost:44304/" + dbPath,
                             Ext = Path.GetExtension(file.FileName),
                             CreatedAt = DateTime.Now,
                         };

@@ -31,29 +31,29 @@ namespace ThreeSoftECommAPI.Services.EComm.CartItemItemsServ
             var query = await _dataContext.product
                 .Join(_dataContext.cartItems, p => p.Id, ci => ci.ProductId, (p, ci) => new { p, ci })
                 .Join(_dataContext.Cart, cci => cci.ci.CartId, c => c.Id, (cci, c) => new { cci, c })
-                .Join(_dataContext.ProductColors, ppc => ppc.cci.p.colorId, pc => pc.Id, (ppc, pc) => new { ppc, pc })
-                .Join(_dataContext.ProductSizes, pps => pps.ppc.cci.p.sizeId, ps => ps.Id, (pps, ps) => new { pps, ps })
-                .Where(x => x.pps.ppc.c.UserId == UserId)
+                //.Join(_dataContext.ProductColors, ppc => ppc.cci.p.colorId, pc => pc.Id, (ppc, pc) => new { ppc, pc })
+                //.Join(_dataContext.ProductSizes, pps => pps.ppc.cci.p.sizeId, ps => ps.Id, (pps, ps) => new { pps, ps })
+                .Where(x => x.c.UserId == UserId)
                 .Select(m => new CartItemResponse
                 {
-                    Id = m.pps.ppc.cci.ci.Id,
-                    CartId = m.pps.ppc.cci.ci.CartId,
-                    Quantity = m.pps.ppc.cci.ci.Quantity,
-                    CreatedAt = m.pps.ppc.cci.ci.CreatedAt,
+                    Id = m.cci.ci.Id,
+                    CartId = m.cci.ci.CartId,
+                    Quantity = m.cci.ci.Quantity,
+                    CreatedAt = m.cci.ci.CreatedAt,
                     product = new ProductResponse
                     {
-                        Id = m.pps.ppc.cci.p.Id,
-                        ArabicName = m.pps.ppc.cci.p.ArabicName,
-                        EnglishName = m.pps.ppc.cci.p.EnglishName,
-                        ArabicDescription = m.pps.ppc.cci.p.ArabicDescription,
-                        EnglishDescription = m.pps.ppc.cci.p.EnglishName,
-                        ImgUrl = m.pps.ppc.cci.p.ImgUrl,
-                        Price = m.pps.ppc.cci.p.Price,
-                        SalePrice = m.pps.ppc.cci.p.SalePrice,
-                        productColor = m.pps.pc,
-                        productSize = m.ps,
-                        productAttributes = (_dataContext.ProductAttributes
-                             .Where(x => x.ProductId == m.pps.ppc.cci.p.Id).DefaultIfEmpty().ToList()),
+                        Id = m.cci.p.Id,
+                        ArabicName = m.cci.p.ArabicName,
+                        EnglishName = m.cci.p.EnglishName,
+                        ArabicDescription = m.cci.p.ArabicDescription,
+                        EnglishDescription = m.cci.p.EnglishName,
+                        ImgUrl = m.cci.p.ImgUrl,
+                        Price = m.cci.p.Price,
+                        SalePrice = m.cci.p.SalePrice,
+                        //productColor = _dataContext.ProductColors.SingleOrDefault(x => x.Id == m.cci.p.colorId),
+                        //productSize = _dataContext.ProductSizes.SingleOrDefault(x => x.Id == m.cci.p.sizeId),
+                        //productAttributes = (_dataContext.ProductAttributes
+                        //     .Where(x => x.ProductId == m.cci.p.Id).DefaultIfEmpty().ToList()),
                     }
 
 

@@ -32,7 +32,7 @@ namespace ThreeSoftECommAPI.Services.EComm.CategoryServ
 
         public async Task<List<Category>> GetCategoriesTopAsync()
         {
-            return await _dataContext.category.Take(8).ToListAsync();
+            return await _dataContext.category.Take(8).Where(x =>x.Status == 1).ToListAsync();
         }
 
         public async Task<Category> GetCategoryByIdAsync(int CatgId)

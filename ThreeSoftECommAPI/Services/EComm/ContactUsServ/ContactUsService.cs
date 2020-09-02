@@ -19,7 +19,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ContactUsServ
 
         public async Task<ContactUs> GetContactUsAsync()
         {
-            return await _dataContext.ContactUs.FirstAsync();
+            return await _dataContext.ContactUs.FirstOrDefaultAsync();
         }
 
         public async Task<int> CreateContactUsAsync(ContactUs contactUs)
@@ -32,10 +32,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ContactUsServ
         public async Task<int> UpdateContactUsAsync(ContactUs contactUs)
         {
             _dataContext.ContactUs.Update(contactUs);
-            var created = await _dataContext.SaveChangesAsync();
-            return created;
+            var updated = await _dataContext.SaveChangesAsync();
+            return updated;
         }
-
-      
     }
 }

@@ -61,6 +61,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Id = id,
                 ArabicName = attributeRequest.ArabicName,
                 EnglishName = attributeRequest.EnglishName,
+                ProductId = attributeRequest.ProductId
             };
 
             var status = await _productAttributeService.Update(Attr);

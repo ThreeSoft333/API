@@ -335,16 +335,13 @@ namespace ThreeSoftECommAPI.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("DECIMAL (25,3)");
 
-                    b.Property<string>("ArabicName")
+                    b.Property<string>("Code")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreateBy")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("EnglishName")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Percentage")
@@ -367,15 +364,11 @@ namespace ThreeSoftECommAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArabicName")
+                    b.HasIndex("Code")
                         .IsUnique()
-                        .HasFilter("[ArabicName] IS NOT NULL");
+                        .HasFilter("[Code] IS NOT NULL");
 
                     b.HasIndex("CreateBy");
-
-                    b.HasIndex("EnglishName")
-                        .IsUnique()
-                        .HasFilter("[EnglishName] IS NOT NULL");
 
                     b.HasIndex("UpdateBy");
 
@@ -1141,11 +1134,11 @@ namespace ThreeSoftECommAPI.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ThreeSoftECommAPI.Domain.EComm.ProductColors", "colors")
+                    b.HasOne("ThreeSoftECommAPI.Domain.EComm.ProductColors", "productColor")
                         .WithMany()
                         .HasForeignKey("colorId");
 
-                    b.HasOne("ThreeSoftECommAPI.Domain.EComm.ProductSize", "size")
+                    b.HasOne("ThreeSoftECommAPI.Domain.EComm.ProductSize", "productSize")
                         .WithMany()
                         .HasForeignKey("sizeId");
                 });
@@ -1153,7 +1146,7 @@ namespace ThreeSoftECommAPI.Data.Migrations
             modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.ProductAttributes", b =>
                 {
                     b.HasOne("ThreeSoftECommAPI.Domain.EComm.Product", "product")
-                        .WithMany()
+                        .WithMany("productAttributes")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1162,7 +1155,7 @@ namespace ThreeSoftECommAPI.Data.Migrations
             modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.ProductImage", b =>
                 {
                     b.HasOne("ThreeSoftECommAPI.Domain.EComm.Product", "product")
-                        .WithMany()
+                        .WithMany("productImages")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1171,7 +1164,7 @@ namespace ThreeSoftECommAPI.Data.Migrations
             modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.ProductReviews", b =>
                 {
                     b.HasOne("ThreeSoftECommAPI.Domain.EComm.Product", "product")
-                        .WithMany()
+                        .WithMany("productReviews")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1202,7 +1195,7 @@ namespace ThreeSoftECommAPI.Data.Migrations
             modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.UserFavourites", b =>
                 {
                     b.HasOne("ThreeSoftECommAPI.Domain.EComm.Product", "product")
-                        .WithMany()
+                        .WithMany("userFavourites")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

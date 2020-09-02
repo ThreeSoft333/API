@@ -20,6 +20,7 @@ namespace ThreeSoftECommAPI.Services.Identity
         Task<AppUser> GetUserById(string UserId);
         Task<bool> AddUserRole(AppUser appUser, string Role);
         Task<string> GetUserRole(AppUser appUser);
+        Task<IList<AppUser>> customerList();
 
     }
 }

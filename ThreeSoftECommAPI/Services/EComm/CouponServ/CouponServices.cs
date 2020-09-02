@@ -35,10 +35,9 @@ namespace ThreeSoftECommAPI.Services.EComm.CouponServ
 
         public async Task<int> CreateCouponAsync(Coupon coupon)
         {
-            var CheckArName = await _dataContext.Coupons.SingleOrDefaultAsync(x => x.ArabicName == coupon.ArabicName);
-            var CheckEnName = await _dataContext.Coupons.SingleOrDefaultAsync(x => x.EnglishName == coupon.EnglishName);
+            var CheckCode = await _dataContext.Coupons.SingleOrDefaultAsync(x => x.Code == coupon.Code);
 
-            if (CheckArName != null || CheckEnName != null)
+            if (CheckCode != null)
                 return -1;
 
             await _dataContext.Coupons.AddAsync(coupon);
@@ -48,10 +47,9 @@ namespace ThreeSoftECommAPI.Services.EComm.CouponServ
 
         public async Task<int> UpdateCouponAsync(Coupon coupon)
         {
-            var CheckArName = await _dataContext.Coupons.Where(y => y.Id != coupon.Id).SingleOrDefaultAsync(x => x.ArabicName == coupon.ArabicName);
-            var CheckEnName = await _dataContext.Coupons.Where(y => y.Id != coupon.Id).SingleOrDefaultAsync(x => x.EnglishName == coupon.EnglishName);
+            var CheckCode = await _dataContext.Coupons.Where(y => y.Id != coupon.Id).SingleOrDefaultAsync(x => x.Code == coupon.Code);
 
-            if (CheckArName != null || CheckEnName != null)
+            if (CheckCode != null)
                 return -1;
 
             _dataContext.Coupons.Update(coupon);
@@ -73,7 +71,28 @@ namespace ThreeSoftECommAPI.Services.EComm.CouponServ
 
         public async Task<Coupon> GetCouponByNameAsync(string Name)
         {
-            return await _dataContext.Coupons.SingleOrDefaultAsync(x => x.EnglishName == Name || x.ArabicName == Name);
+            return await _dataContext.Coupons.Where(x => x.Code == Name.Trim() && x.Quantity > 0 && x.Status == 1).SingleOrDefaultAsync();
+        }
+        public async Task<bool> SubTrackNumberOfPromoCode(int CouponId)
+        {
+            var coubon = await GetCouponByIdAsync(CouponId);
+
+            var _coubon = new Coupon
+            {
+                Id = coubon.Id,
+                Amount = coubon.Amount,
+                Code = coubon.Code,
+                Percentage = coubon.Percentage,
+                Quantity = coubon.Quantity - 1,
+                Status = coubon.Status,
+                Type = coubon.Type,
+                CreateAt = coubon.CreateAt,
+                CreateBy = coubon.CreateBy,
+            };
+
+            _dataContext.Coupons.Update(_coubon);
+            var updated = await _dataContext.SaveChangesAsync();
+            return updated > 0;
         }
     }
 }
