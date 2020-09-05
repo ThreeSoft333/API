@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using ThreeSoftECommAPI.Contracts.V1.Responses;
 using ThreeSoftECommAPI.Data;
 using ThreeSoftECommAPI.Domain.EComm;
+using ThreeSoftECommAPI.Helpers;
 using ThreeSoftECommAPI.Services.EComm.SubCategoryServ;
 
 namespace ThreeSoftECommAPI.Services.EComm.SubSubCategoryServ
@@ -29,6 +31,25 @@ namespace ThreeSoftECommAPI.Services.EComm.SubSubCategoryServ
                     return await _dataContext.subCategory.Where(c => c.CategoryId == CategoryId).Where(x => x.Status == 0).ToListAsync();
                 default:
                     return await _dataContext.subCategory.Where(c => c.CategoryId == CategoryId).ToListAsync();
+            }
+        }
+        public PagedList<SubCategory> GetSubCategoriesAsync(int CategoryId, int status, Pagination pagination)
+        {
+            switch (status)
+            {
+                case 1:
+                    return PagedList<SubCategory>.ToPagedList(_dataContext.subCategory
+                        .Where(c => c.CategoryId == CategoryId && c.Status == 1),
+                        pagination.PageNumber,pagination.PageSize);
+                case 0:
+                    return PagedList<SubCategory>.ToPagedList(_dataContext.subCategory
+                        .Where(c => c.CategoryId == CategoryId && c.Status == 1),
+                        pagination.PageNumber, pagination.PageSize);
+
+                default:
+                    return PagedList<SubCategory>.ToPagedList(_dataContext.subCategory
+                        .Where(c => c.CategoryId == CategoryId),
+                        pagination.PageNumber, pagination.PageSize);
             }
         }
 
@@ -74,5 +95,7 @@ namespace ThreeSoftECommAPI.Services.EComm.SubSubCategoryServ
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
+
+       
     }
 }

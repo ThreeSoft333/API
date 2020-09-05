@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Xml.Schema;
 using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Contracts.V1.Requests.EComm.CatgReq;
+using ThreeSoftECommAPI.Contracts.V1.Responses;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Domain.EComm;
 using ThreeSoftECommAPI.Services.EComm.CategoryServ;
@@ -29,6 +30,22 @@ namespace ThreeSoftECommAPI.Controllers.V1
         public async Task<IActionResult> GetAll([FromQuery] int status)
         {
             return Ok(await _CategoryService.GetCategoriesAsync(status));
+        }
+
+        [HttpGet(ApiRoutes.Category.GetCatgPag)]
+        public IActionResult GetAll([FromQuery] int status, [FromQuery] Pagination pagination)
+        {
+            var category = _CategoryService.GetCategoriesAsync(status, pagination);
+            return Ok(new
+            {
+                Category = category,
+                PageSize = category.PageSize,
+                TotalCount = category.TotalCount,
+                TotalPage = category.TotalPage,
+                HasNext = category.HasNext,
+                HasPrevious = category.HasPrevious,
+                CurrentPage = category.CurrentPage
+            });
         }
 
         [HttpGet(ApiRoutes.Category.GetTob)]

@@ -54,6 +54,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class Category
         {
             public const string GetAll = Base + "/categories";
+            public const string GetCatgPag = Base + "/categoriesPag";
             public const string GetTob = Base + "/categoriesTop";
             public const string Get = Base + "/category/{catgId}";
             public const string Create = Base + "/category";
@@ -65,6 +66,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class SubCategory
         {
             public const string GetAll = Base + "/subCategories/{catgId}";
+            public const string GetSubCatgPag = Base + "/subCategoriesPag/{catgId}";
             public const string Get = Base + "/subcategory/{id}";
             public const string Create = Base + "/subcategory";
             public const string Update = Base + "/subcategory/{id}";

@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ThreeSoftECommAPI.Contracts.V1.Responses;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Domain.EComm;
+using ThreeSoftECommAPI.Helpers;
 
 namespace ThreeSoftECommAPI.Services.EComm.ProductServ
 {
    public interface IProductService
     {
         Task<List<Product>> GetProductsAsync(Int64 SubCatgId, int status);
-        Task<List<ProductResponse>> GetProductsBySubCategoryAsync(string UserId,Int64 SubCatgId);
+        ProductRespPagination GetProductsBySubCategoryAsync(string UserId,Int64 SubCatgId,
+            Pagination pagination);
         Task<List<ProductResponse>> GetProductsMostRecentAsync(string UserId, int count);
         Task<List<ProductResponse>> GetProductsMostWantedAsync(string UserId, int count);
         Task<List<ProductResponse>> GetProductsUserFavAsync(string UserId);

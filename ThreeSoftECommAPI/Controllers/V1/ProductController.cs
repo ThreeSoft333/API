@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Contracts.V1.Requests.EComm.ProductReq;
+using ThreeSoftECommAPI.Contracts.V1.Responses;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Domain.EComm;
 using ThreeSoftECommAPI.Services.EComm.ProductImageServ;
@@ -35,14 +37,30 @@ namespace ThreeSoftECommAPI.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Product.GetAllforApp)]
-        public async Task<IActionResult> GetProductsBySubCategoryAsync([FromRoute] Int64 SubCatgId,[FromQuery] string UserId)
+        public IActionResult GetProductsBySubCategoryAsync([FromRoute] Int64 SubCatgId,
+            [FromQuery] string UserId, [FromQuery] Pagination paginationQuery)
         {
-            return Ok(await _productService.GetProductsBySubCategoryAsync(UserId, SubCatgId));
+            var Products = _productService.GetProductsBySubCategoryAsync(UserId, SubCatgId,
+                paginationQuery);
+
+            var metaData = new
+            {
+                Products.TotalCount,
+                Products.PageSize,
+                Products.CurrentPage,
+                Products.HasNext,
+                Products.HasPrevious
+            };
+
+            Response.Headers.Add("x-Pagination", JsonConvert.SerializeObject(metaData));
+
+            return Ok(Products);
         }
 
         [HttpGet(ApiRoutes.Product.ProductsMostRecent)]
         public async Task<IActionResult> GetProductsMostRecentAsync([FromQuery] string UserId,[FromQuery] int count)
         {
+            
             return Ok(await _productService.GetProductsMostRecentAsync(UserId,count));
         }
 

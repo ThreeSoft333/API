@@ -90,6 +90,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts\V1\Responses\Queries\" />
     <Folder Include="wwwroot\Resources\Images\Advertizing\" />
     <Folder Include="wwwroot\Resources\Images\BrandImg\" />
     <Folder Include="wwwroot\Resources\Images\CategoryImg\" />

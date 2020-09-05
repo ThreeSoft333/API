@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Contracts.V1.Requests.EComm.SubCatgReq;
+using ThreeSoftECommAPI.Contracts.V1.Responses;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Domain.EComm;
 using ThreeSoftECommAPI.Services.EComm.SubCategoryServ;
@@ -29,6 +30,22 @@ namespace ThreeSoftECommAPI.Controllers.V1
         public async Task<IActionResult> GetAll([FromRoute] Int32 catgId, [FromQuery] int status)
         {
             return Ok(await _SubCategoryService.GetSubCategoriesAsync(catgId,status));
+        }
+
+        [HttpGet(ApiRoutes.SubCategory.GetSubCatgPag)]
+        public IActionResult GetAll([FromRoute] Int32 catgId, [FromQuery] int status,[FromQuery] Pagination pagination)
+        {
+            var Subcategory = _SubCategoryService.GetSubCategoriesAsync(catgId, status, pagination);
+            return Ok(new
+            {
+                SubCategory = Subcategory,
+                PageSize = Subcategory.PageSize,
+                TotalCount = Subcategory.TotalCount,
+                TotalPage = Subcategory.TotalPage,
+                HasNext = Subcategory.HasNext,
+                HasPrevious = Subcategory.HasPrevious,
+                CurrentPage = Subcategory.CurrentPage
+            });
         }
 
         [HttpGet(ApiRoutes.SubCategory.Get)]

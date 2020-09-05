@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using ThreeSoftECommAPI.Contracts.V1.Responses;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Data;
 using ThreeSoftECommAPI.Domain.EComm;
+using ThreeSoftECommAPI.Helpers;
 
 namespace ThreeSoftECommAPI.Services.EComm.ProductServ
 {
@@ -40,20 +42,21 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                                                      .Where(c => c.SubCategoryId == subCategoryId).ToListAsync();
             }
         }
-        public async Task<List<ProductResponse>> GetProductsBySubCategoryAsync(string UserId, long SubCatgId)
+        public ProductRespPagination GetProductsBySubCategoryAsync(string UserId, 
+            long SubCatgId,Pagination pagination)
         {
-            var product = await _dataContext.product
+            var product = PagedList<Product>.ToPagedList(_dataContext.product
                                            .Include(x => x.productAttributes)
                                            .Include(x => x.productReviews)
-                                            .Include(x => x.userFavourites)
-                                            .Include(x => x.productColor)
-                                            .Include(x => x.productSize)
-                                            .Include(x => x.productImages)
-                                            .Where(x=>x.SubCategoryId == SubCatgId)
-                                            .ToListAsync();
+                                           .Include(x => x.userFavourites)
+                                           .Include(x => x.productColor)
+                                           .Include(x => x.productSize)
+                                           .Include(x => x.productImages)
+                                           .Where(x=>x.SubCategoryId == SubCatgId)
+                                           ,pagination.PageNumber,pagination.PageSize);
 
             List<ProductResponse> lstproductResponses = new List<ProductResponse>();
-
+            
             for (int i = 0; i < product.Count; i++)
             {
 
@@ -90,19 +93,24 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                     }).ToList(),
                     productAttributes = product[i].productAttributes.Select(x => new ProductAttributesResponse
                     {
-                         ArabicName = x.ArabicName,
-                         EnglishName = x.EnglishName
-                         
+                        ArabicName = x.ArabicName,
+                        EnglishName = x.EnglishName
+
                     }).ToList()
 
                 };
                 lstproductResponses.Add(productRespons);
             }
+            ProductRespPagination productResp = new ProductRespPagination();
+            productResp.productResponses = lstproductResponses;
+            productResp.PageSize = product.PageSize;
+            productResp.TotalCount = product.TotalCount;
+            productResp.TotalPage = product.TotalPage;
+            productResp.HasNext = product.HasNext;
+            productResp.HasPrevious = product.HasPrevious;
+            productResp.CurrentPage = product.CurrentPage;
 
-
-            return lstproductResponses;
-
-          
+            return productResp;
         }
         public async Task<List<ProductResponse>> GetProductsMostRecentAsync(string UserId, int count)
         {

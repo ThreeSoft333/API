@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ThreeSoftECommAPI.Contracts.V1.Responses;
 using ThreeSoftECommAPI.Data;
 using ThreeSoftECommAPI.Domain.EComm;
+using ThreeSoftECommAPI.Helpers;
 
 namespace ThreeSoftECommAPI.Services.EComm.CategoryServ
 {
@@ -15,6 +17,25 @@ namespace ThreeSoftECommAPI.Services.EComm.CategoryServ
         public CategoryService(ApplicationDbContext dbContext)
         {
             _dataContext = dbContext;
+        }
+
+        public PagedList<Category> GetCategoriesAsync(int status, Pagination pagination)
+        {
+            switch (status)
+            {
+                case 1:
+                    return PagedList<Category>.ToPagedList(
+                        _dataContext.category.Where(x => x.Status == 1), pagination.PageNumber
+                        , pagination.PageSize);
+                case 0:
+                    return PagedList<Category>.ToPagedList(
+                        _dataContext.category.Where(x => x.Status == 0), pagination.PageNumber
+                        , pagination.PageSize);
+                default:
+                    return PagedList<Category>.ToPagedList(
+                        _dataContext.category, pagination.PageNumber
+                        , pagination.PageSize);
+            }
         }
 
         public async Task<List<Category>> GetCategoriesAsync(int status)
