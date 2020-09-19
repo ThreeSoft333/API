@@ -17,5 +17,6 @@ namespace ThreeSoftECommAPI.Domain.Identity
         public string CoverImageUrl { get; set; }
         public string DateOfBirth { get; set; }
         public string City { get; set; }
+        public string FcmRegToken { get; set; }
     }
 }

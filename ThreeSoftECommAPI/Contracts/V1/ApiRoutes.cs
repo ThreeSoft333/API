@@ -16,6 +16,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Login = Base + "/identity/login";
             public const string Register = Base + "/identity/register";
             public const string Update = Base + "/identity/update";
+            public const string UpdateFcmRegToken = Base + "/identity/updateFcmRegToken";
             public const string ChangePassword = Base + "/identity/changepassword";
             public const string ResetPassword = Base + "/identity/resetpassword";
             public const string ConfirmPhone = Base + "/identity/confirmphone";
@@ -54,6 +55,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class Category
         {
             public const string GetAll = Base + "/categories";
+            public const string search = Base + "/searchcategories";
             public const string GetCatgPag = Base + "/categoriesPag";
             public const string GetTob = Base + "/categoriesTop";
             public const string Get = Base + "/category/{catgId}";
@@ -66,6 +68,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class SubCategory
         {
             public const string GetAll = Base + "/subCategories/{catgId}";
+            public const string search = Base + "/searchsubCategories/{catgId}";
             public const string GetSubCatgPag = Base + "/subCategoriesPag/{catgId}";
             public const string Get = Base + "/subcategory/{id}";
             public const string Create = Base + "/subcategory";
@@ -180,6 +183,8 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string OrderStatusChart = Base + "/orderstatuschart";
             public const string CheckPreviousOrder = Base + "/checkpreviousorder/{userId}";
             public const string orderItems = Base + "/orderitems/{orderId}";
+            public const string orderReport = Base + "/orderreport";
+            public const string orderStatusCount = Base + "/orderstatuscount";
         }
 
         public static class UserAddresse
@@ -208,6 +213,16 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class payment
         {
             public const string Charge = Base + "/charge";
+        }
+
+        public static class NotificationRout
+        {
+            public const string GetAll = Base + "/notifications";
+            public const string Get = Base + "/notifications/{id}";
+            public const string Create = Base + "/notifications";
+            public const string Update = Base + "/notifications/{id}";
+            public const string Upload = Base + "/notifications/upload";
+            public const string Delete = Base + "/notifications/{id}";
         }
 
 

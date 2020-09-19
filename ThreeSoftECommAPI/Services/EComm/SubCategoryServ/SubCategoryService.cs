@@ -33,6 +33,12 @@ namespace ThreeSoftECommAPI.Services.EComm.SubSubCategoryServ
                     return await _dataContext.subCategory.Where(c => c.CategoryId == CategoryId).ToListAsync();
             }
         }
+        public async Task<List<SubCategory>> SearchSubCategoriesAsync(int CategoryId, string Name)
+        {
+            return await _dataContext.subCategory.Where(c => c.CategoryId == CategoryId &&
+            c.Status == 1 && (c.ArabicName.Contains(Name) || c.EnglishName.Contains(Name)))
+                .ToListAsync();
+        }
         public PagedList<SubCategory> GetSubCategoriesAsync(int CategoryId, int status, Pagination pagination)
         {
             switch (status)

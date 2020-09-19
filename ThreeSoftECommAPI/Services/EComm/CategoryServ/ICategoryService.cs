@@ -11,6 +11,7 @@ namespace ThreeSoftECommAPI.Services.EComm.CategoryServ
    public interface ICategoryService
     {
         Task<List<Category>> GetCategoriesAsync(int status);
+        Task<List<Category>> SearchCategoriesAsync(string Name);
         PagedList<Category> GetCategoriesAsync(int status,Pagination pagination);
         Task<List<Category>> GetCategoriesTopAsync();
         Task<Category> GetCategoryByIdAsync(Int32 categoryId);

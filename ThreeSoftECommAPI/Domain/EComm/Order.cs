@@ -29,5 +29,7 @@ namespace ThreeSoftECommAPI.Domain.EComm
 
         [ForeignKey(nameof(CouponId))]
         public Coupon coupon { get; set; }
+
+        public List<OrderItems> OrderItems { get; set; }
     }
 }

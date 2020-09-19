@@ -21,6 +21,7 @@ namespace ThreeSoftECommAPI.Services.Identity
         Task<bool> AddUserRole(AppUser appUser, string Role);
         Task<string> GetUserRole(AppUser appUser);
         Task<IList<AppUser>> customerList();
+        //Task<string[]> GetAllFcm();
 
     }
 }

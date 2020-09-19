@@ -11,6 +11,7 @@ namespace ThreeSoftECommAPI.Services.EComm.SubCategoryServ
    public interface ISubCategoryService
     {
         Task<List<SubCategory>> GetSubCategoriesAsync(int CategoryId, int status);
+        Task<List<SubCategory>> SearchSubCategoriesAsync(int CategoryId,string Name);
         PagedList<SubCategory> GetSubCategoriesAsync(int CategoryId, int status,Pagination pagination);
         Task<SubCategory> GetSubCategoryByIdAsync(Int32 subCategoryId);
         Task<int> CreateSubCategoryAsync(SubCategory subCategory);

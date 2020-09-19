@@ -10,7 +10,7 @@ using ThreeSoftECommAPI.Helpers;
 
 namespace ThreeSoftECommAPI.Services.EComm.CategoryServ
 {
-    public class CategoryService:ICategoryService
+    public class CategoryService : ICategoryService
     {
         private readonly ApplicationDbContext _dataContext;
 
@@ -36,6 +36,12 @@ namespace ThreeSoftECommAPI.Services.EComm.CategoryServ
                         _dataContext.category, pagination.PageNumber
                         , pagination.PageSize);
             }
+        }
+
+        public async Task<List<Category>> SearchCategoriesAsync(string Name)
+        {
+            return await _dataContext.category.Where(x => x.Status == 1 && 
+            (x.ArabicName.Contains(Name) || x.EnglishName.Contains(Name))).ToListAsync();
         }
 
         public async Task<List<Category>> GetCategoriesAsync(int status)
@@ -99,6 +105,6 @@ namespace ThreeSoftECommAPI.Services.EComm.CategoryServ
             return deleted > 0;
         }
 
-     
+      
     }
 }

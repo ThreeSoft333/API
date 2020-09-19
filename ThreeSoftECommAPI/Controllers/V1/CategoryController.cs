@@ -32,6 +32,12 @@ namespace ThreeSoftECommAPI.Controllers.V1
             return Ok(await _CategoryService.GetCategoriesAsync(status));
         }
 
+        [HttpGet(ApiRoutes.Category.search)]
+        public async Task<IActionResult> SearchCategory([FromQuery] string name)
+        {
+            return Ok(await _CategoryService.SearchCategoriesAsync(name));
+        }
+
         [HttpGet(ApiRoutes.Category.GetCatgPag)]
         public IActionResult GetAll([FromQuery] int status, [FromQuery] Pagination pagination)
         {

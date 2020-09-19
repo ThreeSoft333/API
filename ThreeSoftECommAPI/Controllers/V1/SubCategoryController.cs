@@ -32,6 +32,12 @@ namespace ThreeSoftECommAPI.Controllers.V1
             return Ok(await _SubCategoryService.GetSubCategoriesAsync(catgId,status));
         }
 
+        [HttpGet(ApiRoutes.SubCategory.search)]
+        public async Task<IActionResult> SearchSubCategory([FromRoute] Int32 catgId, [FromQuery] string name)
+        {
+            return Ok(await _SubCategoryService.SearchSubCategoriesAsync(catgId, name));
+        }
+
         [HttpGet(ApiRoutes.SubCategory.GetSubCatgPag)]
         public IActionResult GetAll([FromRoute] Int32 catgId, [FromQuery] int status,[FromQuery] Pagination pagination)
         {

@@ -324,5 +324,17 @@ namespace ThreeSoftECommAPI.Controllers.V1
         {
             return Ok(await _orderService.OrderStatusChart());
         }
+
+        [HttpGet(ApiRoutes.OrderRoute.orderReport)]
+        public async Task<IActionResult> OrderReport([FromQuery] DateTime fromdate,[FromQuery] DateTime todate)
+        {
+            return Ok(await _orderService.OrderReport(fromdate,todate));
+        }
+
+        [HttpGet(ApiRoutes.OrderRoute.orderStatusCount)]
+        public async Task<IActionResult> OrderStatusCount()
+        {
+            return Ok(await _orderService.OrderStatusCount());
+        }
     }
 }

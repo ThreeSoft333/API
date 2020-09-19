@@ -7,7 +7,7 @@ namespace ThreeSoftECommAPI.Contracts.V1.Responses.EComm
 {
     public class OrderStatusChartResponse
     {
-        public string status { get; set; }
-        public int count { get; set; }
+        public string label { get; set; }
+        public int value { get; set; }
     }
 }

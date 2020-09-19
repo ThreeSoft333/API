@@ -243,6 +243,43 @@ namespace ThreeSoftECommAPI.Controllers.V1
             });
         }
 
+        [HttpPost(ApiRoutes.Identity.UpdateFcmRegToken)]
+        public async Task<IActionResult> UpdateToken([FromBody] UpdateFcmRegToken request)
+        {
+            var User = await _identityService.GetUserById(request.UserId);
+
+            if (User != null)
+            {
+                User.FcmRegToken = request.FcmRegToken;
+
+                var UpUser = await _identityService.UpdateUserInfoAsync(User);
+
+                if (!UpUser.Success)
+                {
+                    return BadRequest(new AuthFailedResponse
+                    {
+                        message = UpUser.Errors,
+                        status = BadRequest().StatusCode
+                    });
+                }
+            }
+            else
+            {
+                return NotFound(new ChangePasswordResponse
+                {
+                    status = NotFound().StatusCode,
+                    message = "User does not exist"
+                });
+            }
+
+            return Ok(new ChangePasswordResponse
+            {
+                status = Ok().StatusCode,
+                message = "User Info Updated Successfully"
+            });
+        }
+
+
         [HttpPost(ApiRoutes.Identity.Upload), DisableRequestSizeLimit]
         public async Task<IActionResult> Upload()
         {

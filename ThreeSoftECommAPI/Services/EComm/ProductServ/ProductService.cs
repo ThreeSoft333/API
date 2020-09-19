@@ -327,17 +327,18 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             var product = await _dataContext.product
                                             .Include(x => x.productAttributes)
                                             .Include(x => x.productReviews)
-                                             .Include(x => x.userFavourites)
-                                             .Include(x => x.productColor)
-                                             .Include(x => x.productSize)
-                                             .Include(x => x.productImages)
-                                             .Where(x => x.status == 1 && x.subCategory.Status == 1 
+                                            .Include(x => x.userFavourites)
+                                            .Include(x => x.productColor)
+                                            .Include(x => x.productSize)
+                                            .Include(x => x.productImages)
+                                            .Where(x => x.status == 1 && x.subCategory.Status == 1 
                                              && x.subCategory.category.Status == 1 &&
                                              x.ArabicName.Contains(SearchText)
                                                     || x.EnglishName.Contains(SearchText)
                                                     || x.ArabicDescription.Contains(SearchText)
                                                     || x.EnglishDescription.Contains(SearchText))
                                              .ToListAsync();
+
             List<ProductResponse> lstproductResponses = new List<ProductResponse>();
             if (product != null) { 
             

@@ -375,6 +375,36 @@ namespace ThreeSoftECommAPI.Data.Migrations
                     b.ToTable("Coupons");
                 });
 
+            modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BodyAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BodyEn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreateDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleEn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.Offers", b =>
                 {
                     b.Property<long>("Id")
@@ -882,6 +912,9 @@ namespace ThreeSoftECommAPI.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FcmRegToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
@@ -1098,7 +1131,7 @@ namespace ThreeSoftECommAPI.Data.Migrations
             modelBuilder.Entity("ThreeSoftECommAPI.Domain.EComm.OrderItems", b =>
                 {
                     b.HasOne("ThreeSoftECommAPI.Domain.EComm.Order", "order")
-                        .WithMany()
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

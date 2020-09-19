@@ -256,5 +256,10 @@ namespace ThreeSoftECommAPI.Services.Identity
             var x = await _userManager.GetUsersInRoleAsync("Customer");
             return x;
         }
+
+        //public async Task<string[]> GetAllFcm()
+        //{
+        //    await _userManager.GetUsersInRoleAsync("Customer")
+        //}
     }
 }

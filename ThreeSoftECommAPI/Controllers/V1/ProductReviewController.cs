@@ -42,7 +42,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 UserId = productReviewRequest.UserId,
                 Rate = productReviewRequest.Rate,
                 Status = 0,
-                CreatedAt = productReviewRequest.CreatedAt
+                CreatedAt = System.DateTime.Now
             };
 
             var status = await _productReviewService.CreateProductReviewAsync(ProdReview);

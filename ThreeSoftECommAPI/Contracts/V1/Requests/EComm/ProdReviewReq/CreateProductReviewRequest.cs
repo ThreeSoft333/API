@@ -12,6 +12,5 @@ namespace ThreeSoftECommAPI.Contracts.V1.Requests.EComm.ProdReviewReq
         public Int32 Rate { get; set; }
         public string UserId { get; set; }
         public Int64 ProductId { get; set; }
-        public DateTime CreatedAt { get; set; }
     }
 }

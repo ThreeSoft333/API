@@ -191,7 +191,9 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         {
             if (status == 4)
             {
-                return await _dataContext.Orders.Include(x => x.User).Include(x => x.userAddresses)
+                return await _dataContext.Orders
+                    .Include(x => x.User)
+                    .Include(x => x.userAddresses)
                     .Where(x => x.Status == 4 || x.Status == 6).ToListAsync();
             }
             else
@@ -331,7 +333,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
 
         }
 
-        public async Task<int> UpdateOrderAsync(long orderId,Int32 status,string RejectReason)
+        public async Task<int> UpdateOrderAsync(long orderId, Int32 status, string RejectReason)
         {
             var order = await _dataContext.Orders.SingleOrDefaultAsync(x => x.Id == orderId);
 
@@ -347,18 +349,22 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         public async Task<List<OrderStatusChartResponse>> OrderStatusChart()
         {
             //1 - Received 2 - In Progress Now 3 - Ready for Delivery 4 - The order was delivered 5 - Rejected
-      
-                  var x= await( from order in  _dataContext.Orders
-                          group order by order.Status into g
-                          select new OrderStatusChartResponse
-                          {
-                              status = g.Key == 1 ? "Received":
-                                       g.Key == 2 ? "In Progress Now" :
-                                       g.Key == 3 ? "Ready for Delivery" :
-                                       g.Key == 4 ? "delivered" :
-                                       "Rejected",
-                              count = g.Count()
-                          }).ToListAsync();
+            var orders = await _dataContext.Orders.ToListAsync();
+
+
+            
+            var x = await (from order in _dataContext.Orders
+                           group order by order.Status into g
+                           select new OrderStatusChartResponse
+                           {
+                               label =  g.Key == 1 ? "Received" :
+                                        g.Key == 2 ? "In Progress Now" :
+                                        g.Key == 3 ? "Ready for Delivery" :
+                                        g.Key == 4 || g.Key == 6 ? "delivered" :
+                                        g.Key == 5 ? "Rejected" :
+                                        "",
+                               value =  g.Count()
+                           }).ToListAsync();
 
             return x;
         }
@@ -366,9 +372,35 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         public async Task<int> GetLastOrderStatusNo(string UserId)
         {
             var status = await _dataContext.Orders.Where(x => x.UserId == UserId)
-                .OrderByDescending(x => x.Id).Select(x =>x.Status).FirstOrDefaultAsync();
+                .OrderByDescending(x => x.Id).Select(x => x.Status).FirstOrDefaultAsync();
 
             return status;
+        }
+
+        public async Task<List<Order>> OrderReport(DateTime FromDate, DateTime ToDate)
+        {
+            return await _dataContext.Orders
+                .Include(x => x.User)
+                .Include(x => x.userAddresses)
+                .Include(x => x.OrderItems)
+                .Where(x => x.CreatedAt >= FromDate && x.CreatedAt <= ToDate)
+                .ToListAsync();
+        }
+
+        public async Task<OrderStatusCountResponse> OrderStatusCount()
+        {
+            var orders = await _dataContext.Orders.ToListAsync();
+            //.Where(x => x.CreatedAt >= DateTime.Now.AddDays(-1))
+
+            return new OrderStatusCountResponse
+            {
+                orders = orders.Count,
+                Received = orders.Where(x => x.Status == 1).ToList().Count,
+                inProgressNow = orders.Where(x => x.Status == 2).ToList().Count,
+                readyForDelivary = orders.Where(x => x.Status == 3).ToList().Count,
+                delivered = orders.Where(x => x.Status == 4 || x.Status == 6).ToList().Count,
+                Rejected = orders.Where(x => x.Status == 5).ToList().Count,
+            };
         }
     }
 }

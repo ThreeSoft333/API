@@ -46,6 +46,7 @@ using Microsoft.AspNetCore.Http;
 using ThreeSoftECommAPI.Services.EComm.ContactUsServ;
 using ThreeSoftECommAPI.Services.EComm.PaymentServ;
 using ThreeSoftECommAPI.Services.EComm.ProductAttributeServ;
+using ThreeSoftECommAPI.Services.EComm.NotificationServ;
 
 namespace ThreeSoftECommAPI
 {
@@ -99,6 +100,7 @@ namespace ThreeSoftECommAPI
             services.AddScoped<ICouponServices, CouponServices>();
             services.AddScoped<IContactUsService, ContactUsService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
 
 
