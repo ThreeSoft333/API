@@ -31,6 +31,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class Dashboard
         {
             public const string Get = Base + "/dashboard";
+            public const string drillDownChart = Base + "/dashboard/drilldownchart";
         }
         public static class Brands
         {
@@ -63,6 +64,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Update = Base + "/category/{catgId}";
             public const string Upload = Base + "/category/upload";
             public const string Delete = Base + "/category/{catgId}";
+            
         }
 
         public static class SubCategory

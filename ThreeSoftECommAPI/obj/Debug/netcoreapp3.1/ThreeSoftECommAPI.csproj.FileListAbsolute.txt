@@ -116,4 +116,3 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcor
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.pdb
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.genruntimeconfig.cache
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\obj\Debug\netcoreapp3.1\ThreeSoftECommAPI.csprojAssemblyReference.cache

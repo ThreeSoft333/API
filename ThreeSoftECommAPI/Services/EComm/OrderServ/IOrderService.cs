@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ThreeSoftECommAPI.Contracts.V1.Responses.Charts;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Domain.EComm;
 

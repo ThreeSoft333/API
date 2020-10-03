@@ -7,10 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1;
+using ThreeSoftECommAPI.Contracts.V1.Responses.Charts;
 using ThreeSoftECommAPI.Services.EComm.AdvertisingServ;
 using ThreeSoftECommAPI.Services.EComm.CartItemsServ;
 using ThreeSoftECommAPI.Services.EComm.CategoryServ;
 using ThreeSoftECommAPI.Services.EComm.OffersServ;
+using ThreeSoftECommAPI.Services.EComm.OrderItemServ;
 using ThreeSoftECommAPI.Services.EComm.OrderServ;
 using ThreeSoftECommAPI.Services.EComm.ProductServ;
 
@@ -25,13 +27,15 @@ namespace ThreeSoftECommAPI.Controllers.V1
         private readonly IOffersService _OffersService;
         private readonly ICartItemService _cartItemService;
         private readonly IOrderService _orderService;
+        private readonly IOrderItemService _orderItemService;
 
         public DashboardController(ICategoryService CategoryService,
                                    IAdvertisingService advertisingService,
                                    IProductService productService,
                                    IOffersService offersService,
                                    ICartItemService cartItemService,
-                                   IOrderService orderService)
+                                   IOrderService orderService,
+                                   IOrderItemService orderItemService)
         {
             _CategoryService = CategoryService;
             _AdvertisingService = advertisingService;
@@ -39,6 +43,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
             _OffersService = offersService;
             _cartItemService = cartItemService;
             _orderService = orderService;
+            _orderItemService = orderItemService;
         }
 
         [HttpGet(ApiRoutes.Dashboard.Get)]
@@ -71,6 +76,16 @@ namespace ThreeSoftECommAPI.Controllers.V1
             };
 
             return Ok(obj);
+        }
+
+        [HttpGet(ApiRoutes.Dashboard.drillDownChart)]
+        public async Task<IActionResult> getdrillDownChartData([FromQuery] string lang)
+        {
+            DrillDownChartCategory drillDownChartCategories = new DrillDownChartCategory();
+            drillDownChartCategories.categoryPcntCharts = await _orderItemService.getCategoryPercent(lang);
+            drillDownChartCategories.subCategoryPcntCharts = await _orderItemService.getSubCategoryPercent(lang);
+
+            return Ok(drillDownChartCategories);
         }
 
     }

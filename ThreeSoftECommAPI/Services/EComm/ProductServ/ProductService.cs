@@ -39,7 +39,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                 default:
                     return await _dataContext.product.Include(x => x.subCategory)
                                                      .Include(x => x.productImages)
-                                                     .Where(c => c.SubCategoryId == subCategoryId).ToListAsync();
+                                                     .Where(c => c.SubCategoryId == subCategoryId)
+                                                     .ToListAsync();
             }
         }
         public ProductRespPagination GetProductsBySubCategoryAsync(string UserId, 

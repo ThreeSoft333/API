@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ThreeSoftECommAPI.Contracts.V1.Responses.Charts;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Data;
 using ThreeSoftECommAPI.Domain.EComm;
@@ -346,24 +347,44 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
 
         }
 
+        //public async Task<List<OrderStatusChartResponse>> OrderStatusChart()
+        //{
+        //    //1 - Received 2 - In Progress Now 3 - Ready for Delivery 4 - The order was delivered 5 - Rejected
+
+        //    var x = await (from order in _dataContext.Orders
+        //                   group order by order.Status into g
+        //                   select new OrderStatusChartResponse
+        //                   {
+        //                       label =  g.Key == 1 ? "Received" :
+        //                                g.Key == 2 ? "In Progress Now" :
+        //                                g.Key == 3 ? "Ready for Delivery" :
+        //                                g.Key == 4 || g.Key == 6 ? "delivered" :
+        //                                g.Key == 5 ? "Rejected" :
+        //                                "",
+        //                       value =  g.Count()
+        //                   }).ToListAsync();
+
+        //    return x;
+        //}
+
         public async Task<List<OrderStatusChartResponse>> OrderStatusChart()
         {
             //1 - Received 2 - In Progress Now 3 - Ready for Delivery 4 - The order was delivered 5 - Rejected
-            var orders = await _dataContext.Orders.ToListAsync();
+            var ItemCount = await _dataContext.OrderItems.ToListAsync();
+            var total = ItemCount.Sum(r => r.Id * r.Quantity);
 
-
-            
-            var x = await (from order in _dataContext.Orders
-                           group order by order.Status into g
+            var x = await (from orderItem in _dataContext.OrderItems 
+                           join product in _dataContext.product on orderItem.ProductId
+                           equals product.Id
+                           join subCategory in _dataContext.subCategory on product.SubCategoryId
+                           equals subCategory.Id
+                           join category in _dataContext.category on subCategory.CategoryId
+                           equals category.Id
+                           group category by category.ArabicName into g
                            select new OrderStatusChartResponse
                            {
-                               label =  g.Key == 1 ? "Received" :
-                                        g.Key == 2 ? "In Progress Now" :
-                                        g.Key == 3 ? "Ready for Delivery" :
-                                        g.Key == 4 || g.Key == 6 ? "delivered" :
-                                        g.Key == 5 ? "Rejected" :
-                                        "",
-                               value =  g.Count()
+                               label = g.Key.ToString(),
+                               value = g.Count()
                            }).ToListAsync();
 
             return x;
@@ -402,5 +423,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
                 Rejected = orders.Where(x => x.Status == 5).ToList().Count,
             };
         }
+
+      
     }
 }
