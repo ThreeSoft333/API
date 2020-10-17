@@ -49,6 +49,7 @@ namespace ThreeSoftECommAPI.Domain.EComm
         public List<ProductImage> productImages { get; set; }
         public List<UserFavourites> userFavourites { get; set; }
         public List<ProductAttributes> productAttributes {get;set;}
+        public List<OrderItems> orderItems {get;set;}
 
     }
 }

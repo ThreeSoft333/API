@@ -35,7 +35,7 @@ namespace ThreeSoftECommAPI.Services.Identity
             {
                 return new AuthenticationResult
                 {
-                    Errors = "User with this email address already exists"
+                    Errors = "User already exists"
                 };
             }
 
@@ -60,7 +60,40 @@ namespace ThreeSoftECommAPI.Services.Identity
             return GenerateAuthenticationResultForUser(newUser);
 
         }
-        
+
+        public async Task<AuthenticationResultWeb> RegisterWebAsync(string FullName, string UserName, string Email, string password)
+        {
+            var User = await _userManager.FindByNameAsync(UserName);
+
+            if (User != null)
+            {
+                return new AuthenticationResultWeb
+                {
+                    Errors = "User already exists"
+                };
+            }
+
+            var newUser = new AppUser
+            {
+                Email = Email,
+                UserName = UserName,
+                FullName = FullName
+            };
+
+            var CreateUser = await _userManager.CreateAsync(newUser, password);
+
+            if (!CreateUser.Succeeded)
+            {
+                return new AuthenticationResultWeb
+                {
+                    Success = false,
+                    Errors = CreateUser.Errors.Select(x => x.Description).FirstOrDefault()
+                };
+            }
+
+            return GenerateAuthenticationResultForUserWeb(newUser);
+        }
+
         public async Task<string> GeneratePhoneNumberConfirmedToken(AppUser appUser)
         {
             return await _userManager.GenerateChangePhoneNumberTokenAsync(appUser, appUser.PhoneNumber);
@@ -107,6 +140,39 @@ namespace ThreeSoftECommAPI.Services.Identity
             return GenerateAuthenticationResultForUser(User);
         }
 
+        public async Task<AuthenticationResultWeb> LoginWebAsync(string userName, string password)
+        {
+            AppUser User ;
+            if (userName.Contains("@"))
+            {
+                User = await _userManager.FindByEmailAsync(userName);
+            }
+            else
+            {
+                User = await _userManager.FindByNameAsync(userName);
+            }
+
+            if (User == null)
+            {
+                return new AuthenticationResultWeb
+                {
+                    Errors = "Invalid user name or password"
+                };
+            }
+
+            var userHasValidPassword = await _userManager.CheckPasswordAsync(User, password);
+
+            if (!userHasValidPassword)
+            {
+                return new AuthenticationResultWeb
+                {
+                    Errors = "Invalid user name or password"
+                };
+            }
+
+            return GenerateAuthenticationResultForUserWeb(User);
+        }
+
         private AuthenticationResult GenerateAuthenticationResultForUser(AppUser User)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -144,6 +210,40 @@ namespace ThreeSoftECommAPI.Services.Identity
                 Address = User.Address,
                 City = User.City,
                 PhoneNumberConfirmed = User.PhoneNumberConfirmed
+            };
+        }
+
+        private AuthenticationResultWeb GenerateAuthenticationResultForUserWeb(AppUser User)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                 {
+                    new Claim(JwtRegisteredClaimNames.Sub,User.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email,User.Email),
+                    new Claim("id",User.Id)
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256Signature),
+                IssuedAt = DateTime.UtcNow
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+
+            return new AuthenticationResultWeb
+            {
+                Success = true,
+                Token = tokenHandler.WriteToken(token),
+                UserId = User.Id,
+                UserName = User.UserName,
+                FullName = User.FullName,
+                Email = User.Email,
             };
         }
 
@@ -256,6 +356,10 @@ namespace ThreeSoftECommAPI.Services.Identity
             var x = await _userManager.GetUsersInRoleAsync("Customer");
             return x;
         }
+
+       
+
+
 
         //public async Task<string[]> GetAllFcm()
         //{

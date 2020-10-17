@@ -97,12 +97,8 @@ C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netc
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Newtonsoft.Json.Bson.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\AspNetCore.Reporting.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\AspNetCore.ReportingServices.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\System.CodeDom.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\System.Data.SqlClient.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\System.Private.ServiceModel.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\System.ServiceModel.Http.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\System.ServiceModel.Primitives.dll
-C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\System.ServiceModel.dll
 C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\System.Text.Encoding.CodePages.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Microsoft.ReportViewer.WebForms.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Microsoft.ReportViewer.Common.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Users\husam\source\repos\ThreeSoftECommAPI\ThreeSoftECommAPI\bin\Release\netcoreapp3.1\win-x86\Microsoft.SqlServer.Types.dll

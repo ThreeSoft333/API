@@ -14,7 +14,9 @@ namespace ThreeSoftECommAPI.Contracts.V1
         public static class Identity
         {
             public const string Login = Base + "/identity/login";
+            public const string LoginWeb = Base + "/identity/loginweb";
             public const string Register = Base + "/identity/register";
+            public const string RegisterWeb = Base + "/identity/registerweb";
             public const string Update = Base + "/identity/update";
             public const string UpdateFcmRegToken = Base + "/identity/updateFcmRegToken";
             public const string ChangePassword = Base + "/identity/changepassword";
@@ -185,7 +187,6 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string OrderStatusChart = Base + "/orderstatuschart";
             public const string CheckPreviousOrder = Base + "/checkpreviousorder/{userId}";
             public const string orderItems = Base + "/orderitems/{orderId}";
-            public const string orderReport = Base + "/orderreport";
             public const string orderStatusCount = Base + "/orderstatuscount";
         }
 
@@ -227,6 +228,11 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Delete = Base + "/notifications/{id}";
         }
 
-
+        public static class ReportsRout
+        {
+            public const string orderReport = Base + "/orderreport";
+            public const string orderProductReport = Base + "/orderproductreport";
+            public const string ProductBySubCategoryReport = Base + "/productbysubcategoryreport";
+        }
     }
 }

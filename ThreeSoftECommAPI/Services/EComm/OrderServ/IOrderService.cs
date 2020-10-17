@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1.Responses.Charts;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
+using ThreeSoftECommAPI.Contracts.V1.Responses.Reports;
 using ThreeSoftECommAPI.Domain.EComm;
 
 namespace ThreeSoftECommAPI.Services.EComm.OrderServ
@@ -20,7 +21,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         Task<List<Order>> GetOrdersForAdmin(int status);    
         Task<bool> CheckPreviousOrder(string UserId);
         Task<List<OrderStatusChartResponse>> OrderStatusChart();
-        Task<List<Order>> OrderReport(DateTime FromDate, DateTime ToDate);
+        Task<List<OrderReportResp>> OrderReport(DateTime FromDate, DateTime ToDate);
         Task<OrderStatusCountResponse> OrderStatusCount();
 
     }

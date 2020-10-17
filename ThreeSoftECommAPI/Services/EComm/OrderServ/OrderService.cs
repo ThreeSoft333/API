@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1.Responses.Charts;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
+using ThreeSoftECommAPI.Contracts.V1.Responses.Reports;
 using ThreeSoftECommAPI.Data;
 using ThreeSoftECommAPI.Domain.EComm;
 
@@ -398,13 +399,22 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
             return status;
         }
 
-        public async Task<List<Order>> OrderReport(DateTime FromDate, DateTime ToDate)
+        public async Task<List<OrderReportResp>> OrderReport(DateTime FromDate, DateTime ToDate)
         {
             return await _dataContext.Orders
                 .Include(x => x.User)
                 .Include(x => x.userAddresses)
                 .Include(x => x.OrderItems)
                 .Where(x => x.CreatedAt >= FromDate && x.CreatedAt <= ToDate)
+                .Select(x => new OrderReportResp
+                {
+                    orderId = x.Id,
+                    customrName = x.User.FullName,
+                    address = x.userAddresses.City,
+                    date = x.CreatedAt.ToString("yyyy-MM-dd"),
+                    paymentMethod = x.PaymentMethod == 1 ? "Cash" : "Credit",
+                    amount = x.OrderItems.Select(x => x.Total).Sum()
+                })
                 .ToListAsync();
         }
 

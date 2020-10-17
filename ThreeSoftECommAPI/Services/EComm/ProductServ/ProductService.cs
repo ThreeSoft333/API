@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1.Responses;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
+using ThreeSoftECommAPI.Contracts.V1.Responses.Reports;
 using ThreeSoftECommAPI.Data;
 using ThreeSoftECommAPI.Domain.EComm;
 using ThreeSoftECommAPI.Helpers;
@@ -520,7 +521,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
             var Updated = await _dataContext.SaveChangesAsync();
             return Updated;
         }
-
         public async Task<bool> CheckProductsIfActive(long ProductId)
         {
             var produc = await _dataContext.product.Where(x => x.Id == ProductId && x.status == 1 
@@ -531,7 +531,20 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
 
             return true;
         }
-        
+
+        public async Task<List<ProductsBySubCatgReportResp>> ProductsBySubCategoryReport(long subCategoryId)
+        {
+            return await _dataContext.product
+                .Where(x => x.SubCategoryId == subCategoryId)
+                .Select(x => new ProductsBySubCatgReportResp
+                {
+                    productName = x.ArabicName,
+                    currentPrice = x.SalePrice != 0 ? x.SalePrice : x.Price,
+                    producCountAll = x.Quantity + x.orderItems.Select(x => x.Quantity).Sum(),
+                    producCountAvailable = x.Quantity
+                }).ToListAsync();
+        }
+
         //public async Task<ReviewProductResponse> ReviewProduct(long ProductId)
         //{
         //    var query = await (from p in _dataContext.product

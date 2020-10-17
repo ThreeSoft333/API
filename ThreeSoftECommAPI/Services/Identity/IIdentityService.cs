@@ -10,7 +10,9 @@ namespace ThreeSoftECommAPI.Services.Identity
   public  interface IIdentityService
     {
         Task<AuthenticationResult> RegisterAsync(string Email, string PhoneNumber, string password);
+        Task<AuthenticationResultWeb> RegisterWebAsync(string FullName,string UserName,string Email,string password);
         Task<AuthenticationResult> LoginAsync(string Email, string PhoneNumber, string password);
+        Task<AuthenticationResultWeb> LoginWebAsync(string userName, string password);
         Task<AuthenticationResult> ChangePasswordAsync(string PhoneNumber, string Currentpassword,string NewPassword);
         Task<string> GeneratePasswordResetToken(string PhoneNumber);
         Task<Int32> ResetPasswordAsync(string PhoneNumber, string Token, string NewPassword);

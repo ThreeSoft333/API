@@ -54,25 +54,26 @@ namespace ThreeSoftECommAPI.Controllers.V1
             }
 
             var appUser = await _identityService.GetUserById(authResponse.UserId);
-            string UserRole = "";
-            switch (request.Role)
-            {
-                case 1:
-                    await _identityService.AddUserRole(appUser, "Owner");
-                    UserRole = "Owner";
-                    break;
-                case 2:
-                    await _identityService.AddUserRole(appUser, "Admin");
-                    UserRole = "Admin";
-                    break;
-                default:
-                    await _identityService.AddUserRole(appUser, "Customer");
-                    UserRole = "Customer";
-                    break;
-            }
+
+            await _identityService.AddUserRole(appUser, "Customer");
+            /*
+                        switch (request.Role)
+                        {
+                            case 1:
+                                await _identityService.AddUserRole(appUser, "Owner");
+                                UserRole = "Owner";
+                                break;
+                            case 2:
+                                await _identityService.AddUserRole(appUser, "Admin");
+                                UserRole = "Admin";
+                                break;
+                            default:
+                                await _identityService.AddUserRole(appUser, "Customer");
+                                UserRole = "Customer";
+                                break;
+                        }*/
 
             var PhoneNumberConfirmed = _identityService.GeneratePhoneNumberConfirmedToken(appUser);
-
             SendMessage(PhoneNumberConfirmed.Result);
 
             return Ok(new AuthSuccessResponse
@@ -84,6 +85,55 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Address = authResponse.Address,
                 ImgUrl = authResponse.ImgUrl,
                 ImgCoverUrl = authResponse.ImgCoverUrl,
+                Role = "Customer"
+            });
+        }
+
+        [HttpPost(ApiRoutes.Identity.RegisterWeb)]
+        public async Task<IActionResult> RegisterWeb([FromBody] UserRegistrationWebRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    message = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage)).FirstOrDefault(),
+                    status = BadRequest().StatusCode
+                });
+            }
+
+            var authResponse = await _identityService.RegisterWebAsync(request.fullName, request.userName, request.Email,request.Password);
+
+            if (!authResponse.Success)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    message = authResponse.Errors,
+                    status = BadRequest().StatusCode
+                });
+            }
+
+            var appUser = await _identityService.GetUserById(authResponse.UserId);
+
+            string UserRole = "";
+            switch (request.Role)
+            {
+                case 1:
+                    await _identityService.AddUserRole(appUser, "Owner");
+                    UserRole = "Owner";
+                    break;
+                default:
+                    await _identityService.AddUserRole(appUser, "Admin");
+                    UserRole = "Admin";
+                    break;
+            }
+
+            return Ok(new AuthSuccessResponse
+            {
+                Token = authResponse.Token,
+                UserId = authResponse.UserId,
+                UserName = authResponse.UserName,
+                FullName = authResponse.FullName,
+                Email = authResponse.Email,
                 Role = UserRole
             });
         }
@@ -123,6 +173,32 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Role = await _identityService.GetUserRole(appUser),
                 City = authResponse.City,
                 PhoneNumberConfirmed = authResponse.PhoneNumberConfirmed
+            });
+        }
+
+        [HttpPost(ApiRoutes.Identity.LoginWeb)]
+        public async Task<IActionResult> LoginWeb([FromBody] UserLoginWebRequest request)
+        {
+            var authResponse = await _identityService.LoginWebAsync(request.userName, request.Password);
+            if (!authResponse.Success)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    message = authResponse.Errors,
+                    status = BadRequest().StatusCode
+                });
+            }
+
+            var appUser = await _identityService.GetUserById(authResponse.UserId);
+
+            return Ok(new AuthSuccessResponse
+            {
+                Token = authResponse.Token,
+                UserId = authResponse.UserId,
+                UserName = authResponse.UserName,
+                FullName = authResponse.FullName,
+                Email = authResponse.Email,
+                Role = await _identityService.GetUserRole(appUser)
             });
         }
 
@@ -174,9 +250,9 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 status = BadRequest().StatusCode
             });
 
-          
 
-            
+
+
         }
 
         [HttpPost(ApiRoutes.Identity.ConfirmPhone)]
@@ -278,7 +354,6 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 message = "User Info Updated Successfully"
             });
         }
-
 
         [HttpPost(ApiRoutes.Identity.Upload), DisableRequestSizeLimit]
         public async Task<IActionResult> Upload()
@@ -396,31 +471,31 @@ namespace ThreeSoftECommAPI.Controllers.V1
             char[] upperCase = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
             char[] lowerCase = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
             int[] numbers = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-            char[] spichal = { '@','!','£','$','%','&'};
+            char[] spichal = { '@', '!', '£', '$', '%', '&' };
             Random rRandom = new Random();
 
 
-            
+
             //for (int i = 0; i < passwordLength; i++)
             //{
-               // r = rRandom.Next(4);
+            // r = rRandom.Next(4);
 
-                //if (r == 0)
-                //{
-                    k = rRandom.Next(0, 25);
-                    password += upperCase[k];
-               // }
+            //if (r == 0)
+            //{
+            k = rRandom.Next(0, 25);
+            password += upperCase[k];
+            // }
 
-                //else if (r == 1)
-                //{
-                    k = rRandom.Next(0, 25);
-                    password += lowerCase[k];
-               // }
+            //else if (r == 1)
+            //{
+            k = rRandom.Next(0, 25);
+            password += lowerCase[k];
+            // }
 
-                //else if (r == 2)
-                //{
-                    k = rRandom.Next(0, 9);
-                    password += numbers[k];
+            //else if (r == 2)
+            //{
+            k = rRandom.Next(0, 9);
+            password += numbers[k];
 
             k = rRandom.Next(0, 25);
             password += upperCase[k];
@@ -428,7 +503,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
             //else if (r == 3)
             //{
             k = rRandom.Next(0, 5);
-                    password += spichal[k];
+            password += spichal[k];
             //}
             k = rRandom.Next(0, 25);
             password += lowerCase[k];

@@ -76,7 +76,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.4" />
@@ -93,8 +92,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\V1\Responses\Queries\" />
-    <Folder Include="Reports\" />
     <Folder Include="wwwroot\Resources\Images\Advertizing\" />
     <Folder Include="wwwroot\Resources\Images\BrandImg\" />
     <Folder Include="wwwroot\Resources\Images\CategoryImg\" />
@@ -102,6 +99,12 @@
     <Folder Include="wwwroot\Resources\Images\ProductImg\" />
     <Folder Include="wwwroot\Resources\Images\SubCatgImg\" />
     <Folder Include="wwwroot\Resources\Images\UserImage\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.ReportViewer.WebForms">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

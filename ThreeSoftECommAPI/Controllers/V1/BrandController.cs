@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,8 +29,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpGet(ApiRoutes.Brands.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _brandService.GetBrandsAsync());
-        }
+           return Ok(await _brandService.GetBrandsAsync());
+        } 
 
         [HttpGet(ApiRoutes.Brands.Get)]
         public async Task<IActionResult> Get([FromRoute] Int32 brandId)

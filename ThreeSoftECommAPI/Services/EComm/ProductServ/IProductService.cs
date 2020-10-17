@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1.Responses;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
+using ThreeSoftECommAPI.Contracts.V1.Responses.Reports;
 using ThreeSoftECommAPI.Domain.EComm;
 using ThreeSoftECommAPI.Helpers;
 
@@ -26,6 +27,8 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
         Task<int> UpdateProductSalePriceAsync(Int64 ProductId,decimal salePrice);
         Task<bool> DeleteProductAsync(Int64 ProductId);
         Task<bool> CheckProductsIfActive(long ProductId);
+        Task<List<ProductsBySubCatgReportResp>> ProductsBySubCategoryReport(long subCategoryId);
+
 
 
 

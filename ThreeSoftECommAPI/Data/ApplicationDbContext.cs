@@ -94,6 +94,7 @@ namespace ThreeSoftECommAPI.Data
 
             modelBuilder.Entity<Product>().Property(x => x.SalePrice).HasDefaultValue(0);
 
+            
 
         }
     }
