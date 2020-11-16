@@ -13,6 +13,7 @@ using ThreeSoftECommAPI.Contracts.V1;
 using ThreeSoftECommAPI.Contracts.V1.Requests.Identity;
 using ThreeSoftECommAPI.Contracts.V1.Responses.Identity;
 using ThreeSoftECommAPI.Domain.Identity;
+using ThreeSoftECommAPI.Services.EComm.UserNotifCountServ;
 using ThreeSoftECommAPI.Services.Identity;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
@@ -23,70 +24,69 @@ namespace ThreeSoftECommAPI.Controllers.V1
     {
         private readonly IIdentityService _identityService;
         private readonly IConfiguration _configuration;
-        public IdentityController(IIdentityService identityService, IConfiguration configuration)
+        private readonly IUserNotificationCountService _userNotificationCountService;
+        public IdentityController(IIdentityService identityService, IConfiguration configuration,
+            IUserNotificationCountService userNotificationCountService)
         {
             _identityService = identityService;
             _configuration = configuration;
+            _userNotificationCountService = userNotificationCountService;
         }
 
         [HttpPost(ApiRoutes.Identity.Register)]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request)
         {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new AuthFailedResponse
+                    {
+                        message = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage)).FirstOrDefault(),
+                        status = BadRequest().StatusCode
+                    });
+                }
 
-            if (!ModelState.IsValid)
+                var authResponse = await _identityService.RegisterAsync(request.Email, request.MobileNo, request.Password);
+
+                if (!authResponse.Success)
+                {
+                    return BadRequest(new AuthFailedResponse
+                    {
+                        message = authResponse.Errors,
+                        status = BadRequest().StatusCode
+                    });
+                }
+
+                _userNotificationCountService.Create(authResponse.UserId);
+
+                var appUser = await _identityService.GetUserById(authResponse.UserId);
+
+                await _identityService.AddUserRole(appUser, "Customer");
+
+                var PhoneNumberConfirmed = _identityService.GeneratePhoneNumberConfirmedToken(appUser);
+                SendMessage(PhoneNumberConfirmed.Result);
+
+                return Ok(new AuthSuccessResponse
+                {
+                    Token = authResponse.Token,
+                    UserId = authResponse.UserId,
+                    UserName = authResponse.UserName,
+                    Email = authResponse.Email,
+                    Address = authResponse.Address,
+                    ImgUrl = authResponse.ImgUrl,
+                    ImgCoverUrl = authResponse.ImgCoverUrl,
+                    Role = "Customer"
+                });
+            }
+            catch(Exception ex)
             {
                 return BadRequest(new AuthFailedResponse
                 {
-                    message = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage)).FirstOrDefault(),
+                    message = ex.Message,
                     status = BadRequest().StatusCode
                 });
             }
-
-            var authResponse = await _identityService.RegisterAsync(request.Email, request.MobileNo, request.Password);
-
-            if (!authResponse.Success)
-            {
-                return BadRequest(new AuthFailedResponse
-                {
-                    message = authResponse.Errors,
-                    status = BadRequest().StatusCode
-                });
-            }
-
-            var appUser = await _identityService.GetUserById(authResponse.UserId);
-
-            await _identityService.AddUserRole(appUser, "Customer");
-            /*
-                        switch (request.Role)
-                        {
-                            case 1:
-                                await _identityService.AddUserRole(appUser, "Owner");
-                                UserRole = "Owner";
-                                break;
-                            case 2:
-                                await _identityService.AddUserRole(appUser, "Admin");
-                                UserRole = "Admin";
-                                break;
-                            default:
-                                await _identityService.AddUserRole(appUser, "Customer");
-                                UserRole = "Customer";
-                                break;
-                        }*/
-
-            var PhoneNumberConfirmed = _identityService.GeneratePhoneNumberConfirmedToken(appUser);
-            SendMessage(PhoneNumberConfirmed.Result);
-
-            return Ok(new AuthSuccessResponse
-            {
-                Token = authResponse.Token,
-                UserId = authResponse.UserId,
-                UserName = authResponse.UserName,
-                Email = authResponse.Email,
-                Address = authResponse.Address,
-                ImgUrl = authResponse.ImgUrl,
-                ImgCoverUrl = authResponse.ImgCoverUrl,
-                Role = "Customer"
-            });
         }
 
         [HttpPost(ApiRoutes.Identity.RegisterWeb)]

@@ -28,7 +28,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpGet(ApiRoutes.Coupon.Get)]
         public async Task<IActionResult> Get([FromRoute] Int32 couponId)
         {
-            var Catg = await _couponService.GetCouponByIdAsync(couponId);
+            var Catg =  _couponService.GetCouponByIdAsync(couponId);
 
             if (Catg == null)
                 return NotFound(new ErrorResponse
@@ -137,7 +137,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpDelete(ApiRoutes.Coupon.Delete)]
         public async Task<IActionResult> Delete([FromRoute] Int32 couponId)
         {
-            var deleted = await _couponService.DeleteCouponAsync(couponId);
+            var deleted =  _couponService.DeleteCouponAsync(couponId);
 
             if (deleted)
                 return Ok(new SuccessResponse

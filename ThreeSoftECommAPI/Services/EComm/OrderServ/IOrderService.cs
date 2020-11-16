@@ -13,6 +13,7 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
     {
         Task<int> CreateOrderAsync(Order order);
         Task<int> UpdateOrderAsync(long orderId, Int32 status,string RejectReason);
+        Order GetOrderById(long orderId);
         Task<int> GetLastOrderStatusNo(string UserId);
         Task<List<Order>> GetOrdersAsync(string UserId);
         Task<List<MyOrderResponse>> GetMyOrdersAsync(string UserId);
@@ -23,6 +24,8 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
         Task<List<OrderStatusChartResponse>> OrderStatusChart();
         Task<List<OrderReportResp>> OrderReport(DateTime FromDate, DateTime ToDate);
         Task<OrderStatusCountResponse> OrderStatusCount();
+
+
 
     }
 }

@@ -73,6 +73,8 @@
     <Compile Remove="Data\Migrations\20200710234607_addEcomm17.Designer.cs" />
     <Compile Remove="Data\Migrations\20200710234839_addEcomm17.cs" />
     <Compile Remove="Data\Migrations\20200710234839_addEcomm17.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201116193607_addEcomm27.cs" />
+    <Compile Remove="Data\Migrations\20201116193607_addEcomm27.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

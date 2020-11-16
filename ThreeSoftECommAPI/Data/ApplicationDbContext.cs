@@ -38,6 +38,8 @@ namespace ThreeSoftECommAPI.Data
         public DbSet<ContactUs> ContactUs { get; set; }
         public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<UserNotificationCount> userNotificationCounts { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -93,6 +95,8 @@ namespace ThreeSoftECommAPI.Data
             modelBuilder.Entity<OrderItems>().Property(x => x.Total).HasColumnType("DECIMAL (25,3)");
 
             modelBuilder.Entity<Product>().Property(x => x.SalePrice).HasDefaultValue(0);
+
+            modelBuilder.Entity<UserNotificationCount>().Property(x => x.NotificationCount).HasDefaultValue(0);
 
             
 

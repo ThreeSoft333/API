@@ -92,7 +92,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpGet(ApiRoutes.Product.ViewProduct)]
         public async Task<IActionResult> ViewProduct([FromRoute] Int64 productId)
         {
-            var Product = await _productService.GetProductByIdAsync(productId);
+            var Product = _productService.GetProductById(productId);
 
             if (Product == null)
                 return NotFound(new ErrorResponse
@@ -105,9 +105,9 @@ namespace ThreeSoftECommAPI.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Product.Get)]
-        public async Task<IActionResult> Get([FromRoute] Int64 productId)
+        public IActionResult Get([FromRoute] Int64 productId)
         {
-            var Product = await _productService.GetProductByIdAsync(productId);
+            var Product = _productService.GetProductById(productId);
 
             if (Product == null)
                 return NotFound(new ErrorResponse
@@ -130,7 +130,6 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 ArabicDescription = productRequest.ArabicDescription,
                 EnglishDescription = productRequest.EnglishDescription,
                 Price = productRequest.Price,
-                SalePrice = productRequest.SalePrice,
                 Quantity = productRequest.Quantity,
                 Condition = productRequest.Condition,
                 Material = productRequest.Material,
@@ -177,7 +176,6 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 ArabicDescription = productRequest.ArabicDescription,
                 EnglishDescription = productRequest.EnglishDescription,
                 Price = productRequest.Price,
-                SalePrice = productRequest.SalePrice,
                 Quantity = productRequest.Quantity,
                 Condition = productRequest.Condition,
                 Material = productRequest.Material,

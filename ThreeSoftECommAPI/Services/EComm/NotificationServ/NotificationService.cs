@@ -40,6 +40,7 @@ namespace ThreeSoftECommAPI.Services.EComm.NotificationServ
             return await _dataContext.Notifications.Select(
                 x => new Notification
                 {
+                    Id = x.Id,
                     TitleAr = x.TitleAr,
                     TitleEn = x.TitleEn,
                     BodyAr = x.BodyAr,

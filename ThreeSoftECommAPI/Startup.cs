@@ -47,6 +47,7 @@ using ThreeSoftECommAPI.Services.EComm.ContactUsServ;
 using ThreeSoftECommAPI.Services.EComm.PaymentServ;
 using ThreeSoftECommAPI.Services.EComm.ProductAttributeServ;
 using ThreeSoftECommAPI.Services.EComm.NotificationServ;
+using ThreeSoftECommAPI.Services.EComm.UserNotifCountServ;
 
 namespace ThreeSoftECommAPI
 {
@@ -70,7 +71,6 @@ namespace ThreeSoftECommAPI
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
-
 
 
             services.Configure<FormOptions>(o =>
@@ -101,7 +101,7 @@ namespace ThreeSoftECommAPI
             services.AddScoped<IContactUsService, ContactUsService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<INotificationService, NotificationService>();
-
+            services.AddScoped<IUserNotificationCountService, UserNotificationCountService>();
 
 
             services.AddCors(o => o.AddPolicy(MyAllowSpecificOrigins, builder =>
@@ -208,7 +208,6 @@ namespace ThreeSoftECommAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
 
 
             var swaggerOptions = new SwaggerOptions();

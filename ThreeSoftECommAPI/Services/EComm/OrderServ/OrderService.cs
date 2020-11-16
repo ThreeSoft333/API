@@ -434,6 +434,9 @@ namespace ThreeSoftECommAPI.Services.EComm.OrderServ
             };
         }
 
-      
+        public Order GetOrderById(long orderId)
+        {
+            return _dataContext.Orders.SingleOrDefault(x => x.Id == orderId);
+        }
     }
 }

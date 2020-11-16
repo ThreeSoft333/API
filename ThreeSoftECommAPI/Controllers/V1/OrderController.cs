@@ -79,13 +79,16 @@ namespace ThreeSoftECommAPI.Controllers.V1
                         {
                             await _cartItemService.DeleteCartItemAsync(item.Id);
                         }
+
+                        ProductQuantityMinus(item.ProductId, item.Quantity);
+
                     }
 
                     if(orderRequest.CouponId != null)
                     {
                         if(orderRequest.CouponId != 0)
                         {
-                            SubTrackNumberOfPromoCode(Convert.ToInt32(orderRequest.CouponId));
+                            PromoCodeQuantityMinusOne(Convert.ToInt32(orderRequest.CouponId));
                         }
                     }
 
@@ -114,10 +117,6 @@ namespace ThreeSoftECommAPI.Controllers.V1
             }
         }
 
-        public void SubTrackNumberOfPromoCode(Int32 CouponId)
-        {
-            _couponServices.SubTrackNumberOfPromoCode(CouponId);
-        }
         [HttpGet(ApiRoutes.OrderRoute.MyOrder)]
         public async Task<IActionResult> GetMyOrder(string userId)
         {
@@ -190,7 +189,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
 
                         if (!CheckProductActive)
                         {
-                            var product = await _productService.GetProductByIdAsync(orderItems[i].ProductId);
+                            var product = _productService.GetProductById(orderItems[i].ProductId);
                             ListUnActive.Add(product);
                         }
                     }
@@ -296,6 +295,22 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 var updated = await _orderService.UpdateOrderAsync(updateOrder.orderId, updateOrder.status, updateOrder.rejectReason);
                 if (updated == 1)
                 {
+                    var order = _orderService.GetOrderById(updateOrder.orderId);
+                    if(updateOrder.status == 5 && !string.IsNullOrEmpty(Convert.ToString(order.CouponId)) && order.CouponId != 0)
+                    {
+                        PromoCodeQuantityPlusOne(Convert.ToInt32(order.CouponId));
+
+                       var orderItem =await _orderItemService.GetOrderItems(updateOrder.orderId);
+
+                        if(orderItem.Count > 0)
+                        {
+                            for(int i=0;i< orderItem.Count; i++)
+                            {
+                                ProductQuantityPlus(orderItem[i].ProductId, orderItem[i].Quantity);
+                            }
+                        }
+
+                    }
                     return Ok(new
                     {
                         status = Ok().StatusCode,
@@ -325,14 +340,27 @@ namespace ThreeSoftECommAPI.Controllers.V1
             return Ok(await _orderService.OrderStatusChart());
         }
 
-      
-
         [HttpGet(ApiRoutes.OrderRoute.orderStatusCount)]
         public async Task<IActionResult> OrderStatusCount()
         {
             return Ok(await _orderService.OrderStatusCount());
         }
 
-
+        public void PromoCodeQuantityMinusOne(Int32 CouponId)
+        {
+            _couponServices.PromoCodeQuantityMinusOne(CouponId);
+        }
+        public void PromoCodeQuantityPlusOne(Int32 CouponId)
+        {
+            _couponServices.PromoCodeQuantityPlusOne(CouponId);
+        }
+        public void ProductQuantityMinus(long productId, int quantityId)
+        {
+            _productService.ProductQuantityMinus(productId, quantityId);
+        }
+        public void ProductQuantityPlus(long productId, int quantityId)
+        {
+            _productService.ProductQuantityPlus(productId, quantityId);
+        }
     }
 }

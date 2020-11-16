@@ -15,6 +15,7 @@ using ThreeSoftECommAPI.Services.EComm.OffersServ;
 using ThreeSoftECommAPI.Services.EComm.OrderItemServ;
 using ThreeSoftECommAPI.Services.EComm.OrderServ;
 using ThreeSoftECommAPI.Services.EComm.ProductServ;
+using ThreeSoftECommAPI.Services.EComm.UserNotifCountServ;
 
 namespace ThreeSoftECommAPI.Controllers.V1
 {
@@ -28,6 +29,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
         private readonly ICartItemService _cartItemService;
         private readonly IOrderService _orderService;
         private readonly IOrderItemService _orderItemService;
+        private readonly IUserNotificationCountService _userNotificationCountService;
+
 
         public DashboardController(ICategoryService CategoryService,
                                    IAdvertisingService advertisingService,
@@ -35,7 +38,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                                    IOffersService offersService,
                                    ICartItemService cartItemService,
                                    IOrderService orderService,
-                                   IOrderItemService orderItemService)
+                                   IOrderItemService orderItemService,
+                                   IUserNotificationCountService userNotificationCountService)
         {
             _CategoryService = CategoryService;
             _AdvertisingService = advertisingService;
@@ -44,6 +48,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
             _cartItemService = cartItemService;
             _orderService = orderService;
             _orderItemService = orderItemService;
+            _userNotificationCountService = userNotificationCountService;
         }
 
         [HttpGet(ApiRoutes.Dashboard.Get)]
@@ -57,6 +62,7 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var Offers = await _OffersService.GetOffersTopAsync(UserId, 8);
             var CartItem = await _cartItemService.GetCartItemByUserIdAsync(UserId);
             var OrderStatus = await _orderService.GetLastOrderStatusNo(UserId);
+            var userNotifCount = _userNotificationCountService.getCountByUser(UserId);
 
             int ItemCount = 0;
             for (int i = 0; i < CartItem.Count; i++)
@@ -72,7 +78,8 @@ namespace ThreeSoftECommAPI.Controllers.V1
                 Product_TopRated = TopRated,
                 Offers = Offers,
                 Cart_Items_Count = ItemCount,
-                Order_Status = OrderStatus
+                Order_Status = OrderStatus,
+                notification_count = userNotifCount
             };
 
             return Ok(obj);

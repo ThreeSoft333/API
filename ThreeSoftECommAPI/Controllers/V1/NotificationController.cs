@@ -13,6 +13,7 @@ using ThreeSoftECommAPI.Contracts.V1.Requests.EComm.NotificationReq;
 using ThreeSoftECommAPI.Contracts.V1.Responses.EComm;
 using ThreeSoftECommAPI.Domain.EComm;
 using ThreeSoftECommAPI.Services.EComm.NotificationServ;
+using ThreeSoftECommAPI.Services.EComm.UserNotifCountServ;
 using static ThreeSoftECommAPI.Contracts.V1.ApiRoutes;
 
 namespace ThreeSoftECommAPI.Controllers.V1
@@ -21,9 +22,11 @@ namespace ThreeSoftECommAPI.Controllers.V1
     public class NotificationController:Controller
     {
         private readonly INotificationService _notificationService;
-        public NotificationController(INotificationService notificationService)
+        private readonly IUserNotificationCountService _userNotificationCountService;
+        public NotificationController(INotificationService notificationService, IUserNotificationCountService userNotificationCountService)
         {
             _notificationService = notificationService;
+            _userNotificationCountService = userNotificationCountService;
         }
 
         [HttpGet(ApiRoutes.NotificationRout.GetAll)]
@@ -50,59 +53,53 @@ namespace ThreeSoftECommAPI.Controllers.V1
         [HttpPost(ApiRoutes.NotificationRout.Create)]
         public async Task<IActionResult> Create([FromBody] NotificationRequest notificationRequest)
         {
-            var notf = new Notification
+            try
             {
-                TitleAr = notificationRequest.TitleAr,
-                TitleEn = notificationRequest.TitleEn,
-                BodyAr = notificationRequest.BodyAr,
-                BodyEn = notificationRequest.BodyEn,
-                ImageUrl = notificationRequest.ImageUrl,
-                CreateDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")
-            };
-
-            var status = await _notificationService.CreateNotificationAsync(notf);
-
-            if (status == -1)
-            {
-                return Conflict(new ErrorResponse
+                var notf = new Notification
                 {
-                    message = "Dublicate Entry",
-                    status = Conflict().StatusCode
+                    TitleAr = notificationRequest.TitleAr,
+                    TitleEn = notificationRequest.TitleEn,
+                    BodyAr = notificationRequest.BodyAr,
+                    BodyEn = notificationRequest.BodyEn,
+                    ImageUrl = notificationRequest.ImageUrl,
+                    CreateDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")
+                };
+
+                var status = await _notificationService.CreateNotificationAsync(notf);
+
+                if (status == -1)
+                {
+                    return Conflict(new ErrorResponse
+                    {
+                        message = "Dublicate Entry",
+                        status = Conflict().StatusCode
+                    });
+                }
+
+                if (status == 1)
+                {
+                    _userNotificationCountService.WhenAddNewNotification();
+                    var response = new
+                    {
+                        message = "Successfully Insert",
+                        status = Ok().StatusCode
+                    };
+                    return Ok(response);
+                }
+                return NotFound(new ErrorResponse
+                {
+                    message = "Not Found",
+                    status = NotFound().StatusCode
                 });
             }
-
-            if (status == 1)
+            catch(Exception ex)
             {
-                //var Obj = new
-                //{
-                //    to = "cX358epnOWs:APA91bFxlDeEHyCaJvXzwWBmEsvHbzzl3uA2MspSzhZLXu65J3ZgjzKw5Q9LyUG-2-ZIjw4UX7UiA3_HDYoH7OxZ8z9LMGGQOpseLuEo-4-fIPLTstG6GtVadKoPfVZj2a4D7UBYyWnT",
-                //    data = new {
-                //        title = notificationRequest.Title,
-                //        message = notificationRequest.Body
-                //    }
-                    
-                //};
-//                using (var httpClient = new HttpClient())
-//                {
-//                    StringContent content = new StringContent(JsonConvert.SerializeObject(Obj), Encoding.UTF8, "application/json");
-//                    using (var response1 = await httpClient.PostAsync("tps://fcm.googleapis.com/fcm/send", content))
-//                    {
-//                        string apiResponse = await response1.Content.ReadAsStringAsync();
-////                        reservationList = JsonConvert.DeserializeObject<List<Reservation>>(apiResponse);
-//                    }
-//                }
-                //
-                var response = new {
-                    message = "Successfully Insert",
-                    status = Ok().StatusCode
-                };
-                return Ok(response);
+                return BadRequest(new ErrorResponse
+                {
+                    message = ex.Message,
+                    status = BadRequest().StatusCode
+                });
             }
-            return NotFound(new ErrorResponse
-            {
-                message = "Not Found",
-                status = NotFound().StatusCode
-            });
         }
 
         [HttpPost(ApiRoutes.NotificationRout.Update)]
@@ -192,5 +189,39 @@ namespace ThreeSoftECommAPI.Controllers.V1
             }
             return BadRequest();
         }
+
+        [HttpPost(ApiRoutes.NotificationRout.updateusernotificationcount)]
+        public IActionResult UpdateUserNotificationCount([FromRoute] string userid)
+        {
+            try
+            {
+                var update = _userNotificationCountService.Update(userid);
+
+                if (update)
+                {
+                    var response = new
+                    {
+                        message = "Successfully Update",
+                        status = Ok().StatusCode
+                    };
+                    return Ok(response);
+                }
+
+                return NotFound(new ErrorResponse
+                {
+                    message = "Not Found",
+                    status = NotFound().StatusCode
+                });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    message = ex.Message,
+                    status = BadRequest().StatusCode
+                });
+            }
+        }
+
     }
 }

@@ -393,11 +393,11 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
 
             return lstproductResponses;
         }
-        public async Task<Product> GetProductByIdAsync(Int64 ProductId)
+        public Product GetProductById(Int64 ProductId)
         {
-            return await _dataContext.product.Include(x=>x.productImages)
+            return _dataContext.product.Include(x=>x.productImages)
                 .Include(x=>x.productAttributes)
-                .SingleOrDefaultAsync(x => x.Id == ProductId);
+                .SingleOrDefault(x => x.Id == ProductId);
         }
         public async Task<ViewProductResponse> ViewProductAsync(long ProductId)
         {
@@ -457,7 +457,7 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
         }
         public async Task<bool> DeleteProductAsync(Int64 ProductId)
         {
-            var Product = await GetProductByIdAsync(ProductId);
+            var Product = GetProductById(ProductId);
 
             if (Product == null)
                 return false;
@@ -531,7 +531,6 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
 
             return true;
         }
-
         public async Task<List<ProductsBySubCatgReportResp>> ProductsBySubCategoryReport(long subCategoryId)
         {
             return await _dataContext.product
@@ -545,6 +544,41 @@ namespace ThreeSoftECommAPI.Services.EComm.ProductServ
                 }).ToListAsync();
         }
 
+        public bool ProductQuantityMinus(long productId,int quantity)
+        {
+            try
+            {
+                var product = GetProductById(productId);
+
+                product.Quantity -= quantity;
+
+                var update = _dataContext.SaveChanges();
+                return update > 0;
+            }
+
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool ProductQuantityPlus(long productId, int quantity)
+        {
+            try
+            {
+                var product = GetProductById(productId);
+
+                product.Quantity += quantity;
+
+                var update = _dataContext.SaveChanges();
+                return update > 0;
+            }
+
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         //public async Task<ReviewProductResponse> ReviewProduct(long ProductId)
         //{
         //    var query = await (from p in _dataContext.product

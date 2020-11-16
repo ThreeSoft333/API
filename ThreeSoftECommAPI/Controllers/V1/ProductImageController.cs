@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ThreeSoftECommAPI.Contracts.V1;
@@ -113,16 +114,35 @@ namespace ThreeSoftECommAPI.Controllers.V1
             var deleted = await _productImagesService.DeleteProductImageByProductIdAsync(productId);
 
             if (deleted)
+            {
+                deleteImagesFromFolder(productId);
                 return Ok(new SuccessResponse
                 {
                     message = "Successfully Deleted",
                     status = Ok().StatusCode
                 });
+            }
+                
             return NotFound(new ErrorResponse
             {
                 message = "Not Found",
                 status = NotFound().StatusCode
             });
+        }
+
+        public async void deleteImagesFromFolder(Int64 ProductId)
+        {
+            var images = await _productImagesService.GetProductImageAsync(ProductId);
+
+            for (int i = 0; i < images.Count; i++)
+            {
+                string Path = images[i].ImgUrl;
+                FileInfo file = new FileInfo(Path);
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
+            }
         }
     }
 }

@@ -226,6 +226,7 @@ namespace ThreeSoftECommAPI.Contracts.V1
             public const string Update = Base + "/notifications/{id}";
             public const string Upload = Base + "/notifications/upload";
             public const string Delete = Base + "/notifications/{id}";
+            public const string updateusernotificationcount = Base + "/notifications/updateusernotificationcount/{userid}";
         }
 
         public static class ReportsRout

@@ -152,7 +152,6 @@ namespace ThreeSoftECommAPI.Services.EComm.CartItemItemsServ
             return deleted > 0;
         }
 
-
         public async Task<CartItem> GetCarItemtByValueAsync(long CartId, long? ProductId)
         {
             return await _dataContext.cartItems.SingleOrDefaultAsync(x => x.CartId == CartId && x.ProductId == ProductId);
